@@ -1,2 +1,4 @@
 # MH4310-Elliptic-Codes
-Code for §7 in our report "Elliptic Curve Codes: Recent Constructions and Isogeny-Induced Transformations"
+- Our report "Elliptic Curve Codes: Recent Constructions and Isogeny-Induced Transformations" in PDF format
+- Code for §7 in our report
+- Code for our Manim presentation
