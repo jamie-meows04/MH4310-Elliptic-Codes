@@ -1,0 +1,1384 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jamiepack}[2026/09/13]
+
+% {{{ USER OPTIONS
+
+\newif\ifbubucover\bubucoverfalse
+\newif\ifbubumax\bubumaxtrue
+\newif\ifbububoxbw\bububoxbwfalse
+\newif\ifbubuhdr\bubuhdrtrue
+\newif\ifbubuauthor\bubuauthortrue
+\newif\ifbubudate\bubudatefalse
+\newif\ifbubutitle\bubutitletrue
+\newif\ifbubutitlemark\bubutitlemarkfalse
+\newif\ifbubusecthm\bubusecthmfalse
+\newif\ifbubucountcont\bubucountconttrue
+\newif\ifbubucs\bubucsfalse
+\newif\ifbubuepi\bubuepifalse
+\newif\ifbububib\bububibfalse
+\newif\ifbubuhints\bubuhintsfalse
+\newif\ifbubuasy\bubuasytrue
+\newif\ifbububon\bububonfalse
+\newif\iftocdots\tocdotsfalse
+\newif\ifchead\cheadtrue
+
+\newcommand{\loadfont}{\let\widering\undefined\RequirePackage{kpfonts} \let\bm\boldsymbol}
+\newcommand{\setmathstyle}{}
+\newcommand{\claimsunder}{section}
+\newcommand{\pagemargin}{2.5cm}
+
+\DeclareOption{lmodern}{\renewcommand{\loadfont}{\RequirePackage{lmodern,bm}}}
+\DeclareOption{times}{}
+\DeclareOption{stix}{\renewcommand{\loadfont}{\RequirePackage{stix2} \let\bm\boldsymbol}}
+\DeclareOption{cmb}{\renewcommand{\loadfont}{\RequirePackage{cmbright,bm}}}
+\DeclareOption{kpf}{\renewcommand{\loadfont}{\let\widering\undefined\RequirePackage{kpfonts} \let\bm\boldsymbol}}
+\DeclareOption{displaymath}{\renewcommand{\setmathstyle}{\everymath{\displaystyle}}}
+\DeclareOption{number-within-none}{\bubusecthmfalse}
+\DeclareOption{number-within-section}{\bubusecthmtrue\renewcommand{\claimsunder}{section}}
+\DeclareOption{number-within-subsection}{\bubusecthmtrue\renewcommand{\claimsunder}{subsection}}
+\DeclareOption{number-within-subsubsection}{\bubusecthmtrue\renewcommand{\claimsunder}{subsubsection}}
+\DeclareOption{narrow-margins}{\renewcommand{\pagemargin}{1.5cm}}
+\DeclareOption{normal-margins}{\renewcommand{\pagemargin}{2.5cm}}
+\DeclareOption{wide-margins}{\renewcommand{\pagemargin}{3.5cm}}
+\DeclareOption{toc-dots}{\tocdotstrue}
+\DeclareOption{no-chead}{\cheadfalse}
+
+\DeclareOption{fancycover}{\bubucovertrue}
+\DeclareOption{min}{\bubumaxfalse\bubuasytrue}
+\DeclareOption{boxbw}{\bububoxbwtrue}
+\DeclareOption{nohdr}{\bubuhdrfalse}
+\DeclareOption{noauthor}{\bubuauthorfalse}
+\DeclareOption{notitle}{\bubutitlefalse}
+\DeclareOption{nosectionmark}{\bubutitlemarktrue}
+\DeclareOption{nosecthm}{\bubusecthmfalse}
+\DeclareOption{nocountcont}{\bubucountcontfalse}
+\DeclareOption{cs}{\bubucstrue}
+\DeclareOption{epi}{\bubuepitrue}
+\DeclareOption{bib}{\bububibtrue}
+\DeclareOption{hints}{\bubuhintstrue}
+\DeclareOption{noasy}{\bubuasyfalse}
+\DeclareOption{bon}{\bububontrue}
+
+\ProcessOptions\relax
+
+% }}}
+
+% ================================================== %
+% ================ REQUIRED PACKAGES =============== %
+% ================================================== %
+
+% {{{ REQUIRED PACKAGES
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+%\RequirePackage[minimal]{yhmath}
+\RequirePackage[shortlabels,inline]{enumitem}
+\RequirePackage{mathtools}
+\RequirePackage{graphicx}
+\RequirePackage{xparse}
+\RequirePackage{float}
+
+\ifbubumax
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern}
+\RequirePackage[headsepline]{scrlayer-scrpage}
+\RequirePackage[svgnames,dvipsnames]{xcolor}
+\RequirePackage{tikz}
+\RequirePackage{tikz-cd}
+\RequirePackage{varwidth}
+% \RequirePackage{thmtools}
+\RequirePackage[most]{tcolorbox}
+% \RequirePackage[framemethod=TikZ]{mdframed}
+\RequirePackage[colorlinks=true,pdfusetitle,hypertexnames=false,bookmarks=true, bookmarksnumbered=true, bookmarksopen=true]{hyperref}
+\hypersetup{%
+	urlcolor=RoyalBlue,%
+	linkcolor=RoyalBlue,%
+	citecolor=ForestGreen%
+}
+\RequirePackage[a4paper,margin=\pagemargin,headsep=0.5cm,footskip=1cm]{geometry}
+\RequirePackage{microtype}
+\RequirePackage[makeroom]{cancel}
+\else
+\RequirePackage[
+colorlinks=true,
+pdfusetitle,
+hypertexnames=false,
+linkcolor=blue
+]{hyperref}
+\fi
+
+% \newcommand\hmmax{0} \newcommand\bmmax{0} % Increase limit of math fonts
+\RequirePackage{adjustbox} % For tables in lists
+\RequirePackage{array}
+\RequirePackage[backend=bibtex,bibstyle=ieee,citestyle=numeric-comp,sorting=none,maxnames=20]{biblatex}
+\RequirePackage[hang,flushmargin]{footmisc} % For footnotes formatting
+\RequirePackage{ifthen}
+\RequirePackage{mleftright}
+\RequirePackage{multirow}
+\RequirePackage{subfiles}
+% \RequirePackage{stmaryrd} % For math symbols
+% \RequirePackage{tabularray} % For table formatting
+\RequirePackage{titling} % For title & header formatting
+\RequirePackage{xurl} % For URL formatting
+
+% Must be loaded last
+\RequirePackage[nameinlink]{cleveref}
+
+% }}}
+
+% {{{ COLOR SETUP
+
+\ifbubumax
+\definecolor{LightGray}{gray}{0.9}
+
+\definecolor{lightestblue}{HTML}{F2FBFC} % #F2FBFC
+\definecolor{lighterblue}{HTML}{F2F2F9} % #F2F2F9
+\definecolor{bubulightblue}{HTML}{E5E5FF} % #E5E5FF
+\definecolor{deepblue}{HTML}{3F3FA3} % #3F3FA3
+\definecolor{deepestblue}{HTML}{00007B} % #00007B
+
+\definecolor{lightestgreen}{HTML}{73A840} % #73A840
+\definecolor{bubulightgreen}{HTML}{388C46} % #388C46
+\definecolor{deepgreen}{HTML}{003700} % #003700
+
+\definecolor{bubupink}{HTML}{06608F} % #06608F
+\definecolor{bubucream}{HTML}{00AAA0} % #00AAA0
+\definecolor{bubured}{HTML}{D51645} % #D51645
+
+\ifbububoxbw
+\colorlet{defncoltitle}{black}
+\colorlet{defncolback}{white}
+\colorlet{defncolframe}{black}
+\colorlet{defncolbacktitle}{black}
+\colorlet{thmcoltitle}{black}
+\colorlet{thmcolback}{white}
+\colorlet{thmcolframe}{black}
+\colorlet{thmcolbacktitle}{black}
+\colorlet{lemmacoltitle}{black}
+\colorlet{lemmacolback}{white}
+\colorlet{lemmacolframe}{black}
+\colorlet{lemmacolbacktitle}{black}
+\colorlet{crlcoltitle}{black}
+\colorlet{crlcolback}{white}
+\colorlet{crlcolframe}{black}
+\colorlet{crlcolbacktitle}{black}
+\colorlet{propcoltitle}{black}
+\colorlet{propcolback}{white}
+\colorlet{propcolframe}{black}
+\colorlet{propcolbacktitle}{black}
+\colorlet{conjcoltitle}{black}
+\colorlet{conjcolback}{white}
+\colorlet{conjcolframe}{black}
+\colorlet{conjcolbacktitle}{black}
+
+\colorlet{claimcoltitle}{black}
+\colorlet{claimcolback}{black!5}
+\colorlet{claimborderline}{black}
+\colorlet{claimsegstyle}{black}
+\colorlet{quescoltitle}{black}
+\colorlet{quessegstyle}{black}
+\colorlet{remcolback}{black!5}
+\colorlet{remborderline}{black}
+\colorlet{remcoltitle}{black}
+\colorlet{remsegstyle}{black}
+
+\colorlet{examplecoltitle}{black}
+\colorlet{examplecolback}{black!5}
+\colorlet{examplecolframe}{black}
+
+\colorlet{probcoltitle}{black}
+\colorlet{probcolback}{white}
+\colorlet{probcolframe}{white}
+\colorlet{probfont}{black}
+
+\colorlet{notecoltitle}{black}
+\colorlet{notecolback}{black!5}
+\colorlet{notecolframe}{black}
+\colorlet{noteshadow}{black!50!white}
+\colorlet{noteboxcolback}{white}
+\colorlet{noteboxfill}{white}
+\colorlet{noteboxscope}{black}
+
+\else
+\colorlet{defncoltitle}{RawSienna}
+\colorlet{defncolback}{Salmon!5}
+\colorlet{defncolframe}{RawSienna}
+\colorlet{defncolbacktitle}{RawSienna}
+\colorlet{defnborderline}{RawSienna}
+\colorlet{defnsegstyle}{RawSienna}
+\colorlet{thmcoltitle}{deepestblue}
+\colorlet{thmcolback}{lightestblue}
+\colorlet{thmcolframe}{deepestblue}
+\colorlet{thmcolbacktitle}{deepestblue}
+\colorlet{thmborderline}{deepestblue}
+\colorlet{thmsegstyle}{deepestblue}
+\colorlet{lemmacoltitle}{deepestblue}
+\colorlet{lemmacolback}{lightestblue}
+\colorlet{lemmacolframe}{deepestblue}
+\colorlet{lemmacolbacktitle}{deepestblue}
+\colorlet{lemmaborderline}{deepestblue}
+\colorlet{lemmasegstyle}{deepestblue}
+\colorlet{crlcoltitle}{deepestblue}
+\colorlet{crlcolback}{lighterblue}
+\colorlet{crlcolframe}{deepestblue}
+\colorlet{crlcolbacktitle}{deepblue}
+\colorlet{crlborderline}{deepestblue}
+\colorlet{crlsegstyle}{deepestblue}
+\colorlet{propcoltitle}{deepestblue}
+\colorlet{propcolback}{lighterblue}
+\colorlet{propcolframe}{deepestblue}
+\colorlet{propcolbacktitle}{deepblue}
+\colorlet{propborderline}{deepestblue}
+\colorlet{propsegstyle}{deepestblue}
+\colorlet{conjcoltitle}{Purple}
+\colorlet{conjcolback}{Purple!10}
+\colorlet{conjcolframe}{Purple}
+\colorlet{conjcolbacktitle}{Purple}
+\colorlet{conjborderline}{Purple}
+\colorlet{conjsegstyle}{Purple}
+\colorlet{assumcoltitle}{RedViolet}
+\colorlet{assumcolback}{RedViolet!10}
+\colorlet{assumcolframe}{RedViolet}
+\colorlet{assumcolbacktitle}{RedViolet}
+\colorlet{assumborderline}{RedViolet}
+\colorlet{assumsegstyle}{RedViolet}
+
+\colorlet{claimcoltitle}{bubulightgreen!85!black}
+\colorlet{claimcolback}{bubulightgreen!10}
+\colorlet{claimborderline}{bubulightgreen}
+\colorlet{claimsegstyle}{bubulightgreen!85!black}
+\colorlet{algocoltitle}{bubulightgreen!70!black}
+\colorlet{algocolback}{bubulightgreen!10}
+\colorlet{algoborderline}{bubulightgreen}
+\colorlet{algocolframe}{bubulightgreen!70!black}
+\colorlet{algocolbacktitle}{bubulightgreen!70!black}
+\colorlet{algosegstyle}{bubulightgreen!70!black}
+\colorlet{constrcoltitle}{bubulightgreen!70!black}
+\colorlet{constrcolback}{bubulightgreen!10}
+\colorlet{constrborderline}{bubulightgreen}
+\colorlet{constrcolframe}{bubulightgreen!70!black}
+\colorlet{constrcolbacktitle}{bubulightgreen!70!black}
+\colorlet{constrsegstyle}{bubulightgreen!70!black}
+\colorlet{quescoltitle}{deepgreen}
+\colorlet{quessegstyle}{deepgreen}
+\colorlet{probcoltitle}{deepgreen}
+\colorlet{probsegstyle}{deepgreen}
+\colorlet{remcolback}{RedViolet!5!gray!5}
+\colorlet{remborderline}{black}
+\colorlet{remcoltitle}{black}
+\colorlet{remsegstyle}{black}
+
+\colorlet{examplecoltitle}{deepgreen}
+\colorlet{examplecolback}{bubulightgreen!10}
+\colorlet{examplecolframe}{lightestgreen}
+
+\colorlet{probcoltitle}{blue!40!black}
+\colorlet{probcolback}{white}
+\colorlet{probcolframe}{white}
+\colorlet{probfont}{blue!40!black}
+
+\colorlet{notecoltitle}{black}
+\colorlet{notecolback}{gray!20!white}
+\colorlet{notecolframe}{gray!80!black}
+\colorlet{noteshadow}{black!50!white}
+\colorlet{noteboxcolback}{white}
+\colorlet{noteboxfill}{white}
+\colorlet{noteboxscope}{gray!80!black}
+\fi
+\fi
+
+% }}}
+
+% {{{ PERSONAL STYLING
+
+% Font
+\loadfont
+\renewcommand{\textbf}[1]{%
+	\textcolor{deepestblue}{\bfseries{#1}}%
+}
+
+% General Formatting
+\flushbottom
+\widowpenalty=0
+\clubpenalty=0
+\interlinepenalty=0
+\predisplaypenalty=0
+\displaywidowpenalty=0
+\setlength{\columnsep}{0.6cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em plus 1em minus 0.5em}
+\renewcommand{\baselinestretch}{1.2}
+\renewcommand{\arraystretch}{1.1}
+\newcommand{\mycomment}[1]{}
+\newcommand{\hrulebar}{%
+	\begin{center}
+		\par\hspace*{\fill}\rule{0.8\textwidth}{.7pt}\hspace*{\fill}%
+		% \par\noindent\rule{\textwidth}{0.7pt}%
+		\par\nointerlineskip \vspace{\baselineskip}%
+	\end{center}
+}
+\newcommand{\boxsc}[1]{\boxed{\textsc{#1}}}
+
+% Math Formatting
+\setmathstyle
+\mleftright
+\let\l\mleft
+\let\r\mright
+\newcolumntype{M}{>{$}c<{$}}
+\allowdisplaybreaks
+\AtBeginDocument{
+    \addtolength{\abovedisplayskip}{-0.75ex}
+    \addtolength{\abovedisplayshortskip}{-0.75ex}
+    \addtolength{\belowdisplayskip}{-0.75ex}
+    \addtolength{\belowdisplayshortskip}{-0.75ex}
+}
+
+% List Formatting
+\setlist{topsep=-5pt, itemsep=-5pt, left=0pt, beginpenalty=0, midpenalty=0, endpenalty=0}
+\setlist[enumerate,1]{label={\arabic*.}}
+\setlist[enumerate,2]{label=\alph*.}
+\setlist[itemize,2]{label=$\diamond$}
+
+% Title formatting
+\setlength{\droptitle}{-2cm}
+\author{\textsc{Jamie Low Jiaqi}}
+\date{}
+
+\newcommand{\ToC}{\tableofcontents\restoregeometry}
+
+% Section formatting
+\newcommand{\usubsection}[1]{\subsection*{#1}\addcontentsline{toc}{subsection}{#1}}
+\newcommand{\usection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}\markright{\footnotesize\textbf{#1}}}
+\newcommand{\uchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
+
+% Footnote formatting
+\let\oldfootnote\footnote
+\renewcommand\footnote[1]{%
+	\oldfootnote{\hspace{1mm}#1}%
+}
+\setlength{\footnotesep}{10.8pt}
+\interfootnotelinepenalty=10000
+
+% Equations, figures, tables and captions
+
+\makeatletter
+
+\newcounter{eqn}
+\newcommand{\eqlabel}[1]{\refstepcounter{eqn}\tag{\theeqn}\label{#1}}
+
+\crefname{figure}{figure}{figures}
+\Crefname{figure}{Figure}{Figures}
+\crefname{table}{table}{tables}
+\Crefname{table}{Table}{Tables}
+
+\let\oldfigure\figure
+\renewcommand{\figure}{\oldfigure[ht]\centering\refstepcounter{tcb@cnt@definition}}
+\newcommand{\figcaption}{\par\smallskip\small\textbf{Figure \thetcb@cnt@definition.}\ }
+\newcommand{\tabcaption}{\par\medskip\small\textbf{Table \thetcb@cnt@definition.}\ }
+
+\let\oldprintbibliography\printbibliography
+\renewcommand{\printbibliography}{\usection{References}\oldprintbibliography[heading=none]}
+
+\newenvironment{Tabular}[2][1.1]{\begingroup\renewcommand{\arraystretch}{#1}\tabular{#2}}{\endtabular\endgroup}
+
+\makeatother
+
+% }}}
+
+% ================================================== %
+% =================== PAGE SETUP =================== %
+% ================================================== %
+
+% {{{ PAGE SETUP
+
+\ifbubumax
+%\addtokomafont{subtitle}{\Large}
+%\setkomafont{author}{\Large\scshape}
+%\setkomafont{date}{\Large\normalsize}
+
+\makeatletter
+\providecommand{\thetitle}{\@title}
+\providecommand{\theauthor}{\@author}
+\providecommand{\thedate}{\@date}
+\makeatother
+
+%\clearpairofpagestyles
+\pagestyle{scrheadings}
+
+\newcommand{\bubuiheadcontent}{}
+\newcommand{\bubucheadcontent}{}
+\newcommand{\bubuoheadcontent}{}
+
+\ifbubuhdr
+\ifbubuauthor
+\ifbubudate
+\renewcommand{\bubuiheadcontent}{\footnotesize\textbf{\theauthor} --- \thedate}
+\else
+\renewcommand{\bubuiheadcontent}{\footnotesize\textbf{\theauthor}}
+\fi
+\else
+\ifbubudate
+\renewcommand{\bubuiheadcontent}{\thedate}
+\else
+\renewcommand{\bubuiheadcontent}{}
+\fi
+\fi
+\ifbubutitle
+\ifbubutitlemark
+\renewcommand{\bubuoheadcontent}{\footnotesize\textbf{\thetitle}}
+\else
+\ifchead
+\renewcommand{\bubucheadcontent}{\footnotesize\textbf{\thetitle}}
+\fi
+\renewcommand{\bubuoheadcontent}{\rightmark}
+\fi
+\else
+\renewcommand{\bubuoheadcontent}{}
+\fi
+\else
+\KOMAoptions{headsepline=false}
+\fi
+
+% TODO: add styling for scrreprt and scrbook
+\makeatletter
+\@ifclassloaded{scrartcl}{%
+	\renewcommand{\headfont}{}%
+	\ihead{\bubuiheadcontent}%
+	\automark{section}%
+	\renewcommand*{\sectionmark}[1]{%
+		\markright{\footnotesize\textbf{\thesection. #1}}%
+	}%
+	\chead{\bubucheadcontent}%
+	\ohead{\bubuoheadcontent}%
+	\cfoot{\pagemark}%
+}{%
+	\@ifclassloaded{scrreprt}{%
+		% scrreprt settings
+	}{%
+		\@ifclassloaded{scrbook}{%
+			% scrbook settings
+		}{%
+			\typeout{Unknown KOMA class!}%
+		}%
+	}%
+}
+\makeatother
+\fi
+
+% }}}
+
+% ================================================== %
+% ================== CORE STYLING ================== %
+% ================================================== %
+
+% {{{ CORE STYLING
+
+\renewenvironment{proof}[1][Proof]
+  {\par\pushQED{\qed}\textit{#1. }}
+  {\popQED}
+\newenvironment{proof*}[1][Proof]
+  {\par\textit{#1. }}
+  {}
+
+\mycomment{
+\newenvironment{soln}{%
+	\begin{proof}[Solution]%
+		\renewcommand{\qedsymbol}{$\blacksquare$}%
+	}%
+	{
+\end{proof}}
+
+\newenvironment{subproof}{%
+	\begin{proof}%
+		\renewcommand{\qedsymbol}{$\square$}%
+	}%
+	{
+\end{proof}}
+}
+
+\ifbubumax
+\makeatletter
+% TODO: add styling for scrreprt and scrbook
+\@ifundefined{chapter}{}{%
+	\addtokomafont{partprefix}{\rmfamily}%
+	\renewcommand*{\partformat}{%
+		\color{purple}%
+		\scalebox{2.5}{\thepart}\enlargethispage{2em}%
+	}
+	\addtokomafont{chapterprefix}{\raggedleft}
+	\RedeclareSectionCommand[beforeskip=0.5em]{chapter}
+	\renewcommand*{\chapterformat}{%
+		\mbox{%
+			\scalebox{1.5}{\chapappifchapterprefix{\nobreakspace}}%
+			\scalebox{2.718}{\color{purple}\thechapter}\enskip}%
+	}
+}
+\makeatother
+
+\RedeclareSectionCommand[beforeskip=0.1em, afterskip=0.1em]{section}
+\RedeclareSectionCommand[beforeskip=0.1em, afterskip=0.1em]{subsection}
+\RedeclareSectionCommand[beforeskip=0.1em, afterskip=0.1em]{subsubsection}
+\renewcommand*{\sectionformat}{%
+	\color{violet}\thesection\enskip%
+}
+\renewcommand*{\subsectionformat}{%
+	\color{violet}\thesubsection\enskip%
+}
+\renewcommand*{\subsubsectionformat}{%
+	\color{violet}\thesubsubsection\enskip%
+}
+\addtokomafont{paragraph}{\color{orange!35!black}\P\ }
+\KOMAoptions{numbers=noenddot}
+
+\tcbuselibrary{theorems,skins,hooks,breakable}
+\tcbset{%
+	defnstyle/.style={%
+		breakable,
+		enhanced,
+		before skip=12pt,
+		after skip=12pt,
+		coltitle=defncoltitle,
+		colback=defncolback,
+		frame hidden,
+		boxrule=0sp,
+		borderline west={2pt}{0pt}{defnborderline},
+		sharp corners,
+		detach title,
+		before upper=\tcbtitle\par\medskip,
+		fonttitle=\bfseries\sffamily,
+		description font=\mdseries,
+		description delimiters parenthesis,
+		separator sign none,
+		segmentation style={solid, claimsegstyle},
+	}
+}
+
+\tcbuselibrary{theorems,skins,hooks,breakable}
+\tcbset{%
+	claimstyle/.style={%
+		breakable,
+		enhanced,
+		before skip=12pt,
+		after skip=12pt,
+		coltitle=claimcoltitle,
+		colback=claimcolback,
+		frame hidden,
+		boxrule=0sp,
+		borderline west={2pt}{0pt}{claimborderline},
+		sharp corners,
+		detach title,
+		before upper=\tcbtitle\par\medskip,
+		fonttitle=\bfseries\sffamily,
+		description font=\mdseries,
+		description delimiters parenthesis,
+		separator sign none,
+		segmentation style={solid, claimsegstyle},
+	}
+}
+
+\tcbuselibrary{theorems,skins,hooks,breakable}
+\tcbset{%
+	examplestyle/.style={%
+		breakable,
+		enhanced,
+		before skip=16pt,
+		after skip=16pt,
+		coltitle=examplecoltitle,
+		colback=examplecolback,
+		colframe=examplecolframe,
+		boxrule=0.5pt,
+		sharp corners,
+		detach title,
+		before upper=\tcbtitle\par\medskip,
+		fonttitle=\bfseries\sffamily,
+		description font=\mdseries,
+		separator sign none,
+		description delimiters parenthesis,
+	}
+}
+
+\tcbuselibrary{theorems,skins,hooks,breakable}
+\tcbset{
+	problemstyle/.style={
+		breakable,
+		enhanced,
+		frame hidden,
+		boxrule=0pt,
+		boxsep=0pt,
+		coltitle=probcoltitle,
+		colback=probcolback,
+		colframe=probcolframe,
+		sharp corners,
+		before upper={\noindent\ignorespaces},
+		before skip=16pt,
+		after skip=16pt,
+		top=0pt, bottom=0pt, left=0pt, right=0pt,
+		fonttitle=\bfseries\sffamily\color{probfont},
+		attach title to upper,
+		after title={.\space},
+		description delimiters parenthesis,
+		separator sign none,
+	}
+}
+
+\usetikzlibrary{arrows,calc,shadows.blur}
+\tcbuselibrary{skins,breakable}
+\tcbset{%
+	notationstyle/.style={%
+		breakable,
+		enhanced jigsaw,
+		before skip=16pt,
+		after skip=16pt,
+		coltitle=notecoltitle,
+		colback=notecolback,
+		colframe=notecolframe,
+		size=small,
+		top=2mm,
+		bottom=3mm,
+		left=4mm,
+		right=4mm,
+		boxrule=1pt,
+		title=\textsf{\bfseries{Notation:}},
+		halign title=flush center,
+		drop shadow=noteshadow,
+		attach boxed title to top
+		left={xshift=1cm,yshift=-\tcboxedtitleheight/2,yshifttext=-\tcboxedtitleheight/2},
+		minipage boxed title=2.25cm,
+		boxed title style={%
+			colback=noteboxcolback,
+			size=fbox,
+			boxrule=1pt,
+			boxsep=2pt,
+			underlay={%
+				\coordinate (dotA) at ($(interior.west) + (-0.5pt,0)$);
+				\coordinate (dotB) at ($(interior.east) + (0.5pt,0)$);
+				\begin{scope}%
+					\clip (interior.north west) rectangle ([xshift=3ex]interior.east);
+					\filldraw [noteboxfill, blur shadow={shadow opacity=60, shadow
+						yshift=-.75ex}, rounded corners=2pt] (interior.north west)
+					rectangle (interior.south east);
+				\end{scope}
+				\begin{scope}[noteboxscope]%
+					\fill (dotA) circle (2pt);
+					\fill (dotB) circle (2pt);
+				\end{scope}
+			},
+		},
+	}
+}
+
+\tcbuselibrary{theorems,skins,hooks}
+\newtcbtheorem[
+crefname={definition}{definitions},
+Crefname={Definition}{Definitions}
+]{definition}{Definition}{%
+	claimstyle,
+	title=Definition,
+}{definition}
+
+\tcbuselibrary{theorems,skins,hooks}
+\NewDocumentCommand{\thmbox}{m m O{} m}{%
+	\newtcbtheorem[
+	use counter from=definition,
+	#4
+	]{#1}{#2}{%
+		claimstyle,
+		title={#2},
+		#3%
+	}{#1}%
+}
+
+\tcbuselibrary{theorems,skins,hooks}
+\NewDocumentCommand{\claimbox}{m m O{} m}{%
+	\newtcbtheorem[
+	use counter from=definition,
+	#4
+	]{#1}{#2}
+	{%
+		claimstyle,
+		title={#2},
+		#3%
+	}{#1}%
+}
+
+\tcbuselibrary{theorems,skins,hooks}
+\NewDocumentCommand{\examplebox}{m m O{} m}{%
+	\newtcbtheorem[
+	use counter from=definition,
+	#4
+	]{#1}{#2}
+	{%
+		examplestyle,
+		title={#2},
+		#3%
+	}{#1}%
+}
+
+\tcbuselibrary{theorems,skins,hooks}
+\NewDocumentCommand{\problembox}{m m O{} m}{%
+	\newtcbtheorem[
+	use counter from=definition,
+	#4
+	]{#1}{#2}
+	{%
+		problemstyle,
+		title={#2},
+		#3%
+	}{#1}%
+}
+
+\usetikzlibrary{arrows,calc,shadows.blur}
+\tcbuselibrary{skins}
+\newtcolorbox{notation}[1][]{%
+	notationstyle,%
+	#1,%
+}
+
+\claimbox{theorem}{Theorem}[%
+borderline west={2.5pt}{0pt}{thmborderline},
+coltitle=thmcoltitle,
+colback=thmcolback,
+colframe=thmcolframe,
+colbacktitle=thmcolbacktitle
+]{%
+	crefname={theorem}{theorems},%
+	Crefname={Theorem}{Theorems}%
+}
+\claimbox{lemma}{Lemma}[%
+borderline west={2.5pt}{0pt}{lemmaborderline},
+coltitle=lemmacoltitle,
+colback=lemmacolback,
+colframe=lemmacolframe,
+colbacktitle=lemmacolbacktitle
+]{%
+	crefname={lemma}{lemmas},%
+	Crefname={Lemma}{Lemmas}%
+}
+\claimbox{corollary}{Corollary}[%
+borderline west={2.5pt}{0pt}{crlborderline},
+coltitle=crlcoltitle,
+colback=crlcolback,
+colframe=crlcolframe,
+colbacktitle=crlcolbacktitle
+]{%
+	crefname={corollary}{corollaries},%
+	Crefname={Corollary}{Corollaries}%
+}
+\claimbox{proposition}{Proposition}[%
+borderline west={2.5pt}{0pt}{propborderline},
+coltitle=propcoltitle,
+colback=propcolback,
+colframe=propcolframe,
+colbacktitle=propcolbacktitle
+]{%
+	crefname={proposition}{propositions},%
+	Crefname={Proposition}{Propositions}%
+}
+\claimbox{conjecture}{Conjecture}[%
+borderline west={2.5pt}{0pt}{conjborderline},
+coltitle=conjcoltitle,
+colback=conjcolback,
+colframe=conjcolframe,
+colbacktitle=conjcolbacktitle
+]{%
+crefname={conjecture}{conjectures},%
+Crefname={Conjecture}{Conjecture}%
+}
+\claimbox{assumption}{Assumption}[%
+borderline west={2.5pt}{0pt}{assumborderline},
+coltitle=assumcoltitle,
+colback=assumcolback,
+colframe=assumcolframe,
+colbacktitle=assumcolbacktitle
+]{%
+crefname={assumption}{Assumptions},%
+Crefname={Assumption}{Assumptions}%
+}
+
+\claimbox{algorithm}{Algorithm}[%
+borderline west={2.5pt}{0pt}{algoborderline},
+coltitle=algocoltitle,
+colback=algocolback,
+colframe=algocolframe,
+colbacktitle=algocolbacktitle
+]{%
+	crefname={algorithm}{algorithms},%
+	Crefname={Algorithm}{Algorithms}%
+}
+\claimbox{construction}{Construction}[%
+borderline west={2.5pt}{0pt}{constrborderline},
+coltitle=constrcoltitle,
+colback=constrcolback,
+colframe=constrcolframe,
+colbacktitle=constrcolbacktitle
+]{%
+	crefname={construction}{constructions},%
+	Crefname={Construction}{Constructions}%
+}
+\claimbox{claim}{Claim}[
+before upper={\tcbtitle{\bfseries\sffamily\color{claimcoltitle}---\ }},
+]{%
+	crefname={claim}{claims},%
+	Crefname={Claim}{Claims}%
+}
+\claimbox{question}{Question}[
+before upper={\tcbtitle{\bfseries\sffamily\color{quescoltitle}.}\ },%
+coltitle=quescoltitle,
+segmentation style={quessegstyle}
+]{%
+	crefname={question}{questions},%
+	Crefname={Question}{Questions}%
+}
+\claimbox{problem}{Problem}[
+before upper={\tcbtitle{\bfseries\sffamily\color{probcoltitle}.}\ },%
+coltitle=probcoltitle,
+segmentation style={probsegstyle}
+]{%
+	crefname={problem}{problems},%
+	Crefname={Problem}{Problems}%
+}
+\claimbox{remark}{Remark}[
+colback=remcolback,
+borderline west={2.5pt}{0pt}{remborderline},
+before upper={\tcbtitle{\bfseries\sffamily\color{remcoltitle}.}\ },
+coltitle=remcoltitle,
+segmentation style={solid, remsegstyle}
+]{%
+	crefname={remark}{remarks},%
+	Crefname={Remark}{Remarks}%
+}
+
+\examplebox{example}{Example}[]{%
+	crefname={example}{examples},%
+	Crefname={Example}{Examples}%
+}
+\problembox{exercise}{Exercise}[]{%
+	crefname={exercise}{exercises},%
+	Crefname={Exercise}{Exercises}%
+}
+
+% }}}
+
+% Brackets
+\DeclarePairedDelimiter{\pa}{(}{)}
+\DeclarePairedDelimiter{\br}{[}{]}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\abs}{\vert}{\vert}
+\DeclarePairedDelimiter{\norm}{\vert}{\vert}
+\DeclarePairedDelimiter{\ket}{\vert}{\rangle}
+\DeclarePairedDelimiter{\bra}{\langle}{\vert}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\eval}{.}{\vert}
+\DeclarePairedDelimiter{\fndef}{\{}{.}
+\newcommand{\braket}[2]{\l\langle#1\,\middle\vert\,#2\r\rangle\vphantom{\raisebox{-1.5pt}{$\l\langle#1\middle\vert#2\r\rangle$}}}
+
+\providecommand\given{} % placeholder
+
+\DeclarePairedDelimiterX{\Pa}[2](){%
+	\,#1%
+	\renewcommand\given{\;\delimsize\vert\;}%
+	\given
+	#2\,%
+}
+\DeclarePairedDelimiterX{\Set}[2]\lbrace\rbrace{%
+\,#1%
+\renewcommand\given{\;\delimsize\vert\;}%
+\given
+#2\,%
+}
+\DeclarePairedDelimiterX{\gens}[2]\langle\rangle{%
+\,#1%
+\renewcommand\given{\;\delimsize\vert\;}%
+\given
+#2\,%
+}
+
+% Operators
+\DeclareMathOperator{\bs}{\setminus}
+
+%%%%%%%%%%%%%
+%% oplusminus
+\usetikzlibrary{arrows,matrix}
+\newcommand{\opm}{ 
+  \mathbin{
+    \mathchoice
+      {\buildcirclepm{\displaystyle     }{0.26ex}{1.1}{0.10ex}{.7}}
+      {\buildcirclepm{\textstyle        }{0.26ex}{1.1}{0.10ex}{.7}}
+      {\buildcirclepm{\scriptstyle      }{0.24ex}{0}{0.10ex}{.55}}
+      {\buildcirclepm{\scriptscriptstyle}{0.24ex}{0}{0.10ex}{.45}}
+  } 
+}
+
+\usetikzlibrary{arrows,matrix}
+\newcommand{\bigopm}{ 
+  \,\mathop{
+    \mathchoice
+      {\buildcirclepm{\displaystyle     }{0.7ex}{3}{0.2ex}{2.1}}
+      {\buildcirclepm{\textstyle        }{0.22ex}{1.1}{0.15ex}{.7}}
+      {\buildcirclepm{\scriptstyle      }{0.22ex}{0}{0.15ex}{.55}}
+      {\buildcirclepm{\scriptscriptstyle}{0.22ex}{0}{0.15ex}{.45}}
+  } 
+}
+
+\newcommand\buildcirclepm[5]{%
+  \begin{tikzpicture}[baseline=-2pt, inner sep=-#5, outer sep=-.65]
+    \node[draw,circle,line width=#4] (X)  {\footnotesize\raisebox{#2}{\scalebox{#3}{$#1\pm$}}};
+  \end{tikzpicture}%
+}
+%%%%%%%%%%%%%
+
+\makeatletter
+\newcommand\RedeclareMathOperator{%
+	\@ifstar{\def\rmo@s{m}\rmo@redeclare}{\def\rmo@s{o}\rmo@redeclare}%
+}
+\newcommand\rmo@redeclare[2]{%
+	\begingroup \escapechar\m@ne\xdef\@gtempa{{\string#1}}\endgroup
+	\expandafter\@ifundefined\@gtempa
+	{\@latex@error{\noexpand#1undefined}\@ehc}%
+	\relax
+	\expandafter\rmo@declmathop\rmo@s{#1}{#2}}
+\newcommand\rmo@declmathop[3]{%
+	\DeclareRobustCommand{#2}{\qopname\newmcodes@#1{#3}}%
+}
+\@onlypreamble\RedeclareMathOperator
+\makeatother
+
+\let\llra\longleftrightarrow
+\let\lra\longrightarrow
+\let\Lra\Longrightarrow
+\newcommand{\qlra}{\quad\Lra\quad}
+\newcommand{\qllra}{\quad\llra\quad}
+\newcommand{\qqlra}{\qquad\Lra\qquad}
+\newcommand{\qiff}{\quad\iff\quad}
+\newcommand{\qqiff}{\qquad\iff\qquad}
+\newcommand{\qand}{\quad\text{and}\quad}
+\newcommand{\qqand}{\qquad\text{and}\qquad}
+\newcommand{\qor}{\quad\text{or}\quad}
+\newcommand{\qqor}{\qquad\text{or}\qquad}
+\newcommand{\qbut}{\quad\text{but}\quad}
+\newcommand{\qqbut}{\qquad\text{but}\qquad}
+\newcommand{\qwhr}{\quad\text{where}\quad}
+\newcommand{\qqwhr}{\qquad\text{where}\quad}
+\newcommand{\qfor}{\quad\text{for}\quad}
+\newcommand{\qqfor}{\qquad\text{for}\quad}
+\newcommand{\qif}{\text{if }}
+\newcommand{\qtx}[1]{\quad\text{#1}\quad}
+\newcommand{\qqtx}[1]{\qquad\text{#1}\qquad}
+\newcommand{\qdd}{\hfill$\triangle$}
+\newcommand{\comp}{^\mathsf{c}}
+\renewcommand{\th}{^\text{th}}
+
+\let\oldforall\forall
+\renewcommand{\forall}{\oldforall \, }
+\let\oldexist\exists
+\renewcommand{\exists}{\oldexist \: }
+\newcommand\existu{\oldexist! \: }
+\let\oldnexist\nexists
+\renewcommand{\nexists}{\oldnexist \: }
+
+\newcommand{\overbar}[2][2]{{}\mkern#1mu\overline{\mkern-#1mu#2}}
+%\newcommand{\shortoverline}[2][2]{{}\mkern#1mu\overline{\mkern-#1mu#2\mkern-#1mu}\mkern1mu}
+\renewcommand{\emptyset}{\varnothing}
+\let\eps\varepsilon
+
+%% Calculus
+\RedeclareMathOperator{\Re}{Re}
+\RedeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\sech}{sech}
+\newcommand{\drv}[2][]{\frac{\rm{d}#1}{\rm{d}#2}}
+\newcommand{\pdrv}[2][]{\frac{\partial #1}{\partial #2}}
+\newcommand{\smalldrv}[2][]{\tfrac{\rm{d}#1}{\rm{d}#2}}
+\newcommand{\smallpdrv}[2][]{\tfrac{\partial #1}{\partial #2}}
+
+%% Probability
+\newcommand{\smallchoose}[2]{\begin{psmallmatrix} #1\\#2\end{psmallmatrix}}
+\renewcommand{\choose}[2]{\begin{pmatrix} #1\\#2\end{pmatrix}}
+
+%% Linear Algebra
+\DeclareMathOperator{\trace}{tr}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nullity}{null}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\PGL}{PGL}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\row}{row}
+\DeclareMathOperator{\diag}{diag}
+\newcommand\dotpr[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
+
+%% Number Theory
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\sgn}{sgn}
+
+%% Algebra
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\Trace}{Tr}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Inn}{Inn}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Fix}{Fix}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Nil}{Nil}
+\DeclareMathOperator{\Frac}{Frac}
+\newcommand{\Fbar}[1]{{}\mkern1mu\overline{\mkern-1mu\mathbb{F}\mkern-2mu}\mkern1mu{}_{\!\!#1}}
+
+%% Coding Theory
+\DeclareMathOperator{\wt}{wt}
+\DeclareMathOperator{\Enc}{Enc}
+\DeclareMathOperator{\Dec}{Dec}
+\DeclareMathOperator{\Ham}{Ham}
+\DeclareMathOperator{\MEC}{MEC}
+\DeclareMathOperator{\Hull}{Hull}
+
+%% Arithmetic Geometry
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\PDiv}{PDiv}
+\RedeclareMathOperator{\div}{div}
+\DeclareMathOperator{\Jac}{Jac}
+\DeclareMathOperator{\Pic}{Pic}
+
+% Typefaces
+\let\bb\mathbb
+\let\bf\mathbf
+\let\mc\mathcal
+\let\mf\mathfrak
+\let\rm\mathrm
+\let\sf\mathsf
+\let\tt\texttt
+\let\op\operatorname
+
+\newcommand{\bbA}{\bb{A}}
+\newcommand{\bbB}{\bb{B}}
+\newcommand{\bbC}{\bb{C}}
+\newcommand{\bbD}{\bb{D}}
+\newcommand{\bbE}{\bb{E}}
+\newcommand{\bbF}{\bb{F}}
+\newcommand{\bbG}{\bb{G}}
+\newcommand{\bbH}{\bb{H}}
+\newcommand{\bbI}{\bb{I}}
+\newcommand{\bbJ}{\bb{J}}
+\newcommand{\bbK}{\bb{K}}
+\newcommand{\bbL}{\bb{L}}
+\newcommand{\bbM}{\bb{M}}
+\newcommand{\bbN}{\bb{N}}
+\newcommand{\bbO}{\bb{O}}
+\newcommand{\bbP}{\bb{P}}
+\newcommand{\bbQ}{\bb{Q}}
+\newcommand{\bbR}{\bb{R}}
+\newcommand{\bbS}{\bb{S}}
+\newcommand{\bbT}{\bb{T}}
+\newcommand{\bbU}{\bb{U}}
+\newcommand{\bbV}{\bb{V}}
+\newcommand{\bbW}{\bb{W}}
+\newcommand{\bbX}{\bb{X}}
+\newcommand{\bbY}{\bb{Y}}
+\newcommand{\bbZ}{\bb{Z}}
+
+\newcommand{\bfa}{\bf{a}}
+\newcommand{\bfb}{\bf{b}}
+\newcommand{\bfc}{\bf{c}}
+\newcommand{\bfd}{\bf{d}}
+\newcommand{\bfe}{\bf{e}}
+\newcommand{\bff}{\bf{f}}
+\newcommand{\bfg}{\bf{g}}
+\newcommand{\bfh}{\bf{h}}
+\newcommand{\bfi}{\bf{i}}
+\newcommand{\bfj}{\bf{j}}
+\newcommand{\bfk}{\bf{k}}
+\newcommand{\bfl}{\bf{l}}
+\newcommand{\bfm}{\bf{m}}
+\newcommand{\bfn}{\bf{n}}
+\newcommand{\bfo}{\bf{o}}
+\newcommand{\bfp}{\bf{p}}
+\newcommand{\bfq}{\bf{q}}
+\newcommand{\bfr}{\bf{r}}
+\newcommand{\bfs}{\bf{s}}
+\newcommand{\bft}{\bf{t}}
+\newcommand{\bfu}{\bf{u}}
+\newcommand{\bfv}{\bf{v}}
+\newcommand{\bfw}{\bf{w}}
+\newcommand{\bfx}{\bf{x}}
+\newcommand{\bfy}{\bf{y}}
+\newcommand{\bfz}{\bf{z}}
+\newcommand{\bfA}{\bf{A}}
+\newcommand{\bfB}{\bf{B}}
+\newcommand{\bfC}{\bf{C}}
+\newcommand{\bfD}{\bf{D}}
+\newcommand{\bfE}{\bf{E}}
+\newcommand{\bfF}{\bf{F}}
+\newcommand{\bfG}{\bf{G}}
+\newcommand{\bfH}{\bf{H}}
+\newcommand{\bfI}{\bf{I}}
+\newcommand{\bfJ}{\bf{J}}
+\newcommand{\bfK}{\bf{K}}
+\newcommand{\bfL}{\bf{L}}
+\newcommand{\bfM}{\bf{M}}
+\newcommand{\bfN}{\bf{N}}
+\newcommand{\bfO}{\bf{O}}
+\newcommand{\bfP}{\bf{P}}
+\newcommand{\bfQ}{\bf{Q}}
+\newcommand{\bfR}{\bf{R}}
+\newcommand{\bfS}{\bf{S}}
+\newcommand{\bfT}{\bf{T}}
+\newcommand{\bfU}{\bf{U}}
+\newcommand{\bfV}{\bf{V}}
+\newcommand{\bfW}{\bf{W}}
+\newcommand{\bfX}{\bf{X}}
+\newcommand{\bfY}{\bf{Y}}
+\newcommand{\bfZ}{\bf{Z}}
+
+\newcommand{\mcA}{\mc{A}}
+\newcommand{\mcB}{\mc{B}}
+\newcommand{\mcC}{\mc{C}}
+\newcommand{\mcD}{\mc{D}}
+\newcommand{\mcE}{\mc{E}}
+\newcommand{\mcF}{\mc{F}}
+\newcommand{\mcG}{\mc{G}}
+\newcommand{\mcH}{\mc{H}}
+\newcommand{\mcI}{\mc{I}}
+\newcommand{\mcJ}{\mc{J}}
+\newcommand{\mcK}{\mc{K}}
+\newcommand{\mcL}{\mc{L}}
+\newcommand{\mcM}{\mc{M}}
+\newcommand{\mcN}{\mc{N}}
+\newcommand{\mcO}{\mc{O}}
+\newcommand{\mcP}{\mc{P}}
+\newcommand{\mcQ}{\mc{Q}}
+\newcommand{\mcR}{\mc{R}}
+\newcommand{\mcS}{\mc{S}}
+\newcommand{\mcT}{\mc{T}}
+\newcommand{\mcU}{\mc{U}}
+\newcommand{\mcV}{\mc{V}}
+\newcommand{\mcW}{\mc{W}}
+\newcommand{\mcX}{\mc{X}}
+\newcommand{\mcY}{\mc{Y}}
+\newcommand{\mcZ}{\mc{Z}}
+
+\newcommand{\mfa}{\mf{a}}
+\newcommand{\mfb}{\mf{b}}
+\newcommand{\mfc}{\mf{c}}
+\newcommand{\mfd}{\mf{d}}
+\newcommand{\mfe}{\mf{e}}
+\newcommand{\mff}{\mf{f}}
+\newcommand{\mfg}{\mf{g}}
+\newcommand{\mfh}{\mf{h}}
+\newcommand{\mfi}{\mf{i}}
+\newcommand{\mfj}{\mf{j}}
+\newcommand{\mfk}{\mf{k}}
+\newcommand{\mfl}{\mf{l}}
+\newcommand{\mfm}{\mf{m}}
+\newcommand{\mfn}{\mf{n}}
+\newcommand{\mfo}{\mf{o}}
+\newcommand{\mfp}{\mf{p}}
+\newcommand{\mfq}{\mf{q}}
+\newcommand{\mfr}{\mf{r}}
+\newcommand{\mfs}{\mf{s}}
+\newcommand{\mft}{\mf{t}}
+\newcommand{\mfu}{\mf{u}}
+\newcommand{\mfv}{\mf{v}}
+\newcommand{\mfw}{\mf{w}}
+\newcommand{\mfx}{\mf{x}}
+\newcommand{\mfy}{\mf{y}}
+\newcommand{\mfz}{\mf{z}}
+\newcommand{\mfA}{\mf{A}}
+\newcommand{\mfB}{\mf{B}}
+\newcommand{\mfC}{\mf{C}}
+\newcommand{\mfD}{\mf{D}}
+\newcommand{\mfE}{\mf{E}}
+\newcommand{\mfF}{\mf{F}}
+\newcommand{\mfG}{\mf{G}}
+\newcommand{\mfH}{\mf{H}}
+\newcommand{\mfI}{\mf{I}}
+\newcommand{\mfJ}{\mf{J}}
+\newcommand{\mfK}{\mf{K}}
+\newcommand{\mfL}{\mf{L}}
+\newcommand{\mfM}{\mf{M}}
+\newcommand{\mfN}{\mf{N}}
+\newcommand{\mfO}{\mf{O}}
+\newcommand{\mfP}{\mf{P}}
+\newcommand{\mfQ}{\mf{Q}}
+\newcommand{\mfR}{\mf{R}}
+\newcommand{\mfS}{\mf{S}}
+\newcommand{\mfT}{\mf{T}}
+\newcommand{\mfU}{\mf{U}}
+\newcommand{\mfV}{\mf{V}}
+\newcommand{\mfW}{\mf{W}}
+\newcommand{\mfX}{\mf{X}}
+\newcommand{\mfY}{\mf{Y}}
+\newcommand{\mfZ}{\mf{Z}}
+
+\newcommand{\rma}{\rm{a}}
+\newcommand{\rmb}{\rm{b}}
+\newcommand{\rmc}{\rm{c}}
+\newcommand{\rmd}{\rm{d}}
+\newcommand{\rme}{\rm{e}}
+\newcommand{\rmf}{\rm{f}}
+\newcommand{\rmg}{\rm{g}}
+\newcommand{\rmh}{\rm{h}}
+\newcommand{\rmi}{\rm{i}}
+\newcommand{\rmj}{\rm{j}}
+\newcommand{\rmk}{\rm{k}}
+\newcommand{\rml}{\rm{l}}
+\newcommand{\rmm}{\rm{m}}
+\newcommand{\rmn}{\rm{n}}
+\newcommand{\rmo}{\rm{o}}
+\newcommand{\rmp}{\rm{p}}
+\newcommand{\rmq}{\rm{q}}
+\newcommand{\rmr}{\rm{r}}
+\newcommand{\rms}{\rm{s}}
+\newcommand{\rmt}{\rm{t}}
+\newcommand{\rmu}{\rm{u}}
+\newcommand{\rmv}{\rm{v}}
+\newcommand{\rmw}{\rm{w}}
+\newcommand{\rmx}{\rm{x}}
+\newcommand{\rmy}{\rm{y}}
+\newcommand{\rmz}{\rm{z}}
+\newcommand{\rmA}{\rm{A}}
+\newcommand{\rmB}{\rm{B}}
+\newcommand{\rmC}{\rm{C}}
+\newcommand{\rmD}{\rm{D}}
+\newcommand{\rmE}{\rm{E}}
+\newcommand{\rmF}{\rm{F}}
+\newcommand{\rmG}{\rm{G}}
+\newcommand{\rmH}{\rm{H}}
+\newcommand{\rmI}{\rm{I}}
+\newcommand{\rmJ}{\rm{J}}
+\newcommand{\rmK}{\rm{K}}
+\newcommand{\rmL}{\rm{L}}
+\newcommand{\rmM}{\rm{M}}
+\newcommand{\rmN}{\rm{N}}
+\newcommand{\rmO}{\rm{O}}
+\newcommand{\rmP}{\rm{P}}
+\newcommand{\rmQ}{\rm{Q}}
+\newcommand{\rmR}{\rm{R}}
+\newcommand{\rmS}{\rm{S}}
+\newcommand{\rmT}{\rm{T}}
+\newcommand{\rmU}{\rm{U}}
+\newcommand{\rmV}{\rm{V}}
+\newcommand{\rmW}{\rm{W}}
+\newcommand{\rmX}{\rm{X}}
+\newcommand{\rmY}{\rm{Y}}
+\newcommand{\rmZ}{\rm{Z}}
+
+\newcommand{\da}{\rmd a}
+\newcommand{\db}{\rmd b}
+\newcommand{\dc}{\rmd c}
+\newcommand{\dd}{\rmd d}
+\newcommand{\de}{\rmd e}
+\newcommand{\df}{\rmd f}
+\newcommand{\dg}{\rmd g}
+\renewcommand{\dh}{\rmd h}
+\newcommand{\di}{\rmd i}
+\renewcommand{\dj}{\rmd j}
+\newcommand{\dk}{\rmd k}
+\newcommand{\dl}{\rmd l}
+\newcommand{\dm}{\rmd m}
+\newcommand{\dn}{\rmd n}
+\renewcommand{\do}{\rmd o}
+\newcommand{\dq}{\rmd q}
+\newcommand{\dr}{\rmd r}
+\newcommand{\ds}{\rmd s}
+\newcommand{\dt}{\rmd t}
+\newcommand{\du}{\rmd u}
+\newcommand{\dv}{\rmd v}
+\newcommand{\dw}{\rmd w}
+\newcommand{\dx}[1][x]{\rmd#1}
+\newcommand{\dy}{\rmd y}
+\newcommand{\dz}{\rmd z}
+\newcommand{\dA}{\rmd A}
+\newcommand{\dB}{\rmd B}
+\newcommand{\dC}{\rmd C}
+\newcommand{\dD}{\rmd D}
+\newcommand{\dE}{\rmd E}
+\newcommand{\dF}{\rmd F}
+\newcommand{\dG}{\rmd G}
+\newcommand{\dH}{\rmd H}
+\newcommand{\dI}{\rmd I}
+\newcommand{\dJ}{\rmd J}
+\newcommand{\dK}{\rmd K}
+\newcommand{\dL}{\rmd L}
+\newcommand{\dM}{\rmd M}
+\newcommand{\dN}{\rmd N}
+\newcommand{\dO}{\rmd O}
+\newcommand{\dP}{\rmd P}
+\newcommand{\dQ}{\rmd Q}
+\newcommand{\dR}{\rmd R}
+\newcommand{\dS}{\rmd S}
+\newcommand{\dT}{\rmd T}
+\newcommand{\dU}{\rmd U}
+\newcommand{\dV}{\rmd V}
+\newcommand{\dW}{\rmd W}
+\newcommand{\dX}{\rmd X}
+\newcommand{\dY}{\rmd Y}
+\newcommand{\dZ}{\rmd Z}
+\newcommand{\dth}{\rmd\theta}
+
+\newcommand{\sfa}{\sf{a}}
+\renewcommand{\sfb}{\sf{b}}
+\newcommand{\sfc}{\sf{c}}
+\newcommand{\sfd}{\sf{d}}
+\newcommand{\sfe}{\sf{e}}
+\newcommand{\sff}{\sf{f}}
+\newcommand{\sfg}{\sf{g}}
+\newcommand{\sfh}{\sf{h}}
+\newcommand{\sfi}{\sf{i}}
+\newcommand{\sfj}{\sf{j}}
+\newcommand{\sfk}{\sf{k}}
+\newcommand{\sfl}{\sf{l}}
+\newcommand{\sfm}{\sf{m}}
+\newcommand{\sfn}{\sf{n}}
+\newcommand{\sfo}{\sf{o}}
+\newcommand{\sfp}{\sf{p}}
+\newcommand{\sfq}{\sf{q}}
+\newcommand{\sfr}{\sf{r}}
+\newcommand{\sfs}{\sf{s}}
+\newcommand{\sft}{\sf{t}}
+\newcommand{\sfu}{\sf{u}}
+\newcommand{\sfv}{\sf{v}}
+\newcommand{\sfw}{\sf{w}}
+\newcommand{\sfx}{\sf{x}}
+\newcommand{\sfy}{\sf{y}}
+\newcommand{\sfz}{\sf{z}}
+\newcommand{\sfA}{\sf{A}}
+\newcommand{\sfB}{\sf{B}}
+\newcommand{\sfC}{\sf{C}}
+\newcommand{\sfD}{\sf{D}}
+\newcommand{\sfE}{\sf{E}}
+\newcommand{\sfF}{\sf{F}}
+\newcommand{\sfG}{\sf{G}}
+\newcommand{\sfH}{\sf{H}}
+\newcommand{\sfI}{\sf{I}}
+\newcommand{\sfJ}{\sf{J}}
+\newcommand{\sfK}{\sf{K}}
+\newcommand{\sfL}{\sf{L}}
+\newcommand{\sfM}{\sf{M}}
+\newcommand{\sfN}{\sf{N}}
+\newcommand{\sfO}{\sf{O}}
+\newcommand{\sfP}{\sf{P}}
+\newcommand{\sfQ}{\sf{Q}}
+\newcommand{\sfR}{\sf{R}}
+\newcommand{\sfS}{\sf{S}}
+\newcommand{\sfT}{\sf{T}}
+\newcommand{\sfU}{\sf{U}}
+\newcommand{\sfV}{\sf{V}}
+\newcommand{\sfW}{\sf{W}}
+\newcommand{\sfX}{\sf{X}}
+\newcommand{\sfY}{\sf{Y}}
+\newcommand{\sfZ}{\sf{Z}}
