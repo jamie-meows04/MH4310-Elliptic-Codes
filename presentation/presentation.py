@@ -104,11 +104,6 @@ def colored_tex(*parts, **kwargs):
         part.set_color(color)
     return tex
 
-class Blank(Slide):
-    def construct(self):
-        # Blank opening slide so the presentation starts on a black screen
-        self.wait(0.1)
-
 class Preliminaries(ThreeDSlide):
     def construct(self):
         self.wait_time_between_slides = 0.2
