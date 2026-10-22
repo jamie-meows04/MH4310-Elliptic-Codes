@@ -678,6 +678,212 @@ def inseparable_demo(q=31):
     print("pi^*(P) has multiplicity", m, "at P  =>  pi^*D is not a sum of distinct points")
 
 
+# ---------------------------------------------------------------------------
+# 6.  MDS quasi-cyclic pullback codes via a subgroup of prime index m
+# ---------------------------------------------------------------------------
+#
+# Claim.  Let ell = deg(phi) >= 2 with K = ker(phi) rational and cyclic, and
+# let m be a prime with gcd(ell, m) = 1.  Let H < E1(F_q) have index m and
+# a not in H.
+#   * K lies in H: the image of K in E1(F_q)/H ~ Z/m has order dividing
+#     gcd(ell, m) = 1.  So a + H is a union of fibres of phi.
+#   * Take D = points Q of E2 whose fibre phi^{-1}(Q) lies in a + H, and
+#     G = k(infinity)  or  (k-1)(infinity) + (Q1) with Q1 in phi(H).
+#     Then Sigma(phi^*G) lies in H (it is a sum of fibre sums, and each
+#     fibre over a point of phi(H) lies in H).
+#   * Any ell*k points of phi^*D add up to an element of [ell k]a + H.  If
+#     m does not divide ell*k, this coset is not H, so by Theorem 4
+#     C' = C_L(phi^*D, phi^*G) is MDS.
+# C' has length up to N/m and is quasi-cyclic of co-index ell.  m = 2 is the
+# best case (length up to N/2) and needs ell and k odd.  For even ell, use an
+# odd prime m, e.g. m = 3 with 3 not dividing ell*k.  The twists C_L(D, G_j)
+# are then MDS as well (a twist codeword of weight w gives a codeword of C'
+# of weight ell*w).
+
+def default_index(ell):
+    """The smallest prime m with gcd(ell, m) = 1 (m = 2 for odd ell)."""
+    return next(m for m in Primes() if ell % m != 0)
+
+
+def prime_index_subgroup(E, m):
+    """The subgroup mE(F_q), as a set of points, if it has index exactly m.
+    Its index is #E(F_q)[m], so this happens exactly when E has a cyclic
+    rational m-torsion of order m (for m = 2: ONE rational point of order 2;
+    when all three are rational, 2E(F_q) has index 4).  Else returns None."""
+    pts = E.points()
+    H = set(m * P for P in pts)
+    return H if m * len(H) == len(pts) else None
+
+
+def coset_setup(q, A, B, ell=3, m=None, verbose=True):
+    """E1 : y^2 = x^3 + A x + B over F_q.  Returns (I, H, a) where I is the
+    IsogenyTools of a degree-ell isogeny with rational cyclic kernel, H is a
+    subgroup of prime index m of E1(F_q) and a is not in H; or None if
+    (q, A, B) is unsuitable."""
+    m = m or default_index(ell)
+    assert is_prime(m) and gcd(ell, m) == 1
+    F = GF(q)
+    try:
+        E1 = EllipticCurve(F, [0, 0, 0, A, B])
+    except ArithmeticError:                       # singular curve
+        return None
+    N = E1.cardinality()
+    if N % (ell * m) != 0:
+        return None
+    H = prime_index_subgroup(E1, m)
+    if H is None:
+        return None
+    T = next((P for P in E1.points() if P.order() == ell), None)
+    if T is None:                                 # need a rational point of order ell
+        return None
+    I = IsogenyTools(E1.isogeny(T))               # Velu: kernel <T>, works for any ell
+    a = next(P for P in E1.points() if P not in H)
+    # Sanity checks of the claim's first step: K lies in H, and every fibre
+    # lies entirely inside one coset of H.
+    assert all(P in H for P in I.kernel)
+    assert all(len({(P - a) in H for P in I.pre[Q]}) == 1 for Q in I.image)
+    if verbose:
+        print("E1 :", E1, "  #E1 =", N, E1.abelian_group())
+        print("E2 :", I.E2, "  deg phi =", ell, "  index m =", m)
+    return I, H, a
+
+
+def every_k_columns_independent(C, max_sets=3 * 10**5):
+    """Direct MDS test that does NOT use Theorem 4: an [n, k] code is MDS iff
+    every k columns of its generator matrix are linearly independent.
+    Returns True/False, or None if there are more than max_sets column sets."""
+    import math
+    M = C.generator_matrix()
+    k, n = M.nrows(), M.ncols()
+    if math.comb(n, k) > max_sets:
+        return None
+    return all(M.matrix_from_columns(list(S)).rank() == k
+               for S in itertools.combinations(range(n), k))
+
+
+def coset_mds_code(I, H, a, k, n=None, Q1=None, straddle=False):
+    """Build C' = C_L(phi^*D, phi^*G) as in the claim above.
+
+    n        : number of points of D (default: all admissible points)
+    Q1       : if given, G = (k-1)(O) + (Q1) with Q1 in phi(H); else G = k(O)
+    straddle : NEGATIVE CONTROL -- D also uses fibres outside a + H, which
+               breaks the hypothesis (the code is then usually not MDS)
+    Returns a dictionary with the codes, divisors and distances."""
+    E2, O2 = I.E2, I.E2(0)
+    good = [Q for Q in I.image if not Q.is_zero() and (I.pre[Q][0] - a) in H]   # fibre in a+H
+    other = [Q for Q in I.image if not Q.is_zero() and Q not in good]
+    if Q1 is None:
+        Gpts = {O2: k}
+    else:
+        Q1 = E2(Q1)
+        assert I.pre[Q1] and I.pre[Q1][0] in H, "Q1 must lie in phi(H)"
+        Gpts = {O2: k - 1} if k > 1 else {}
+        Gpts[Q1] = Gpts.get(Q1, 0) + 1
+    if straddle:
+        mm = n or len(good)
+        pool = good[: mm // 2 + 1] + [Q for Q in other if Q not in Gpts]
+        D2 = pool[:mm]
+    else:
+        D2 = good[:n] if n else good
+    D1 = I.pull_points(D2)
+    G1 = I.pull_divisor(Gpts)
+    C1, _ = ag_code(I.EF1, D1, G1)
+    SG1 = divisor_sum(I.EF1, G1)                   # Sigma(phi^*G)
+    d1, cnt = elliptic_distance(D1, SG1, C1.dimension())
+    return dict(C1=C1, D2=D2, D1=D1, Gpts=Gpts, SG1=SG1, d1=d1, count=cnt,
+                mds=(d1 == C1.length() - C1.dimension() + 1))
+
+
+def coset_twists_mds(I, D2, Gpts, k):
+    """Are the twists C_L(D, G_j) on E2 all MDS?  (Theorem 4 on E2.)
+    Sigma(G_j) = Sigma(G) + [j]R with R a generator of ker(phi-hat).
+    Returns a list of booleans, or None if ker(phi-hat) is not rational
+    (by the Weil pairing it is rational iff ell divides q - 1)."""
+    E2 = I.E2
+    phihat = I.phi.dual()
+    R = next((P for P in E2.points()
+              if P.order() == I.deg and phihat(P).is_zero()), None)
+    if R is None:
+        return None
+    SG = sum((Integer(c) * Q for Q, c in Gpts.items()), E2(0))
+    return [elliptic_distance(D2, SG + j * R, k)[0] == len(D2) - k + 1
+            for j in range(I.deg)]
+
+
+def coset_is_quasi_cyclic(I, res):
+    """Does translation by a generator T of K map C' to itself?  (Theorem
+    17(b): a pure coordinate permutation, n cycles of length ell.)"""
+    C1, D1 = res['C1'], res['D1']
+    T = next(P for P in I.kernel if P.order() == I.deg)
+    index = {P: j for j, P in enumerate(D1)}
+    sigma = [index[P + T] for P in D1]
+    return all(vector(C1.base_field(), [r[sigma[j]] for j in range(len(D1))]) in C1
+               for r in C1.generator_matrix().rows())
+
+
+def coset_experiments(ells=(3, 4, 5, 7), curves_per_ell=2, q_range=(23, 200),
+                      min_fibres=4, ks=None, max_sets=3 * 10**5):
+    """For each ell: find curves with a rational ell-isogeny and a subgroup of
+    prime index m = default_index(ell); build C' for several k; check MDS by
+    Theorem 4 AND by the direct column test; check the twists and
+    quasi-cyclicity; run negative controls (m | ell*k; D straddling cosets)."""
+    tally = defaultdict(int)
+    for ell in ells:
+        m = default_index(ell)
+        banner("COSET CONSTRUCTION: ell = %d, index m = %d" % (ell, m))
+        found = 0
+        for q in prime_range(*q_range):
+            if found >= curves_per_ell:
+                break
+            for A, B in itertools.product(range(q), range(1, q)):
+                S = coset_setup(q, A, B, ell, m, verbose=False)
+                if S is None:
+                    continue
+                I, H, a = S
+                nmax = len([Q for Q in I.image if not Q.is_zero() and (I.pre[Q][0] - a) in H])
+                if nmax < min_fibres:
+                    continue
+                found += 1
+                print("E1 :", I.E1, "  #E1 =", I.E1.cardinality())
+                print("  admissible fibres: %d  (so C' has length up to %d = N/%d)"
+                      % (nmax, ell * nmax, m))
+                Q1 = next((Q for Q in I.image if not Q.is_zero() and I.pre[Q][0] in H), None)
+                for k in (ks or range(1, nmax)):
+                    if k >= nmax:
+                        continue
+                    expected_k = (ell * k) % m != 0
+                    variants = [dict()]
+                    if expected_k:
+                        if Q1 is not None:
+                            variants.append(dict(Q1=Q1))
+                        variants.append(dict(straddle=True))
+                    for v in variants:
+                        res = coset_mds_code(I, H, a, k, **v)
+                        C1 = res['C1']
+                        direct = every_k_columns_independent(C1, max_sets)
+                        label = ("G=(k-1)O+(Q1)" if 'Q1' in v else "G=kO") + \
+                                ("  [control: straddle]" if v.get('straddle') else "") + \
+                                ("  [control: m | ell*k]" if not expected_k else "")
+                        expected = expected_k and not v.get('straddle')
+                        line = "  k=%d %-34s C' = %s  MDS(Thm 4): %-5s  direct column test: %-5s" % (
+                            k, label, params(C1, res['d1']), res['mds'], direct)
+                        if expected:
+                            tw = coset_twists_mds(I, res['D2'], res['Gpts'], k)
+                            qc = coset_is_quasi_cyclic(I, res)
+                            line += "  twists MDS: %s  QC: %s" % (tw, qc)
+                            tally['claim'] += 1
+                            tally['claim_ok'] += res['mds'] and direct is not False
+                        else:
+                            tally['control'] += 1
+                            tally['control_mds'] += res['mds']
+                        if direct is not None and direct != res['mds']:
+                            line += "   <-- Theorem 4 and direct test DISAGREE"
+                        print(line)
+                break                             # one curve per prime
+    print("\n  claim holds in %d/%d cases;  controls that happened to be MDS: %d/%d"
+          % (tally['claim_ok'], tally['claim'], tally['control_mds'], tally['control']))
+
+
 if __name__ == "__main__":
     I = setup()
     method_1_and_3(I, k=3)
@@ -687,3 +893,4 @@ if __name__ == "__main__":
     method_2_and_4(I, k=3)
     method_2_trials(I)
     inseparable_demo()
+    coset_experiments()

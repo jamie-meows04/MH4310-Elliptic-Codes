@@ -6,7 +6,7 @@
 \author{Jamie Low \& Oliver Ang}
 
 % Uncomment to check spacing
-% \raggedbottom
+\raggedbottom
 
 \begin{document}
 
@@ -259,7 +259,7 @@ For the bound on $n$, $Q\notin\mcE_\mathrm{odd}$ implies $[\mcE(\bbF_q):\mcE_\ma
 Another important question to ask is how long an MDS elliptic code can be. Write $\MEC(k,q)$ for the maximum length of a nontrivial $q$-ary MDS elliptic code of dimension $k$, where we temporarily allow $\supp G$ to contain non-rational points. By \Cref{theorem:mds-criterion}, the problem is one in additive combinatorics. How large can a subset $\mcT\subseteq\mcE(\bbF_q)$ be before every point of the group is a sum of $k$ distinct elements of $\mcT$? Once $\supp D$ is that large, no choice of $G$ yields the MDS property.
 
 The first bound is due to Munuera \cite{munuera1992main}, who showed
-\[ \MEC(k,q)\leq\frac{q+1}{2}+\sqrt q+k, \]
+\[ \MEC(k,q)\leq\frac{q+1}{2}+\sqrt q+k, \eqlabel{eqn:munuera} \]
 already confining an MDS elliptic code to about half of the rational points. This was improved by Li, Wan and Zhang \cite{li2015minimum} for large $k$, and by Han and Ren \cite{han2023tight,han2024maximal} for small $k$, before the exact value was determined by Chen et al.~\cite{chen2026maximal}, also for small $k$.
 
 \begin{theorem}{Maximal length \cite[Table~1]{chen2026maximal}}{mec}
@@ -404,23 +404,67 @@ Denote by $\hat\varphi:\mcE_2\to\mcE_1$ the dual isogeny, which satisfies $\hat\
     Then $C':=C_\mcL(\varphi^*D,\varphi^*G)$ is an $\br{\ell n,\;\ell k,\;\geq\ell(n-k)}_q$ elliptic code on $\mcE_1$. Moreover,
     \begin{enumerate}[label={(\alph*)}, left=-4pt, topsep=5pt, itemsep=-3pt]
         \item \label{enum:pullback-isodual} if $D-2G$ is principal, then $C$ and $C'$ are both iso-dual,
-        \item \label{enum:pullback-qc} each $T\in K$ acts on $C'$ by the coordinate permutation induced by $P\mapsto P\oplus T$, so $C'$ is quasi-cyclic of index $n$,
-        \item \label{enum:pullback-fixed} the subcode of $C'$ fixed by $K$ is $\varphi^*C$, the $\ell$-fold repetition of $C$ from method 3, and
-        \item \label{enum:pullback-split} suppose $\ell\mid q-1$, and let $\zeta\in\bbF_q$ have order $\ell$. Then, up to a permutation of coordinates, $C'$ is the \textbf{matrix product code} $[C_0,\hdots,C_{\ell-1}]\cdot \bfV$ \cite{mh4310ld7,blackmore2001matrix} with $\bfV:=\br{\zeta^{jm}}_{j,m=0}^{\ell-1}$, where each $C_j$ is a scaling of the \textbf{twisted} code $C_\mcL(D,G_j)$. 
+        \item \label{enum:pullback-qc} each $T\in K$ acts on $C'$ by the coordinate permutation induced by $P\mapsto P\oplus T$, so $C'$ is quasi-cyclic of index $n$ (i.e. co-index $\ell$),
+        \item \label{enum:pullback-fixed} the subcode of $C'$ fixed by $K$ is $\varphi^*C$, the $\ell$-fold repetition of $C$ from method 3,
+        \item \label{enum:pullback-split} suppose $\ell\mid q-1$, and let $\zeta\in\bbF_q$ have order $\ell$. Then, $C'$ is monomially equivalent to the \textbf{matrix product code} $[C_0,\hdots,C_{\ell-1}]\cdot \bfV$ \cite{mh4310ld7,blackmore2001matrix} with $\bfV:=\br{\zeta^{jm}}_{j,m=0}^{\ell-1}$, where each $C_j$ is a scaling of the \textbf{twisted} code $C_\mcL(D,G_j)$. 
         
-        Here, $G_j$ is any divisor disjoint from $D$ with $\deg G_j=k$ and $\Sigma(G_j)=\Sigma(G)\oplus[j]R$, where $R$ is a suitable generator for $\ang R=\ker\hat\varphi$.
+        Here, $G_j$ is any divisor disjoint from $D$ with $\deg G_j=k$ and $\Sigma(G_j)=\Sigma(G)\oplus[j]R$, where $R$ is a suitable generator for $\ang R=\ker\hat\varphi$, and
+        \item \label{enum:pullback-twists-mds} if $C'$ is MDS, then no $k$ points of $\supp D$ sum to an element of $\Sigma(G)\oplus\ker\hat\varphi$. In the setting of \ref{enum:pullback-split}, every twist $C_\mcL(D,G_j)$ is then MDS.
     \end{enumerate}
 \end{theorem}
 
 See page \pageref{proof:pullback} in the appendix for a proof of this result, which was supplied by Claude and verified by the authors, ChatGPT, and Gemini. To our knowledge, \Cref{theorem:pullback} does not appear in the literature in this form. However, its proof ingredients are standard in arithmetic geometry.
 
-Claude's code verified all of \Cref{theorem:pullback} for the example above. A $[12,6,6]_{31}$ iso-dual code pulled back to a $[36,18,18]_{31}$ iso-dual code. For $k=3$, the three constituents $C_j$ of a $[36,9,27]_{31}$ pullback matched the three twists of a $[12,3,9]_{31}$ code.
-
 \Cref{theorem:pullback} has three immediate applications. The first is \textbf{longer iso-dual elliptic codes}. The hypothesis of \ref{enum:pullback-isodual} holds for the codes of \Cref{theorem:isodual}, as $\Sigma(D)=\infty=[2]Q=\Sigma(2G)$. Method 1 therefore turns a short iso-dual MDS code of length $2k<\frac N\ell$ into a long iso-dual code of length $2\ell k$ with the same rate $\frac12$ and relative designed distance $\frac{n-k}{n}$, but typically at the cost of the MDS property (i.e. 1 unit of distance).
 
-The second is a supply of \textbf{quasi-cyclic elliptic codes}. Quasi-cyclic codes generalise cyclic codes and have a rich algebraic structure \cite{ling2001algebraic}. By \ref{enum:pullback-qc}, method 1 produces quasi-cyclic elliptic codes of co-index $\ell$, provided $\mcE_1(\bbF_q)$ has a cyclic subgroup of order $\ell$, with the same rate $\frac kn$ and relative designed distance $\frac{n-k}{n}$ as $C$. Moreover, the automorphisms in \ref{enum:pullback-qc} are pure permutations, unlike the monomial automorphisms of \Cref{theorem:translations}.
+The second is \textbf{decoding via twists}. Ling and Sol\'e showed that every quasi-cyclic code decomposes into shorter constituent codes \cite{ling2001algebraic}. Part \ref{enum:pullback-split} identifies the constituents of $C'$ as scalings of the twists $C_\mcL(D,G_j)$, which are $[n,k,\geq\! n-k]$ elliptic codes on $\mcE_2$. Decoding the $\ell$ twists separately, each up to half its minimum distance, corrects every error pattern meeting at most $\floor{(n-k-1)/2}$ fibres $\varphi^{-1}(P_i)$, however many errors each fibre contains. Thus, errors concentrated on few fibres can be corrected by $\ell$ decoders of length $n$, rather than one of length $\ell n$.
 
-The third is \textbf{decoding via twists}. Ling and Sol\'e showed that every quasi-cyclic code decomposes into shorter constituent codes \cite{ling2001algebraic}. Part \ref{enum:pullback-split} identifies the constituents of $C'$ as scalings of the twists $C_\mcL(D,G_j)$, which are $[n,k,\geq\! n-k]$ elliptic codes on $\mcE_2$. Decoding the $\ell$ twists separately, each up to half its minimum distance, corrects every error pattern meeting at most $\floor{(n-k-1)/2}$ fibres $\varphi^{-1}(P_i)$, however many errors each fibre contains. Thus, errors concentrated on few fibres can be corrected by $\ell$ decoders of length $n$, rather than one of length $\ell n$.
+The third is a supply of \textbf{quasi-cyclic elliptic codes}. Quasi-cyclic codes generalise cyclic codes and have a rich algebraic structure \cite{ling2001algebraic}. By \ref{enum:pullback-qc}, method 1 produces quasi-cyclic elliptic codes of co-index $\ell$ with the same rate $\frac kn$ and relative designed distance $\frac{n-k}{n}$ as $C$, provided $\mcE_1(\bbF_q)$ has a cyclic subgroup of order $\ell$. We can combine this with \Cref{theorem:index-two} to $\mcE_1$ to obtain \textbf{MDS quasi-cyclic elliptic codes}, provided that the index-two subgroup is compatible with the fibres of $\varphi$. This is illustrated in \Cref{construction:index-two-pullback,example:mds-qc}.
+
+\begin{construction}{MDS QC pullback codes}{index-two-pullback}
+    Let $\varphi:\mcE_1\to\mcE_2$ and $K$ be as in \Cref{theorem:pullback}, with $\ell$ odd. Let $N=\#\mcE_1(\bbF_q)$ be even, let $H\leq\mcE_1(\bbF_q)$ be a subgroup of index 2, and choose $Q\in\mcE_1(\bbF_q)\setminus H$.
+    \begin{enumerate}[label={(\alph*)}, left=-4pt, topsep=2pt, itemsep=0pt]
+        \item \label{enum:index-two-pullback-odd} If $k$ is odd, set $D=\sum_{P\in\varphi(Q\oplus H)}(P)$ and $G=k(\infty)$. Then $C'=C_\mcL(\varphi^*D,\varphi^*G)$ is an $\br{N/2,\;\ell k,\;N/2-\ell k+1}_q$ MDS code.
+        \item \label{enum:index-two-pullback-any} For any $k$, set $D=\sum_{P\in\varphi(H)\setminus\set\infty}(P)$ and $G=(k-1)(\infty)+(\varphi(Q))$. Then $C'$ is an $\br{N/2-\ell,\;\ell k,\;N/2-\ell-\ell k+1}_q$ MDS code.
+    \end{enumerate}
+    In both cases, $C'$ is quasi-cyclic of co-index $\ell$ by \Cref{construction:index-two-pullback}\ref{enum:pullback-qc}.
+\end{construction}
+
+\begin{proof}
+    See page \pageref{proof:index-two-pullback} in the appendix.
+\end{proof}
+
+\begin{example}{$\sf{[140,5k]_{251}}$ MDS QC codes}{mds-qc} \setlength{\parskip}{5pt}
+Consider $\mcE_1:y^2=x^3+x+100$ over $\bbF_{251}$. Then, $N=\#\mcE_1(\bbF_{251})=280$, which is 2 off from the upper Hasse--Weil bound $M=282$. $(199,0)$ is its only rational point of order 2, so $H:=[2]\mcE_1(\bbF_{251})$ has index 2.
+
+The point $T=(65,14)$ has order $\ell=5$, and V\'elu's formulae give the isogeny $\varphi:\mcE_1\to\mcE_2:y^2=x^3+231x+13$ with kernel $\ang T$.
+
+As $5\mid250=q-1$, we may take $\zeta=20$, an element of order 5 in $\bbF_{251}$.
+
+The 28 points of $\mcE_2$ whose fibres lie in $\mcE_1(\bbF_{251})\setminus H$ are
+\[ \begin{gathered}
+\scriptstyle (5,\pm17),\ (23,\pm26),\ (56,\pm8),\ (60,\pm31),\ (77,\pm52),\ (104,\pm24),\\[-6pt]
+\scriptstyle (142,\pm124),\ (143,\pm67),\ (161,\pm100),\ (222,\pm7),\ (224,\pm85),\\[-6pt]
+\scriptstyle (225,\pm5),\ (228,\pm75),\text{ and } (232,\pm78).
+\end{gathered} \]
+Let $D$ be their sum and $G=k(\infty)$ with $k$ odd. By \Cref{construction:index-two-pullback}, $C'$ is a quasi-cyclic $[140,5k,141-5k]_{251}$ MDS code of co-index 5.
+
+The kernel of $\hat\varphi$ is generated by $R=(141,209)$, with multiples
+\[ \scriptstyle [2]R=(20,121),\quad [3]R=(20,130),\qand [4]R=(141,42), \]
+none of which lie in $\supp D$. The twisted divisors of \Cref{theorem:pullback}\ref{enum:pullback-split} may be taken as
+\[ G_j=(k-1)(\infty)+([j]R) \qfor 0\leq j\leq4, \]
+and $C'$ is monomially equivalent to the matrix product code $[C_0,\hdots,C_4]\cdot\bfV$ with
+\[ \bfV=\br*{\zeta^{jm}}_{j,m=0}^4=\begin{psmallmatrix}
+1&1&1&1&1 \\
+1&20&149&219&113 \\
+1&149&113&20&219 \\
+1&219&20&113&149 \\
+1&113&219&149&20
+\end{psmallmatrix}, \]
+where each $C_j$ is a scaling of the twisted code $C_\mcL(D,G_j)$. By \Cref{theorem:pullback}\ref{enum:pullback-twists-mds}, every twist is a $[28,k,29-k]_{251}$ MDS code. For instance, for $k=15$, $C'$ is a $[140,75,66]_{251}$ code that glues together five $[28,15,14]_{251}$ MDS codes.
+
+Taking instead $D$ to be the sum of the 55 affine points of $\varphi(\mcE_1(\bbF_{251}))$, \Cref{theorem:pullback} gives quasi-cyclic $[275,5k]_{251}$ codes for $1\leq k\leq54$. By \Cref{eqn:munuera}, the codes are near-MDS, with minimum distance $275-5k$.
+\end{example}
 
 \section{Conclusion} \label{section:conclusion}
 
@@ -497,6 +541,24 @@ However, the current research landscape focusing specifically on elliptic codes 
     Now, $f\in L_j$ if and only if $f/u^j$ is fixed by $\tau$, that is, $f=u^j\varphi^*g$ for some $g\in\bbF_q(\mcE_2)$. By the third fact, $\div f=\varphi^*(jA+\div g)\geq-\varphi^*G$ if and only if $g\in\mcL(G+jA)$. So $L_j=u^j\varphi^*\mcL(G+jA)$. Fix $\tilde P_i\in\varphi^{-1}(P_i)$ for each $i$, so that the fibre over $P_i$ is $\set{\tilde P_i\oplus[m]T:0\leq m<\ell}$, and order the coordinates of $C'$ as $\tilde P_1,\hdots,\tilde P_n,\ \tilde P_1\oplus T,\hdots,\tilde P_n\oplus T,\ \hdots$. For $f=u^j\varphi^*g\in L_j$, we have $f(\tilde P_i)=u(\tilde P_i)^jg(P_i)$, where $u$ has neither a zero nor a pole at $\tilde P_i$ as $\supp A\cap\supp D=\emptyset$. Hence, the restrictions of $W_j$ to the coordinates $\tilde P_1,\hdots,\tilde P_n$ form $C_j:=\bfv_j\star C_\mcL(D,G+jA)$, where $\bfv_j=(u(\tilde P_i)^j)_{i=1}^n$. Moreover, $f(\tilde P_i\oplus[m]T)=(\tau^mf)(\tilde P_i)=\zeta^{jm}f(\tilde P_i)$, so
     \[ W_j=\set{(\bfc\,|\,\zeta^j\bfc\,|\,\cdots\,|\,\zeta^{j(\ell-1)}\bfc):\bfc\in C_j}. \]
     Summing over $j$ gives $C'=\bigoplus_jW_j=[C_0,\hdots,C_{\ell-1}]\cdot V$. Finally, $G+jA$ is disjoint from $D$, with degree $k$ and sum $\Sigma(G)\oplus[j]R$. By \Cref{lemma:abel-jacobi}, any $G_j$ as in the statement is equivalent to it, so $C_\mcL(D,G_j)$ is a scaling of $C_\mcL(D,G+jA)$ \cite[Prop.~2.2.14]{stichtenoth2009algebraic}.
+
+    \textit{(e)} By the construction of $\hat\varphi$ \cite[\S III.6]{silverman2009arithmetic}, every divisor $B\in\Div\mcE_2$ of degree 0 satisfies $\Sigma(\varphi^*B)=\hat\varphi(\Sigma(B))$. Put $s_K:=\Sigma(\varphi^*(\infty))=\bigoplus_{T\in K}T$. Applying this to $B-b(\infty)$, every divisor $B$ of degree $b$ satisfies
+    \[ \Sigma(\varphi^*B)=\hat\varphi(\Sigma(B))\oplus[b]s_K. \]
+    Suppose that distinct points $P_{i_1},\hdots,P_{i_k}\in\supp D$ satisfy $P_{i_1}\oplus\cdots\oplus P_{i_k}\ominus\Sigma(G)\in\ker\hat\varphi$. Applying the identity to $B=\sum_j(P_{i_j})$ and to $G$, both of degree $k$, the $\ell k$ points of the fibres over $P_{i_1},\hdots,P_{i_k}$ sum to
+    \[ \hat\varphi\pa[\big]{P_{i_1}\oplus\cdots\oplus P_{i_k}}\oplus[k]s_K=\hat\varphi(\Sigma(G))\oplus[k]s_K=\Sigma(\varphi^*G). \]
+    These are $\ell k$ distinct points of $\supp\varphi^*D$, so $C'$ is not MDS by \Cref{theorem:mds-criterion}. In the setting of \ref{enum:pullback-split}, we have $\ker\hat\varphi=\ang R$, so $\Sigma(G_j)=\Sigma(G)\oplus[j]R$ runs over $\Sigma(G)\oplus\ker\hat\varphi$. Hence, if $C'$ is MDS, no $k$ points of $\supp D$ sum to any $\Sigma(G_j)$, and each twist $C_\mcL(D,G_j)$ is MDS by \Cref{theorem:mds-criterion}.
+\end{proof}
+
+\begin{proof}[Proof of \Cref{construction:index-two-pullback}]\refstepcounter{figure}\label{proof:index-two-pullback}
+    The image of $K$ in $\mcE_1(\bbF_q)/H\cong\bbZ/2\bbZ$ has order dividing both $\#K=\ell$ and 2, so it is trivial, and $K\subseteq H$. Hence, $H$ and $Q\oplus H$ are unions of cosets of $K$, i.e. they are partitioned by the fibres of $\varphi$. So $\varphi^{-1}(\varphi(H))=H$ and $\varphi^{-1}(\varphi(Q\oplus H))=Q\oplus H$. In particular, $\varphi(H)\cap\varphi(Q\oplus H)=\emptyset$. Also, every fibre over a point of $\supp D$ is rational, so \Cref{theorem:pullback} applies. As $\infty=\varphi(\infty)\in\varphi(H)$ and $\varphi(Q)\in\varphi(Q\oplus H)$, the supports of $D$ and $G$ are disjoint in both cases. Writing $K=\ang T$, we have $s_K:=\sum_{T'\in K}T'=[\ell(\ell-1)/2]T=\infty$, since $\ell$ is odd.
+
+    For (a), $\Sigma(\varphi^*G)=[k]s_K=\infty\in H$. But $\supp\varphi^*D=Q\oplus H$, so any $\ell k$ of its points sum into $[\ell k]Q\oplus H=Q\oplus H$, as $\ell k$ is odd.
+
+    For (b), the fibre over $\varphi(Q)$ is $Q\oplus K$, so $\Sigma(\varphi^*G)=[k-1]s_K\oplus[\ell]Q\oplus s_K=[\ell]Q$, which lies in $Q\oplus H$ as $\ell$ is odd. But $\supp\varphi^*D\subseteq H$, so any $\ell k$ of its points sum into $H$.
+
+    In both cases, no $\ell k$ points of $\supp\varphi^*D$ sum to $\Sigma(\varphi^*G)$, so $C'$ is MDS by \Cref{theorem:mds-criterion}. The lengths are $\ell\cdot\#\supp D$, namely $\ell\cdot\frac N{2\ell}$ and $\ell\cdot\pa[\big]{\frac N{2\ell}-1}$. Removing points from $D$ preserves both arguments.
+    
+    Note that the argument extends to a subgroup $H$ of any prime index $m\nmid\ell$, giving MDS codes of length $N/m$ whenever $m\nmid\ell k$. This also covers even $\ell$, for example $\ell=4$ with $m=3$.
 \end{proof}
 
 \usection{AI prompts}
@@ -515,11 +577,11 @@ At the beginning, we used Claude to evaluate our potential project directions. W
     \item ``Add one or two paragraphs to \Cref{section:group-law} on code automorphisms arising from the group law.''
 \end{itemize}
 
-Ideation for \Cref{section:isogenies} was done without AI assistance. After hypothesising the outcome of the four methods, we compared our hypotheses against Claude's own predictions. Claude then generated SageMath code to construct our codes and test our hypotheses. After running the code, we combined our observations into \Cref{theorem:pullback} and asked Claude to prove it in a more general case.
+Ideation for \Cref{section:isogenies} was done without AI assistance. After hypothesising the outcome of the four methods, we compared our hypotheses against Claude's own predictions. Claude then generated SageMath code to construct our codes and test our hypotheses. After running the code, we combined our observations into \Cref{theorem:pullback} and asked Claude to prove it in a more general case. Claude also wrote code to compute \Cref{example:mds-qc}.
 \begin{itemize}
     \item ``Predict the outcome of each of the four isogeny transformations, and suggest how to analyse them in SageMath, with a sample code file to test each one.''
     \item ``Suggest applications of method~1.''
-    \item ``Prove the properties of method~1: its parameters $[\ell n,\ell k,\geq\ell(n-k)]$, inherited iso-duality, quasi-cyclicity, and its splitting into $\ell$ twisted elliptic codes.''
+    \item ``Prove the properties of method~1: its parameters $[\ell n,\ell k,\geq\!\ell(n-k)]$, inherited iso-duality, quasi-cyclicity, and its splitting into $\ell$ twisted elliptic codes.''
 \end{itemize}
 
 We fed the statement and proof of \Cref{theorem:pullback} into ChatGPT and Gemini to verify whether the proof was correct. While all agreed that the proof was valid, we refined the proof based on their feedback to make certain arguments clearer.

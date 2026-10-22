@@ -248,18 +248,28 @@ linkcolor=blue
 \colorlet{claimcolback}{bubulightgreen!10}
 \colorlet{claimborderline}{bubulightgreen}
 \colorlet{claimsegstyle}{bubulightgreen!85!black}
+
 \colorlet{algocoltitle}{bubulightgreen!70!black}
 \colorlet{algocolback}{bubulightgreen!10}
 \colorlet{algoborderline}{bubulightgreen}
 \colorlet{algocolframe}{bubulightgreen!70!black}
 \colorlet{algocolbacktitle}{bubulightgreen!70!black}
 \colorlet{algosegstyle}{bubulightgreen!70!black}
+
 \colorlet{constrcoltitle}{bubulightgreen!70!black}
 \colorlet{constrcolback}{bubulightgreen!10}
 \colorlet{constrborderline}{bubulightgreen}
 \colorlet{constrcolframe}{bubulightgreen!70!black}
 \colorlet{constrcolbacktitle}{bubulightgreen!70!black}
 \colorlet{constrsegstyle}{bubulightgreen!70!black}
+
+\colorlet{examplecoltitle}{bubulightgreen!70!black}
+\colorlet{examplecolback}{bubulightgreen!10}
+\colorlet{exampleborderline}{bubulightgreen}
+\colorlet{examplecolframe}{bubulightgreen!70!black}
+\colorlet{examplecolbacktitle}{bubulightgreen!70!black}
+\colorlet{examplesegstyle}{bubulightgreen!70!black}
+
 \colorlet{quescoltitle}{deepgreen}
 \colorlet{quessegstyle}{deepgreen}
 \colorlet{probcoltitle}{deepgreen}
@@ -268,10 +278,6 @@ linkcolor=blue
 \colorlet{remborderline}{black}
 \colorlet{remcoltitle}{black}
 \colorlet{remsegstyle}{black}
-
-\colorlet{examplecoltitle}{deepgreen}
-\colorlet{examplecolback}{bubulightgreen!10}
-\colorlet{examplecolframe}{lightestgreen}
 
 \colorlet{probcoltitle}{blue!40!black}
 \colorlet{probcolback}{white}
@@ -848,8 +854,13 @@ segmentation style={solid, remsegstyle}
 	crefname={remark}{remarks},%
 	Crefname={Remark}{Remarks}%
 }
-
-\examplebox{example}{Example}[]{%
+\claimbox{example}{Example}[%
+borderline west={2.5pt}{0pt}{exampleborderline},
+coltitle=examplecoltitle,
+colback=examplecolback,
+colframe=examplecolframe,
+colbacktitle=examplecolbacktitle
+]{%
 	crefname={example}{examples},%
 	Crefname={Example}{Examples}%
 }
