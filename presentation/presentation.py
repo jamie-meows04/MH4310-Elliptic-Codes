@@ -104,11 +104,14 @@ def colored_tex(*parts, **kwargs):
         part.set_color(color)
     return tex
 
+class Blank(Slide):
+    def construct(self):
+        # Blank opening slide so the presentation starts on a black screen
+        self.wait(0.1)
 
 class Preliminaries(ThreeDSlide):
     def construct(self):
         self.wait_time_between_slides = 0.2
-        self.next_slide()
 
         curve = elliptic_curve(color=BLUE, stroke_width=4)
         # Same curve continued off-screen, swapped in for a later zoom-out. Split
