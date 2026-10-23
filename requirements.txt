@@ -1,0 +1,5 @@
+# Presentation (manim-slides). manim and Pillow are deliberately pinned below
+# their latest releases (0.22.0 and 13.0.0); don't upgrade them.
+manim==0.21.0
+pillow==12.3.0
+manim-slides[pyside6]==5.7.0

@@ -165,19 +165,20 @@ class Preliminaries(ThreeDSlide):
         self.play(Write(weierstrass))
         self.next_slide()
 
+        # Highlight the leading terms y^2 and x^3.
+        for _ in range(2):
+            self.play(Indicate(lhs[0], color=PINK), Indicate(rhs[1], color=PINK))
+        self.next_slide()
+
         field = Tex(r"over $\mathbb{F}_q$", font_size=32)
         field.next_to(title[0], DOWN, buff=0.2, aligned_edge=LEFT)
         self.play(Write(field))
+        self.wait(1)
 
         # Highlight the coefficients a_1, a_3, a_2, a_4, a_6.
         coefficients = [lhs[2], lhs[6], rhs[3], rhs[6], rhs[9]]
         for _ in range(2):
             self.play(*(Indicate(a, color=PINK) for a in coefficients))
-        self.next_slide()
-
-        # Highlight the leading terms y^2 and x^3.
-        for _ in range(2):
-            self.play(Indicate(lhs[0], color=PINK), Indicate(rhs[1], color=PINK))
         self.next_slide()
 
         # Zoomed out, the frame spans x in [-12, 12] and y in [-9, 9]. s converts
@@ -912,12 +913,13 @@ class Isogenies(Slide):
         a2, b2 = 2 * high - low, (high - low) * high  # moving `high` to 0
         c1, c2 = a2 - 2 * np.sqrt(b2), a2 + 2 * np.sqrt(b2)  # E_1: x(x-c1)(x-c2)
 
-        # Each graph on faint axes at equal x and y scales, so shapes are true.
-        def curve_graph(f, x_range, y_range, height=2.8):
+        # Each graph on faint axes, at equal x and y scales (so shapes are true)
+        # unless a width is given.
+        def curve_graph(f, x_range, y_range, height=2.8, width=None):
             unit = height / (y_range[1] - y_range[0])
             axes = Axes(
                 x_range=[*x_range, 1], y_range=[*y_range, 1],
-                x_length=unit * (x_range[1] - x_range[0]), y_length=height,
+                x_length=width or unit * (x_range[1] - x_range[0]), y_length=height,
                 tips=False, axis_config={"stroke_opacity": 0.4, "include_ticks": False},
             )
             graph = axes.plot_implicit_curve(f, color=BLUE, stroke_width=3)
@@ -1306,6 +1308,279 @@ class Isogenies(Slide):
         for item in properties:
             self.play(Write(item))
             self.next_slide()
+
+        self.play(FadeOut(properties), FadeOut(assumptions))
+
+        # A worked example. T and its multiples are pink.
+        t = ("T", PINK)
+        example = VGroup(
+            Tex(r"$\mathcal{E}_1: y^2=x^3+x+100$ over $\mathbb{F}_{251}$", font_size=size),
+            colored_tex(
+                "A point of order $", ell, "=5$ is $", t, "=(65,14)$", font_size=size
+            ),
+            colored_tex(
+                "Construct isogeny $", (r"\varphi", BLUE),
+                r":\mathcal{E}_1\to\mathcal{E}_2$ with kernel $\langle", t, r"\rangle$",
+                font_size=size,
+            ),
+            Tex(r"$\mathcal{E}_2:y^2=x^3+231x+13$", font_size=size),
+        ).arrange(DOWN, buff=0.15)
+        example.next_to(code_list[0], DOWN, buff=0.4).set_x(0)
+
+        # The example's curves over R, on the same axes: wide enough for the
+        # lifts of points with x-coordinates up to 232 (see `lift`), so not at
+        # equal x and y scales.
+        def e1_equation(x):
+            return x**3 + x + 100
+
+        def e2_equation(x):
+            return x**3 + 231 * x + 13
+
+        example_e1, example_e2 = (
+            curve_graph(
+                lambda x, y, f=f: y**2 - f(x), (-20, 245), (-4000, 4000),
+                height=2.7, width=2.6,
+            )
+            for f in (e1_equation, e2_equation)
+        )
+        example_graphs = VGroup(example_e1, example_e2).arrange(RIGHT, buff=1.3)
+        example_graphs.next_to(example, DOWN, buff=0.3)
+        example_e1_label = MathTex(r"\mathcal{E}_1", font_size=size).next_to(example_e1, LEFT)
+        example_e2_label = MathTex(r"\mathcal{E}_2", font_size=size).next_to(example_e2, RIGHT)
+        example_arrow = Arrow(
+            example_e1.get_right(), example_e2.get_left(), buff=0.15,
+            stroke_width=3, max_tip_length_to_length_ratio=0.15,
+        )
+        example_arrow_label = MathTex(r"\varphi", font_size=size, color=BLUE)
+        example_arrow_label.next_to(example_arrow, UP, buff=0.1)
+
+        # <T> on E_1 over F_251, by the group law: T = (65, 14), 2T = (204, 239),
+        # 3T = (204, 12), 4T = (65, 237) = -T, 5T = infinity. Each is lifted to
+        # the real point with the same x, on the upper branch when its y mod 251
+        # is at most 125 and the lower one otherwise, so -T mirrors T.
+        def lift(x, y, graph=example_e1, equation=e1_equation):
+            sign = 1 if y <= 125 else -1
+            return graph[0].c2p(x, sign * np.sqrt(equation(x)))
+
+        def point_label(coefficient, dot, direction):
+            parts = [t] if coefficient == 1 else [str(coefficient), t]
+            label = colored_tex("$", *parts, "$", font_size=16)
+            return label.next_to(dot, direction, buff=0.08)
+
+        # Each label sits just outside its branch; 2T's and 3T's are nudged left,
+        # away from where the branches carry on outwards.
+        multiples = [
+            ((65, 14), UP, 0), ((204, 239), DOWN, 0.08), ((204, 12), UP, 0.08),
+            ((65, 237), DOWN, 0),
+        ]
+        kernel_dots, kernel_labels = VGroup(), VGroup()
+        for k, (point, direction, left_shift) in enumerate(multiples, start=1):
+            dot = Dot(lift(*point), radius=0.05, color=PINK)
+            kernel_dots.add(dot)
+            kernel_labels.add(point_label(k, dot, direction).shift(left_shift * LEFT))
+
+        # x-coordinates of <T>'s points, marked on E_1's x-axis.
+        x_marks = VGroup()
+        for x in (65, 204):
+            tick = Line(UP, DOWN, stroke_width=2, stroke_opacity=0.6).set_height(0.1)
+            tick.move_to(example_e1[0].c2p(x, 0))
+            # Above the axis: below it, 65 would sit on -T and the lower branch.
+            number = MathTex(str(x), font_size=14)
+            if x == 65:
+                number.next_to(tick, UR, buff=0.02).shift(0.08 * RIGHT)  # clear of T's dot
+            else:
+                number.next_to(tick, UP, buff=0.04)
+            x_marks.add(VGroup(tick, number))
+
+        # The point at infinity, drawn at the top centre of each graph.
+        def infinity_point(graph):
+            axes = graph[0]
+            dot = Dot([axes.get_x(), axes.get_top()[1], 0], radius=0.05)
+            label = MathTex(r"\infty", font_size=16).next_to(dot, RIGHT, buff=0.08)
+            return dot, label
+
+        e1_infinity, e1_infinity_label = infinity_point(example_e1)
+        e2_infinity, e2_infinity_label = infinity_point(example_e2)
+
+        self.play(Write(example[0]))
+        self.play(Create(example_e1), Write(example_e1_label))
+        self.next_slide()
+
+        self.play(Write(example[1]))
+        self.play(
+            LaggedStart(*(
+                GrowFromCenter(dot) for dot in (*kernel_dots, e1_infinity)
+            ), lag_ratio=0.2),
+            LaggedStart(*(
+                Write(label) for label in (*kernel_labels, e1_infinity_label)
+            ), lag_ratio=0.2),
+            FadeIn(x_marks),
+        )
+        self.next_slide()
+
+        self.play(Write(example[2]))
+        self.play(GrowArrow(example_arrow), Write(example_arrow_label))
+        self.play(
+            Create(example_e2), Write(example_e2_label),
+            GrowFromCenter(e2_infinity), Write(e2_infinity_label),
+        )
+        self.next_slide()
+
+        self.play(Write(example[3]))
+        self.next_slide()
+
+        # The kernel <T> = {infinity, T, 2T, 3T, 4T} all maps to infinity on E_2.
+        kernel_copies = VGroup(*(dot.copy() for dot in (e1_infinity, *kernel_dots)))
+        self.play(LaggedStart(*(
+            copy.animate.move_to(e2_infinity) for copy in kernel_copies
+        ), lag_ratio=0.15, run_time=2))
+        self.next_slide()
+
+        # D on E_2: the 28 points (x, +-y) over F_251, lifted to R like <T>.
+        d_xs = (5, 23, 56, 60, 77, 104, 142, 143, 161, 222, 224, 225, 228, 232)
+        d_dots = VGroup(*(
+            Dot(lift(x, y, example_e2, e2_equation), radius=0.035, color=YELLOW)
+            for x in d_xs for y in (0, 250)
+        ))
+        d_label = MathTex("D", font_size=16, color=YELLOW)
+        d_label.next_to(d_dots[2 * d_xs.index(104)], UL, buff=0.06)
+        g_label = MathTex(r"G=k(\infty)", font_size=16, color=RED)
+        g_label.next_to(e2_infinity, RIGHT, buff=0.08)
+
+        self.play(
+            LaggedStart(*(GrowFromCenter(dot) for dot in d_dots), lag_ratio=0.05),
+            Write(d_label),
+        )
+        self.play(ReplacementTransform(e2_infinity_label, g_label))
+        self.next_slide()
+
+        # Pulling D back: each of its points has 5 preimages, so 5 copies of
+        # each spread over E_1. The 70 pairs (x, +-y) go to evenly spaced x from
+        # -4 to the graph's right edge, in order, so copies of a pair land next
+        # to each other.
+        self.play(FadeOut(VGroup(
+            kernel_dots, kernel_labels, e1_infinity, e1_infinity_label, x_marks
+        )))
+        target_xs = np.linspace(-4, example_e1[0].x_range[1], 5 * len(d_xs))
+        pullback_d = VGroup()
+        for i in range(len(d_xs)):
+            for k in range(5):
+                x = target_xs[5 * i + k]
+                for j, y in enumerate((0, 250)):  # upper, then lower branch
+                    copy = d_dots[2 * i + j].copy()
+                    copy.target = copy.copy().move_to(lift(x, y))
+                    pullback_d.add(copy)
+        self.play(LaggedStart(*(
+            MoveToTarget(copy) for copy in pullback_d
+        ), lag_ratio=0.01, run_time=3))
+
+        # Labelled like D on E_2, by the upper branch at x = 104.
+        def pullback_label(divisor, color):
+            return colored_tex(
+                "$", (r"\varphi", BLUE), "^*", (divisor, color), "$", font_size=16
+            )
+
+        pullback_d_label = pullback_label("D", YELLOW)
+        pullback_d_label.next_to(lift(104, 0), UL, buff=0.1)
+        self.play(Write(pullback_d_label))
+        self.next_slide()
+
+        # Pulling G back: infinity's preimages are the kernel <T>.
+        pullback_g = VGroup(*(
+            e2_infinity.copy().set_color(RED) for _ in range(5)
+        ))
+        self.play(LaggedStart(*(
+            copy.animate.move_to(target)
+            for copy, target in zip(pullback_g, (*kernel_dots, e1_infinity))
+        ), lag_ratio=0.15, run_time=2))
+
+        # Labelled like G on E_2, beside the point at infinity.
+        pullback_g_label = pullback_label("G", RED)
+        pullback_g_label.next_to(e1_infinity, RIGHT, buff=0.08)
+        self.play(Write(pullback_g_label))
+        self.next_slide()
+
+        # The resulting code, centred under (1).
+        example_code = Tex(
+            r"is an MDS quasi-cyclic $[140, 5k, 141-5k]_{251}$ code", font_size=size
+        )
+        example_code.next_to(code_list[0], DOWN, buff=0.25).set_x(code_list[0].get_x())
+        self.play(FadeOut(example))
+        self.play(Write(example_code))
+        self.next_slide()
+
+        example_matrix_product = Tex(
+            r"and matrix product code $(C_0,C_1,C_2,C_3,C_4)\cdot\mathbf{V}$",
+            font_size=size,
+        )
+        example_matrix_product.next_to(example_code, DOWN, buff=0.25)
+        example_matrix_product.set_x(code_list[0].get_x())
+        self.play(Write(example_matrix_product))
+        self.next_slide()
+
+        # The graphs and their points drop out of frame, making way for V, the
+        # Vandermonde matrix of the 5th roots of unity 20^i in F_251.
+        text = (code_list[0], example_code, example_matrix_product)
+        graphics = Group(*(m for m in self.mobjects_without_canvas if m not in text))
+        self.play(graphics.animate.shift(config.frame_height * DOWN))
+        self.remove(graphics)
+
+        vandermonde = MathTex(
+            r"\mathbf{V}=\begin{pmatrix} 1 & 1 & 1 & 1 & 1 \\"
+            r" 1 & 20 & 20^2 & 20^3 & 20^4 \\"
+            r" 1 & 20^2 & 20^4 & 20^6 & 20^8 \\"
+            r" 1 & 20^3 & 20^6 & 20^9 & 20^{12} \\"
+            r" 1 & 20^4 & 20^8 & 20^{12} & 20^{16} \end{pmatrix},\quad",
+            r"C_j", r"\cong", r"C_{\mathcal{L}}(D,G_j)",
+            font_size=size,
+        )
+        twist_equation, cong = vandermonde[1:], vandermonde[2]
+        vandermonde.next_to(example_matrix_product, DOWN, buff=0.4)
+        vandermonde.set_x(code_list[0].get_x())
+
+        # G_j = (k-1)(infinity) + [j]R, where R = (141, 209) on E_2; [0]R is
+        # infinity, so G_0 = k(infinity).
+        twists = MathTex(
+            r"G_0&=k(\infty) \\"
+            r" G_1&=(k-1)(\infty)+(141,209) \\"
+            r" G_2&=(k-1)(\infty)+(20,121) \\"
+            r" G_3&=(k-1)(\infty)+(20,130) \\"
+            r" G_4&=(k-1)(\infty)+(141,42)",
+            font_size=20,
+        )
+        twists.next_to(vandermonde, DOWN, buff=0.35).set_x(code_list[0].get_x())
+        # A note centred below the \cong, pointing up at it.
+        scaling_note = Tex("up to scaling", font_size=20).next_to(cong, DOWN, buff=0.6)
+        scaling_arrow = Arrow(
+            scaling_note.get_top(), cong.get_bottom(), buff=0.1,
+            stroke_width=2, tip_length=0.12, max_tip_length_to_length_ratio=0.3,
+        )
+
+        self.play(Write(vandermonde))
+        self.play(Write(twists))
+        self.play(Write(scaling_note), GrowArrow(scaling_arrow))
+        self.next_slide()
+
+        # The note becomes the C_j's parameters, braced under C_j = C_L(D, G_j).
+        twist_brace = Brace(twist_equation, DOWN, buff=0.1)
+        twist_brace.stretch(0.6, 1, about_edge=UP)  # thinner
+        twist_parameters = MathTex("[28, k, 29-k]", font_size=size)
+        twist_parameters.next_to(twist_brace, DOWN, buff=0.1)
+        self.play(ReplacementTransform(
+            VGroup(scaling_arrow, scaling_note), VGroup(twist_brace, twist_parameters)
+        ))
+        self.next_slide()
+
+        # A concrete k, in place of the G_j's.
+        example_k = Tex(
+            r"E.g.\ $k=15$ yields a $[140,75,66]$ code\\"
+            r"with five $[28,15,14]$ constituents",
+            font_size=size,
+        )
+        example_k.next_to(vandermonde, DOWN, buff=0.5).set_x(code_list[0].get_x())
+        self.play(FadeOut(twists))
+        self.play(Write(example_k))
+        self.next_slide()
 
         # Closing slide, after TeacherStudentsScene from 3b1b's manim: three
         # students (scaled down) in the bottom-left corner, the teacher flipped
