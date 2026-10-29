@@ -110,7 +110,7 @@ The Euclidean dual code $C_\mcL(D,G)^{\perp_\rmE}$ of $C_\mcL(D,G)$ is
 \[ C_\Omega(D,G)=\set*{(\Res_{P_1}(\omega),\hdots,\Res_{P_n}(\omega)):\omega\in\Omega(G-D)}, \]
 as proven in \cite[Prop.~8]{o2008key}. Choose $t\in\bbF_q(\mcE)$ such that $\ord_{P_i}(t)=1$ for $1\leq i\leq n$. Then, the differential $\eta:=\dt/t$ has the property that every $\omega\in\Omega(G-D)$ can be written as $f\eta$ for some $f\in\mcL(H)$, where $H=D-G+\div\eta$ \cite[\S8.1]{stichtenoth2009algebraic}. As such, we have the beautiful result that $C_\Omega(D,G)=C_\mcL(D,H)$. Consequently, $C_\mcL(D,G)$ is either MDS or near-MDS.
 
-Common choices of $G$ include $G=k(Q)$ for some $Q\in\mcE$, or $G=(k-1)(P)+(Q)$ for some $P,Q\in\mcE$. Such codes are called \textbf{one-point codes} and \textbf{two-point codes} respectively. The former has the advantage that a basis of $\mcL(G)$ is easy to construct.
+Common choices of $G$ include $G=k(Q)$ or $G=(k-1)(P)+(Q)$ for some $P,Q\in\mcE$. Such codes are called \textbf{one-point codes} and \textbf{two-point codes} respectively. The former has the advantage that a basis of $\mcL(G)$ is easy to construct.
 
 \subsection{Decoding}
 
@@ -694,13 +694,13 @@ Ideation for \Cref{section:isogenies} was done without AI assistance. After hypo
     \item ``How does the generator matrix of the code produced by method~1 look like?''
 \end{itemize}
 
-We fed the statement and proof of \Cref{lemma:pullback-eigen} and \Cref{theorem:pullback-split} into ChatGPT and Gemini to verify whether the proof was correct. While all agreed that the proof was valid, we humans manually verified the proof and refined it to make certain arguments clearer.
+We fed the statement and proof of \Cref{lemma:pullback-eigen} and \Cref{theorem:pullback-split} into ChatGPT and Gemini as a preliminary verification of whether the proof was valid. Thereafter, we (humans) manually verified the proof and refined it to make certain arguments clearer.
 
 We used Claude to proofread our manuscript for errors and missing hypotheses in results.
 \begin{itemize}
     \item ``Why does \Cref{conjecture:mec-bound-conj} require $3\leq k\leq n-3$, and why does the bound in \cite{zhu2026isodual} differ from $\MEC(k,q)$?''
+    \item ``Confirm that the rewritten statement of \Cref{theorem:pullback-split} omits no crucial hypothesis, and scan the literature to determine how novel the proof is.''
     \item ``Proofread the changes to the document, including \Cref{section:isogenies}.''
-    \item ``Confirm that the rewritten statement of \Cref{theorem:pullback} omits no crucial hypothesis, and whether it is new.''
 \end{itemize}
 
 Lastly, we used Claude Code to expedite the process of writing and debugging the Manim code for our presentation.
