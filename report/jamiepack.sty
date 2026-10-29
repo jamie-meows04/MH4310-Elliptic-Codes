@@ -379,9 +379,9 @@ linkcolor=blue
 \Crefname{table}{Table}{Tables}
 
 \let\oldfigure\figure
-\renewcommand{\figure}{\oldfigure[ht]\centering\refstepcounter{tcb@cnt@definition}}
-\newcommand{\figcaption}{\par\smallskip\small\textbf{Figure \thetcb@cnt@definition.}\ }
-\newcommand{\tabcaption}{\par\medskip\small\textbf{Table \thetcb@cnt@definition.}\ }
+\renewcommand{\figure}{\oldfigure[ht]\centering\refstepcounter{tcb@cnt@base}}
+\newcommand{\figcaption}{\par\smallskip\small\textbf{Figure \thetcb@cnt@base.}\ }
+\newcommand{\tabcaption}{\par\medskip\small\textbf{Table \thetcb@cnt@base.}\ }
 
 \let\oldprintbibliography\printbibliography
 \renewcommand{\printbibliography}{\usection{References}\oldprintbibliography[heading=none]}
@@ -676,29 +676,15 @@ linkcolor=blue
 
 \tcbuselibrary{theorems,skins,hooks}
 \newtcbtheorem[
-crefname={definition}{definitions},
-Crefname={Definition}{Definitions}
-]{definition}{Definition}{%
+]{base}{Base}{%
+%   number within=\claimsunder
 	claimstyle,
-	title=Definition,
-}{definition}
-
-\tcbuselibrary{theorems,skins,hooks}
-\NewDocumentCommand{\thmbox}{m m O{} m}{%
-	\newtcbtheorem[
-	use counter from=definition,
-	#4
-	]{#1}{#2}{%
-		claimstyle,
-		title={#2},
-		#3%
-	}{#1}%
-}
+}{base}
 
 \tcbuselibrary{theorems,skins,hooks}
 \NewDocumentCommand{\claimbox}{m m O{} m}{%
 	\newtcbtheorem[
-	use counter from=definition,
+	use counter from=base,
 	#4
 	]{#1}{#2}
 	{%
@@ -708,39 +694,16 @@ Crefname={Definition}{Definitions}
 	}{#1}%
 }
 
-\tcbuselibrary{theorems,skins,hooks}
-\NewDocumentCommand{\examplebox}{m m O{} m}{%
-	\newtcbtheorem[
-	use counter from=definition,
-	#4
-	]{#1}{#2}
-	{%
-		examplestyle,
-		title={#2},
-		#3%
-	}{#1}%
+\claimbox{definition}{Definition}[%
+borderline west={2.5pt}{0pt}{defnborderline},
+coltitle=defncoltitle,
+colback=defncolback,
+colframe=defncolframe,
+colbacktitle=defncolbacktitle
+]{%
+	crefname={definition}{definitions},%
+	Crefname={Definition}{Definitions}%
 }
-
-\tcbuselibrary{theorems,skins,hooks}
-\NewDocumentCommand{\problembox}{m m O{} m}{%
-	\newtcbtheorem[
-	use counter from=definition,
-	#4
-	]{#1}{#2}
-	{%
-		problemstyle,
-		title={#2},
-		#3%
-	}{#1}%
-}
-
-\usetikzlibrary{arrows,calc,shadows.blur}
-\tcbuselibrary{skins}
-\newtcolorbox{notation}[1][]{%
-	notationstyle,%
-	#1,%
-}
-
 \claimbox{theorem}{Theorem}[%
 borderline west={2.5pt}{0pt}{thmborderline},
 coltitle=thmcoltitle,
@@ -863,10 +826,6 @@ colbacktitle=examplecolbacktitle
 ]{%
 	crefname={example}{examples},%
 	Crefname={Example}{Examples}%
-}
-\problembox{exercise}{Exercise}[]{%
-	crefname={exercise}{exercises},%
-	Crefname={Exercise}{Exercises}%
 }
 
 % }}}
