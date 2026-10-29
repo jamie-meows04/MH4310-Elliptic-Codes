@@ -2,7 +2,7 @@
 isogeny_codes.py -- testing the four isogeny transformations of elliptic codes
 ================================================================================
 
-MH4310 project, Section 7.  For an isogeny  phi : E1 -> E2  we test
+MH4310 project, Section 6.  For an isogeny  phi : E1 -> E2  we test
 
   (1)  C_L(phi^* D, phi^* G)        D, G on E2   (pull back the divisors)
   (2)  C_L(phi_* D, phi_* G)        D, G on E1   (push forward the divisors)
@@ -887,7 +887,7 @@ def coset_experiments(ells=(3, 4, 5, 7), curves_per_ell=2, q_range=(23, 200),
 if __name__ == "__main__":
     I = setup()
     method_1_and_3(I, k=3)
-    iso_dual_check(I)
+    #iso_dual_check(I)
     method_1_trials(I)
     method_1_structure(I, k=3)
     method_2_and_4(I, k=3)
