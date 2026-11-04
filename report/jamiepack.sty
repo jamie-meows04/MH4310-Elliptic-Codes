@@ -129,64 +129,10 @@ linkcolor=blue
 
 % {{{ COLOR SETUP
 
+% Box colours are given directly in the \claimbox calls below; all names
+% are from xcolor (svgnames/dvipsnames).
 \ifbubumax
-\definecolor{LightGray}{gray}{0.9}
-
-\definecolor{lightestblue}{HTML}{F2FBFC} % #F2FBFC
-\definecolor{lighterblue}{HTML}{F2F2F9} % #F2F2F9
-\definecolor{bubulightblue}{HTML}{E5E5FF} % #E5E5FF
-\definecolor{deepblue}{HTML}{3F3FA3} % #3F3FA3
-\definecolor{deepestblue}{HTML}{00007B} % #00007B
-
-\definecolor{lightestgreen}{HTML}{73A840} % #73A840
-\definecolor{bubulightgreen}{HTML}{388C46} % #388C46
-\definecolor{deepgreen}{HTML}{003700} % #003700
-
-\definecolor{bubupink}{HTML}{06608F} % #06608F
-\definecolor{bubucream}{HTML}{00AAA0} % #00AAA0
-\definecolor{bubured}{HTML}{D51645} % #D51645
-
 \ifbububoxbw
-\colorlet{defncoltitle}{black}
-\colorlet{defncolback}{white}
-\colorlet{defncolframe}{black}
-\colorlet{defncolbacktitle}{black}
-\colorlet{thmcoltitle}{black}
-\colorlet{thmcolback}{white}
-\colorlet{thmcolframe}{black}
-\colorlet{thmcolbacktitle}{black}
-\colorlet{lemmacoltitle}{black}
-\colorlet{lemmacolback}{white}
-\colorlet{lemmacolframe}{black}
-\colorlet{lemmacolbacktitle}{black}
-\colorlet{crlcoltitle}{black}
-\colorlet{crlcolback}{white}
-\colorlet{crlcolframe}{black}
-\colorlet{crlcolbacktitle}{black}
-\colorlet{propcoltitle}{black}
-\colorlet{propcolback}{white}
-\colorlet{propcolframe}{black}
-\colorlet{propcolbacktitle}{black}
-\colorlet{conjcoltitle}{black}
-\colorlet{conjcolback}{white}
-\colorlet{conjcolframe}{black}
-\colorlet{conjcolbacktitle}{black}
-
-\colorlet{claimcoltitle}{black}
-\colorlet{claimcolback}{black!5}
-\colorlet{claimborderline}{black}
-\colorlet{claimsegstyle}{black}
-\colorlet{quescoltitle}{black}
-\colorlet{quessegstyle}{black}
-\colorlet{remcolback}{black!5}
-\colorlet{remborderline}{black}
-\colorlet{remcoltitle}{black}
-\colorlet{remsegstyle}{black}
-
-\colorlet{examplecoltitle}{black}
-\colorlet{examplecolback}{black!5}
-\colorlet{examplecolframe}{black}
-
 \colorlet{probcoltitle}{black}
 \colorlet{probcolback}{white}
 \colorlet{probcolframe}{white}
@@ -201,84 +147,6 @@ linkcolor=blue
 \colorlet{noteboxscope}{black}
 
 \else
-\colorlet{defncoltitle}{RawSienna}
-\colorlet{defncolback}{Salmon!5}
-\colorlet{defncolframe}{RawSienna}
-\colorlet{defncolbacktitle}{RawSienna}
-\colorlet{defnborderline}{RawSienna}
-\colorlet{defnsegstyle}{RawSienna}
-\colorlet{thmcoltitle}{deepestblue}
-\colorlet{thmcolback}{lightestblue}
-\colorlet{thmcolframe}{deepestblue}
-\colorlet{thmcolbacktitle}{deepestblue}
-\colorlet{thmborderline}{deepestblue}
-\colorlet{thmsegstyle}{deepestblue}
-\colorlet{lemmacoltitle}{deepestblue}
-\colorlet{lemmacolback}{lightestblue}
-\colorlet{lemmacolframe}{deepestblue}
-\colorlet{lemmacolbacktitle}{deepestblue}
-\colorlet{lemmaborderline}{deepestblue}
-\colorlet{lemmasegstyle}{deepestblue}
-\colorlet{crlcoltitle}{deepestblue}
-\colorlet{crlcolback}{lighterblue}
-\colorlet{crlcolframe}{deepestblue}
-\colorlet{crlcolbacktitle}{deepblue}
-\colorlet{crlborderline}{deepestblue}
-\colorlet{crlsegstyle}{deepestblue}
-\colorlet{propcoltitle}{deepestblue}
-\colorlet{propcolback}{lighterblue}
-\colorlet{propcolframe}{deepestblue}
-\colorlet{propcolbacktitle}{deepblue}
-\colorlet{propborderline}{deepestblue}
-\colorlet{propsegstyle}{deepestblue}
-\colorlet{conjcoltitle}{Purple}
-\colorlet{conjcolback}{Purple!10}
-\colorlet{conjcolframe}{Purple}
-\colorlet{conjcolbacktitle}{Purple}
-\colorlet{conjborderline}{Purple}
-\colorlet{conjsegstyle}{Purple}
-\colorlet{assumcoltitle}{RedViolet}
-\colorlet{assumcolback}{RedViolet!10}
-\colorlet{assumcolframe}{RedViolet}
-\colorlet{assumcolbacktitle}{RedViolet}
-\colorlet{assumborderline}{RedViolet}
-\colorlet{assumsegstyle}{RedViolet}
-
-\colorlet{claimcoltitle}{bubulightgreen!85!black}
-\colorlet{claimcolback}{bubulightgreen!10}
-\colorlet{claimborderline}{bubulightgreen}
-\colorlet{claimsegstyle}{bubulightgreen!85!black}
-
-\colorlet{algocoltitle}{bubulightgreen!70!black}
-\colorlet{algocolback}{bubulightgreen!10}
-\colorlet{algoborderline}{bubulightgreen}
-\colorlet{algocolframe}{bubulightgreen!70!black}
-\colorlet{algocolbacktitle}{bubulightgreen!70!black}
-\colorlet{algosegstyle}{bubulightgreen!70!black}
-
-\colorlet{constrcoltitle}{bubulightgreen!70!black}
-\colorlet{constrcolback}{bubulightgreen!10}
-\colorlet{constrborderline}{bubulightgreen}
-\colorlet{constrcolframe}{bubulightgreen!70!black}
-\colorlet{constrcolbacktitle}{bubulightgreen!70!black}
-\colorlet{constrsegstyle}{bubulightgreen!70!black}
-
-\colorlet{examplecoltitle}{bubulightgreen!70!black}
-\colorlet{examplecolback}{bubulightgreen!10}
-\colorlet{exampleborderline}{bubulightgreen}
-\colorlet{examplecolframe}{bubulightgreen!70!black}
-\colorlet{examplecolbacktitle}{bubulightgreen!70!black}
-\colorlet{examplesegstyle}{bubulightgreen!70!black}
-
-\colorlet{quescoltitle}{deepgreen}
-\colorlet{quessegstyle}{deepgreen}
-\colorlet{probcoltitle}{deepgreen}
-\colorlet{probsegstyle}{deepgreen}
-\colorlet{remcolback}{RedViolet!5!gray!5}
-\colorlet{remborderline}{black}
-\colorlet{remcoltitle}{black}
-\colorlet{remsegstyle}{black}
-
 \colorlet{probcoltitle}{blue!40!black}
 \colorlet{probcolback}{white}
 \colorlet{probcolframe}{white}
@@ -301,7 +169,7 @@ linkcolor=blue
 % Font
 \loadfont
 \renewcommand{\textbf}[1]{%
-	\textcolor{deepestblue}{\bfseries{#1}}%
+	\textcolor{Navy}{\bfseries{#1}}%
 }
 
 % General Formatting
@@ -537,62 +405,91 @@ linkcolor=blue
 \addtokomafont{paragraph}{\color{orange!35!black}\P\ }
 \KOMAoptions{numbers=noenddot}
 
-\tcbuselibrary{theorems,skins,hooks,breakable}
-\tcbset{%
-	defnstyle/.style={%
-		breakable,
-		enhanced,
-		before skip=12pt,
-		after skip=12pt,
-		coltitle=defncoltitle,
-		colback=defncolback,
-		frame hidden,
-		boxrule=0sp,
-		borderline west={2pt}{0pt}{defnborderline},
-		sharp corners,
-		detach title,
-		before upper=\tcbtitle\par\medskip,
-		fonttitle=\bfseries\sffamily,
-		description font=\mdseries,
-		description delimiters parenthesis,
-		separator sign none,
-		segmentation style={solid, claimsegstyle},
-	}
+% Box styles. Each takes two arguments: {<background>}{<text>}.
+% The background colour fills the box (and the banner); the text colour is
+% used for the title, the frame, and all other lines. Body text stays black.
+
+% Title of a claimstyle box. \jp@description is only called when the box has
+% a description; it switches the end of the title from a run-in dot to a
+% line break.
+\makeatletter
+\newcommand{\jp@titledot}{{\color{tcbcoltitle}\bfseries\sffamily.}\ }
+\newcommand{\jp@titlebreak}{\par\medskip}
+\newcommand{\jp@description}[1]{%
+	\global\let\jp@aftertitle\jp@titlebreak
+	{\mdseries(#1)}%
+}
+\newcommand{\jp@claimtitle}{%
+	\global\let\jp@aftertitle\jp@titledot
+	\tcbtitle\jp@aftertitle
 }
 
 \tcbuselibrary{theorems,skins,hooks,breakable}
 \tcbset{%
-	claimstyle/.style={%
+	% Framed box with the title in a banner on the top edge
+	defnstyle/.style 2 args={%
 		breakable,
 		enhanced,
 		before skip=12pt,
 		after skip=12pt,
-		coltitle=claimcoltitle,
-		colback=claimcolback,
-		frame hidden,
-		boxrule=0sp,
-		borderline west={2pt}{0pt}{claimborderline},
-		sharp corners,
-		detach title,
-		before upper=\tcbtitle\par\medskip,
-		fonttitle=\bfseries\sffamily,
+		colback=#1,
+		colframe=#2,
+		coltitle=#2,
+		boxrule=0.8pt,
+		attach boxed title to top left={xshift=1cm,yshift*=1mm-\tcboxedtitleheight},
+		varwidth boxed title*=-3cm,
+		boxed title style={
+			frame code={
+				\path[draw=#2, line width=0.8pt]
+				([yshift=-1mm,xshift=-1.1mm]frame.north west)
+				arc[start angle=0,end angle=180,radius=1mm]
+				([yshift=-1mm,xshift=1.1mm]frame.north east)
+				arc[start angle=180,end angle=0,radius=1mm];
+				\path[fill=#1, draw=#2, line width=0.8pt]
+				([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
+				[rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
+				-- (frame.south east) -- (frame.south west)
+				-- ([xshift=-1mm,yshift=-1mm]frame.north west)
+				[sharp corners]-- cycle;
+			},
+			interior engine=empty,
+		},
+		fonttitle=\bfseries,
 		description font=\mdseries,
 		description delimiters parenthesis,
 		separator sign none,
-		segmentation style={solid, claimsegstyle},
-	}
-}
-
-\tcbuselibrary{theorems,skins,hooks,breakable}
-\tcbset{%
-	examplestyle/.style={%
+		segmentation style={solid, #2},
+	},
+	% Unframed box with a rule on the left. Without a description, the title
+	% runs into the body ("Theorem 3. ..."); with one, the title is on its own
+	% line ("Theorem 3 (Name)", then the body).
+	claimstyle/.style 2 args={%
+		breakable,
+		enhanced,
+		before skip=12pt,
+		after skip=12pt,
+		colback=#1,
+		coltitle=#2,
+		frame hidden,
+		boxrule=0sp,
+		borderline west={2.5pt}{0pt}{#2},
+		sharp corners,
+		detach title,
+		before upper=\jp@claimtitle,
+		fonttitle=\bfseries\sffamily,
+		description formatter=\jp@description,
+		separator sign none,
+		segmentation style={solid, #2},
+	},
+	% Framed box with square corners (not used by \claimbox)
+	examplestyle/.style 2 args={%
 		breakable,
 		enhanced,
 		before skip=16pt,
 		after skip=16pt,
-		coltitle=examplecoltitle,
-		colback=examplecolback,
-		colframe=examplecolframe,
+		colback=#1,
+		colframe=#2,
+		coltitle=#2,
 		boxrule=0.5pt,
 		sharp corners,
 		detach title,
@@ -601,8 +498,9 @@ linkcolor=blue
 		description font=\mdseries,
 		separator sign none,
 		description delimiters parenthesis,
-	}
+	},
 }
+\makeatother
 
 \tcbuselibrary{theorems,skins,hooks,breakable}
 \tcbset{
@@ -675,158 +573,85 @@ linkcolor=blue
 }
 
 \tcbuselibrary{theorems,skins,hooks}
+% Shared counter for all theorem boxes
 \newtcbtheorem[
 ]{base}{Base}{%
 %   number within=\claimsunder
-	claimstyle,
+	claimstyle={white}{black},
 }{base}
 
-\tcbuselibrary{theorems,skins,hooks}
-\NewDocumentCommand{\claimbox}{m m O{} m}{%
+% \claimbox[<banner>]{<background>}{<text>}{<environment>}{<Name>}{<Names>}
+%
+% <banner>       true: defnstyle (title in a banner);
+%                false (default): claimstyle
+% <background>   light colour, used only for the background
+% <text>         dark colour, used for the title and all lines
+% <environment>  environment name and label prefix
+% <Name>         title of the box, and the singular name for \cref and \Cref
+% <Names>        plural name for \cref and \Cref
+%
+% With the boxbw option, the colours are overridden by white and black.
+%
+% For example,
+%   \claimbox{Azure}{Navy}{theorem}{Theorem}{Theorems}
+% defines \begin{theorem}{<description>}{<label>}, referenced as
+% theorem:<label>, which \cref and \Cref both print as "Theorem".
+\makeatletter
+\NewDocumentCommand{\claimbox}{O{false} m m m m m}{%
+	\ifbububoxbw
+		\jp@claimbox{#1}{white}{black}{#4}{#5}{#6}%
+	\else
+		\jp@claimbox{#1}{#2}{#3}{#4}{#5}{#6}%
+	\fi
+}
+\newcommand{\jp@claimbox}[6]{%
+	\ifthenelse{\equal{#1}{true}}%
+		{\jp@newbox{defnstyle}{#2}{#3}{#4}{#5}{#6}}%
+		{\jp@newbox{claimstyle}{#2}{#3}{#4}{#5}{#6}}%
+}
+% \jp@newbox{<style>}{<bg>}{<text>}{<environment>}{<Name>}{<Names>}
+\newcommand{\jp@newbox}[6]{%
 	\newtcbtheorem[
-	use counter from=base,
-	#4
-	]{#1}{#2}
-	{%
-		claimstyle,
-		title={#2},
-		#3%
-	}{#1}%
+		use counter from=base,
+		crefname={#5}{#6},
+		Crefname={#5}{#6},
+	]{#4}{#5}{%
+		#1={#2}{#3},
+		title={#5},
+	}{#4}%
 }
+\makeatother
 
-\claimbox{definition}{Definition}[%
-borderline west={2.5pt}{0pt}{defnborderline},
-coltitle=defncoltitle,
-colback=defncolback,
-colframe=defncolframe,
-colbacktitle=defncolbacktitle
-]{%
-	crefname={definition}{definitions},%
-	Crefname={Definition}{Definitions}%
-}
-\claimbox{theorem}{Theorem}[%
-borderline west={2.5pt}{0pt}{thmborderline},
-coltitle=thmcoltitle,
-colback=thmcolback,
-colframe=thmcolframe,
-colbacktitle=thmcolbacktitle
-]{%
-	crefname={theorem}{theorems},%
-	Crefname={Theorem}{Theorems}%
-}
-\claimbox{lemma}{Lemma}[%
-borderline west={2.5pt}{0pt}{lemmaborderline},
-coltitle=lemmacoltitle,
-colback=lemmacolback,
-colframe=lemmacolframe,
-colbacktitle=lemmacolbacktitle
-]{%
-	crefname={lemma}{lemmas},%
-	Crefname={Lemma}{Lemmas}%
-}
-\claimbox{corollary}{Corollary}[%
-borderline west={2.5pt}{0pt}{crlborderline},
-coltitle=crlcoltitle,
-colback=crlcolback,
-colframe=crlcolframe,
-colbacktitle=crlcolbacktitle
-]{%
-	crefname={corollary}{corollaries},%
-	Crefname={Corollary}{Corollaries}%
-}
-\claimbox{proposition}{Proposition}[%
-borderline west={2.5pt}{0pt}{propborderline},
-coltitle=propcoltitle,
-colback=propcolback,
-colframe=propcolframe,
-colbacktitle=propcolbacktitle
-]{%
-	crefname={proposition}{propositions},%
-	Crefname={Proposition}{Propositions}%
-}
-\claimbox{conjecture}{Conjecture}[%
-borderline west={2.5pt}{0pt}{conjborderline},
-coltitle=conjcoltitle,
-colback=conjcolback,
-colframe=conjcolframe,
-colbacktitle=conjcolbacktitle
-]{%
-crefname={conjecture}{conjectures},%
-Crefname={Conjecture}{Conjecture}%
-}
-\claimbox{assumption}{Assumption}[%
-borderline west={2.5pt}{0pt}{assumborderline},
-coltitle=assumcoltitle,
-colback=assumcolback,
-colframe=assumcolframe,
-colbacktitle=assumcolbacktitle
-]{%
-crefname={assumption}{Assumptions},%
-Crefname={Assumption}{Assumptions}%
-}
-
-\claimbox{algorithm}{Algorithm}[%
-borderline west={2.5pt}{0pt}{algoborderline},
-coltitle=algocoltitle,
-colback=algocolback,
-colframe=algocolframe,
-colbacktitle=algocolbacktitle
-]{%
-	crefname={algorithm}{algorithms},%
-	Crefname={Algorithm}{Algorithms}%
-}
-\claimbox{construction}{Construction}[%
-borderline west={2.5pt}{0pt}{constrborderline},
-coltitle=constrcoltitle,
-colback=constrcolback,
-colframe=constrcolframe,
-colbacktitle=constrcolbacktitle
-]{%
-	crefname={construction}{constructions},%
-	Crefname={Construction}{Constructions}%
-}
-\claimbox{claim}{Claim}[
-before upper={\tcbtitle{\bfseries\sffamily\color{claimcoltitle}---\ }},
-]{%
-	crefname={claim}{claims},%
-	Crefname={Claim}{Claims}%
-}
-\claimbox{question}{Question}[
-before upper={\tcbtitle{\bfseries\sffamily\color{quescoltitle}.}\ },%
-coltitle=quescoltitle,
-segmentation style={quessegstyle}
-]{%
-	crefname={question}{questions},%
-	Crefname={Question}{Questions}%
-}
-\claimbox{problem}{Problem}[
-before upper={\tcbtitle{\bfseries\sffamily\color{probcoltitle}.}\ },%
-coltitle=probcoltitle,
-segmentation style={probsegstyle}
-]{%
-	crefname={problem}{problems},%
-	Crefname={Problem}{Problems}%
-}
-\claimbox{remark}{Remark}[
-colback=remcolback,
-borderline west={2.5pt}{0pt}{remborderline},
-before upper={\tcbtitle{\bfseries\sffamily\color{remcoltitle}.}\ },
-coltitle=remcoltitle,
-segmentation style={solid, remsegstyle}
-]{%
-	crefname={remark}{remarks},%
-	Crefname={Remark}{Remarks}%
-}
-\claimbox{example}{Example}[%
-borderline west={2.5pt}{0pt}{exampleborderline},
-coltitle=examplecoltitle,
-colback=examplecolback,
-colframe=examplecolframe,
-colbacktitle=examplecolbacktitle
-]{%
-	crefname={example}{examples},%
-	Crefname={Example}{Examples}%
-}
+\claimbox{Salmon!5}{RawSienna}
+	{definition}{Definition}{Definitions}
+\claimbox{DodgerBlue!6}{DodgerBlue!45!black}
+	{theorem}{Theorem}{Theorems}
+\claimbox{DodgerBlue!6}{DodgerBlue!45!black}
+	{lemma}{Lemma}{Lemmas}
+\claimbox{blue!5}{Navy}
+	{corollary}{Corollary}{Corollaries}
+\claimbox{blue!5}{Navy}
+	{proposition}{Proposition}{Propositions}
+\claimbox{Gold!8}{Olive!50!DarkGoldenrod!75!black}
+	{conjecture}{Conjecture}{Conjectures}
+\claimbox{Salmon!5}{RawSienna}
+	{assumption}{Assumption}{Assumptions}
+\claimbox{MediumSeaGreen!6}{MediumSeaGreen!50!black}
+	{algorithm}{Algorithm}{Algorithms}
+\claimbox{MediumSeaGreen!6}{MediumSeaGreen!50!black}
+	{construction}{Construction}{Constructions}
+\claimbox{Gold!8}{Olive!50!DarkGoldenrod!75!black}
+	{claim}{Claim}{Claims}
+\claimbox{DarkTurquoise!8}{DarkTurquoise!40!black}
+	{question}{Question}{Questions}
+\claimbox{DarkTurquoise!8}{DarkTurquoise!40!black}
+	{problem}{Problem}{Problems}
+\claimbox{DarkTurquoise!8}{DarkTurquoise!40!black}
+	{exercise}{Exercise}{Exercises}
+\claimbox{RedViolet!5}{RedViolet}
+	{remark}{Remark}{Remarks}
+\claimbox{RedViolet!5}{RedViolet}
+	{example}{Example}{Examples}
 
 % }}}
 
@@ -1011,6 +836,7 @@ colbacktitle=examplecolbacktitle
 \newcommand{\Fbar}[1]{{}\mkern1mu\overline{\mkern-1mu\mathbb{F}\mkern-2mu}\mkern1mu{}_{\!\!#1}}
 
 %% Coding Theory
+\DeclareMathOperator{\ev}{ev}
 \DeclareMathOperator{\wt}{wt}
 \DeclareMathOperator{\Enc}{Enc}
 \DeclareMathOperator{\Dec}{Dec}
