@@ -2,16 +2,8 @@
 Pullback codes over 𝔽₆₄: Example 28 of
 "Isogeny Pullbacks of Elliptic Codes" (beyond length q + 1).
 
-Run with
-    sage example_F64.py      (or: sage -python example_F64.py)
-
-The file is plain Python syntax (no Sage preparser), so it also runs
-under any Python with Sage importable, e.g. passagemath.
-
 Coordinates of φ*D are ordered block by block: block m consists of
 the points P̃ᵢ ⊕ [m]T for i = 1, …, n.
-
-Field elements are printed as powers of α.
 """
 
 from itertools import combinations
