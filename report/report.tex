@@ -482,7 +482,7 @@ the second implication by \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}. Hen
 
 \subsection{Splitting into twists} \label{subsection:splitting}
 
-We asked Claude to write SageMath code that constructs the generator matrix of $\varphi^*C$ for the toy example in \Cref{subsection:exploration}. Claude did this by examining the eigenspaces of the translation map. The resulting generator matrix was a block matrix consisting of generator matrices for these eigenspaces. We (humans) noticed that this matrix had the structure of the matrix product codes covered in class \cite{mh4310ld7,blackmore2001matrix}. We then asked Claude to prove this structure in a more general setting. The proof relies on a lemma on the above eigenspaces using tools from arithmetic geometry, which we state first.
+We asked Claude to construct the generator matrix of $\varphi^*C$. Claude did this by examining the eigenspaces of the translation map. The resulting generator matrix was a block matrix consisting of generator matrices for these eigenspaces. We (humans) noticed that this matrix had the structure of the matrix product codes covered in class \cite{mh4310ld7,blackmore2001matrix}. We asked Claude to prove this structure in a more general setting. We then verified the proof manually and rewrote it in a clearer fashion. The proof relies on a lemma on the above eigenspaces using tools from arithmetic geometry, which we state first.
 
 \begin{lemma}{Eigenfunctions of translations}{pullback-eigen}
     In \Cref{definition:pullback-code}, suppose $\ell\mid q-1$ and let $\zeta\in\bbF_q$ have order $\ell$. Write $K=\ang T$ and $\tau:=\tau_T^*$. Then there exist an \textbf{eigenfunction} $u\in\bbF_q(\mcE_1)^*$ and a divisor $A\in\Div\mcE_2$ with
@@ -645,31 +645,45 @@ However, the current research landscape focusing specifically on elliptic codes 
 } % end of comment
 
 \begin{proof}[Proof of \Cref{lemma:pullback-eigen}]\refstepcounter{figure}\label{proof:pullback-eigen}
-(a) By Dedekind's lemma, $1,\tau,\hdots,\tau^{\ell-1}$ are linearly independent over $\bbF_q(\mcE_1)$, and so over $\varphi^*\bbF_q(\mcE_2)$. Thus, $\tau$ has minimal polynomial $X^\ell-1$ on $\bbF_q(\mcE_1)$. Hence, there is $u\in\bbF_q(\mcE_1)^*$ with $\tau(u)=\zeta u$.
-    
-    Observe that $\div u$ is fixed by $K$. \Cref{lemma:pullback-facts}\ref{enum:pf-divisors} gives $\div u=\varphi^*A$ for some $A\in\Div\mcE_2$. Also, $u^\ell$ is fixed by $\tau$, so $u^\ell=\varphi^*h$ for some $h$. Then, $\varphi^*(\ell A)=\varphi^*\div h$ gives $\ell A=\div h$. In particular, $\deg A=0$.
-    
-    By the approximation theorem \cite[Thm.~1.3.1]{stichtenoth2009algebraic}, replacing $u$ by $u\cdot\varphi^*a$ for suitable $a\in\bbF_q(\mcE_2)^*$, we may assume $\supp A\cap\supp D=\emptyset$.
-    
-(b) Put $R:=\Sigma(A)\in\mcE_2(\bbF_q)$. As $\varphi^*A=\div u$ is principal and $\deg A=0$, we have $\Sigma(\varphi^*A)=\hat\varphi(\Sigma(A))$ by the construction of $\hat\varphi$ \cite[\S III.6]{silverman2009arithmetic}, so $R\in\ker\hat\varphi$.
+\ref{enum:eigen-u} By Dedekind's lemma, $1,\tau,\hdots,\tau^{\ell-1}$ are linearly independent over $\bbF_q(\mcE_1)$, and so over $\varphi^*\bbF_q(\mcE_2)$. Thus, $\tau$ has minimal polynomial $X^\ell-1$ on $\bbF_q(\mcE_1)$. Hence, there is $u\in\bbF_q(\mcE_1)^*$ with $\tau(u)=\zeta u$. Since
+\[ \tau(\div u)=\div(\tau(u))=\div(\zeta u)=\div u,\]
+$\div u$ is fixed by $K$. \Cref{lemma:pullback-facts}\ref{enum:pf-divisors} gives $\div u=\varphi^*A$ for some $A\in\Div\mcE_2$. Also, $u^\ell$ is fixed by $\tau$, so $u^\ell=\varphi^*h$ for some $h\in\bbF_q(\mcE_2)$. Taking $\div$ on both sides gives
+\[ \div(u^\ell)=\ell\div u=\ell\varphi^*A=\varphi^*(\ell A)=\varphi^*\div h,\]
+which forces $\ell A=\div h$. In particular, $\deg A=0$.
+
+By the approximation theorem \cite[Thm.~1.3.1]{stichtenoth2009algebraic}, replacing $u$ by $u\cdot\varphi^*a$ for suitable $a\in\bbF_q(\mcE_2)^*$, we may assume $\supp A\cap\supp D=\emptyset$.
+
+\ref{enum:eigen-R} Put $R:=\Sigma(A)\in\mcE_2(\bbF_q)$. As $\varphi^*A=\div u$ is principal and $\deg A=0$, we have $\hat\varphi(\Sigma(A))=\Sigma(\varphi^*A)=\infty$ by \Cref{lemma:abel-jacobi}, so $R\in\ker\hat\varphi$.
 
 We show that $R$ has order $\ell$. Suppose $[m]R=\infty$ with $m<\ell$. Then, $mA=\div a$ for some $a$. Consider the function $v:=u^m/\varphi^*a$. Its divisor is $\div v=m\varphi^*(A)-\varphi^*(mA)=0$, so $v$ is a nonzero constant, hence fixed by $\tau$. But $\tau(v)=(\zeta u)^m/\varphi^*a=\zeta^m v$, which forces $\zeta^m=1$, a contradiction. Thus, $R$ has order $\ell$.
 
 As $\hat\varphi\circ\varphi=[\ell]$ is separable for $\ell\nmid q$, so is $\hat\varphi$, and $\#\ker\hat\varphi=\ell$. Hence $R$ generates $\ker\hat\varphi$, which is therefore rational.
-    
-(c) $f$ lies in the $\zeta^j$-eigenspace if and only if $f/u^j$ is fixed by $\tau$, that is, $f=u^j\varphi^*g$ for some $g\in\bbF_q(\mcE_2)$. By \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}, $\div f=\varphi^*(jA+\div g)\geq-\varphi^*G$ if and only if $g\in\mcL(G+jA)$.
+
+\ref{enum:eigen-space} Let $f\in\mcL(\varphi^*G)$, so $\div f\geq-\varphi^*G$. $f$ lies in the $\zeta^j$-eigenspace if and only if $f/u^j$ is fixed by $\tau$, if and only if $f=u^j\varphi^*g$ for some $g\in\bbF_q(\mcE_2)$. This already shows that $u^j\varphi^*\mcL(G+jA)$ lies in the $\zeta^j$-eigenspace. For the reverse inclusion, note that \Cref{lemma:pullback-facts}\ref{enum:pf-divisors} gives $\div f=\varphi^*(jA+\div g)\geq-\varphi^*G$, so $g\in\mcL(G+jA)$.
 \end{proof}
 
 \begin{proof}[Proof of \Cref{construction:index-two-pullback}]\refstepcounter{figure}\label{proof:index-two-pullback}
-    The image of $K$ in $\mcE_1(\bbF_q)/H\cong\bbZ/2\bbZ$ has order dividing both $\#K=\ell$ and 2, so it is trivial, and $K\subseteq H$. Hence, $H$ and $Q\oplus H$ are unions of cosets of $K$, i.e. they are partitioned by the fibres of $\varphi$. So $\varphi^{-1}(\varphi(H))=H$ and $\varphi^{-1}(\varphi(Q\oplus H))=Q\oplus H$. In particular, $\varphi(H)\cap\varphi(Q\oplus H)=\emptyset$. Also, every fibre over a point of $\supp D$ is rational, so \Cref{theorem:pullback} applies. As $\infty=\varphi(\infty)\in\varphi(H)$ and $\varphi(Q)\in\varphi(Q\oplus H)$, the supports of $D$ and $G$ are disjoint in both cases. Writing $K=\ang T$, we have $s_K:=\sum_{T'\in K}T'=[\ell(\ell-1)/2]T=\infty$, since $\ell$ is odd.
-
-    For (a), $\Sigma(\varphi^*G)=[k]s_K=\infty\in H$. But $\supp\varphi^*D=Q\oplus H$, so any $\ell k$ of its points sum into $[\ell k]Q\oplus H=Q\oplus H$, as $\ell k$ is odd.
-
-    For (b), the fibre over $\varphi(Q)$ is $Q\oplus K$, so $\Sigma(\varphi^*G)=[k-1]s_K\oplus[\ell]Q\oplus s_K=[\ell]Q$, which lies in $Q\oplus H$ as $\ell$ is odd. But $\supp\varphi^*D\subseteq H$, so any $\ell k$ of its points sum into $H$.
-
-    In both cases, no $\ell k$ points of $\supp\varphi^*D$ sum to $\Sigma(\varphi^*G)$, so $C'$ is MDS by \Cref{theorem:mds-criterion}. The lengths are $\ell\cdot\#\supp D$, namely $\ell\cdot\frac N{2\ell}$ and $\ell\cdot\pa[\big]{\frac N{2\ell}-1}$. Removing points from $D$ preserves both arguments.
+    We check that the codes $C$ and $\varphi^*C$ are well-defined, i.e. the supports of $D$ and $G$ (resp. $\varphi^*D$ and $\varphi^*G$) are disjoint and $\bbF_q$-rational.
     
-    Note that the argument extends to a subgroup $H$ of any prime index $m\nmid\ell$, giving MDS codes of length $N/m$ whenever $m\nmid\ell k$. This also covers even $\ell$, for example $\ell=4$ with $m=3$.
+    The image of $K$ in $\mcE_1(\bbF_q)/H\cong\bbZ/2\bbZ$ has order dividing both $\#K=\ell$ and 2, so it is trivial, and $K\subseteq H$. Hence, $H$ and $Q\oplus H$ are unions of cosets of $K$, i.e. they are partitioned by the fibres of $\varphi$. So $\varphi^{-1}(\varphi(H))=H$, $\varphi^{-1}(\varphi(Q\oplus H))=Q\oplus H$, and $\varphi(H)\cap\varphi(Q\oplus H)=\emptyset$. In \ref{enum:index-two-pullback-odd}, this shows that
+    \begin{align*}
+        \supp \varphi^*G&=\varphi^{-1}(\infty)=K\subseteq\mcE_1(\bbF_q) \quad\text{and} \\
+        \supp \varphi^*D&=\varphi^{-1}(\varphi(Q\oplus H))\subseteq Q\oplus H\subseteq\mcE_1(\bbF_q)
+    \end{align*}
+    are $\bbF_q$-rational. Likewise, in \ref{enum:index-two-pullback-any}, both
+    \begin{align*}
+        \supp \varphi^*G&=K\cup (Q\oplus K)\subseteq\mcE_1(\bbF_q) \quad\text{and} \\
+        \supp \varphi^*D&=\varphi^{-1}(\varphi(H\bs\set{\infty}))\subseteq H\subseteq\mcE_1(\bbF_q)
+    \end{align*}
+    are $\bbF_q$-rational. As $\infty=\varphi(\infty)\in\varphi(H)$ and $\varphi(Q)\in\varphi(Q\oplus H)$, the supports of $D$ and $G$ are disjoint in both cases, so $C$ is well-defined. It follows that the supports of $\varphi^*D$ and $\varphi^*G$ are also disjoint, so $\varphi^*C$ is well-defined. 
+    
+    Now, we show that $\varphi^*C$ is MDS by means of \Cref{theorem:mds-criterion}. Write $K=\ang T$ and $s_K:=\sum_{T'\in K}T'=[\ell(\ell-1)/2]T$. Since $\ell$ is odd, $s_K=\infty$.
+
+    For \ref{enum:index-two-pullback-odd}, $\Sigma(\varphi^*G)=[k]s_K=\infty\in H$. But $\supp\varphi^*D=Q\oplus H$, so any $\ell k$ of its points sum into $[\ell k]Q\oplus H=Q\oplus H$, as $\ell k$ is odd.
+
+    For \ref{enum:index-two-pullback-any}, the fibre over $\varphi(Q)$ is $Q\oplus K$, so $\Sigma(\varphi^*G)=[k-1]s_K\oplus[\ell]Q\oplus s_K=[\ell]Q$, which lies in $Q\oplus H$ as $\ell$ is odd. But $\supp\varphi^*D\subseteq H$, so any $\ell k$ of its points sum into $H$.
+
+    In both cases, no $\ell k$ points of $\supp\varphi^*D$ sum to $\Sigma(\varphi^*G)$, so $\varphi^*C$ is MDS by \Cref{theorem:mds-criterion}.
 \end{proof}
 
 \usection{AI prompts}

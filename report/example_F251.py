@@ -1,5 +1,5 @@
 """
-Pullback codes over 𝔽₂₅₁: Example 18 of MH4310 report
+Pullback codes over 𝔽₂₅₁: Example 21 of MH4310 report
 "Elliptic Curve Codes: Recent Constructions and Isogeny-Induced
 Transformations".
 
