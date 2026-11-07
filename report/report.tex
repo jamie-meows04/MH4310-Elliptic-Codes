@@ -171,14 +171,14 @@ Henceforth we assume, as is standard, that $\supp G\subset\mcE(\bbF_q)$, so that
     Otherwise, $d=n-k+1$, and the code is MDS.
 \end{theorem}
 
-The criterion is more than a test, since its proof is constructive and hands us the minimum-weight codewords explicitly. Suppose $S=\set{P_{i_1},\hdots,P_{i_k}}\subseteq\supp D$ satisfies \Cref{eqn:mds-criterion}. The divisor $\sum_{P\in S}(P)-G$ then has degree 0 and sum $\infty$, so \Cref{lemma:abel-jacobi} produces a function $f$ with $\div f=\sum_{P\in S}(P)-G$. This $f$ lies in $\mcL(G)$ and vanishes on $S$ and nowhere else in $\supp D$, so $f(D)$ is a codeword of weight exactly $n-k$. Two functions with the same divisor differ by a constant, and distinct subsets give codewords with distinct supports, so we obtain every minimum-weight codeword exactly once up to scaling. Writing $A_{n-k}$ for the number of codewords of weight $n-k$,
+The criterion is more than a test, since its proof is constructive and hands us the minimum-weight codewords explicitly. Suppose $S=\set{P_{i_1},\hdots,P_{i_k}}\subseteq\supp D$ satisfies \Cref{eqn:mds-criterion}. The divisor $\sum_{P\in S}(P)-G$ then has degree 0 and sum $\infty$, so \Cref{lemma:abel-jacobi} produces a function $f$ with $\div f=\sum_{P\in S}(P)-G$. This $f$ lies in $\mcL(G)$ and vanishes on $S$ and nowhere else in $\supp D$, so $f(D)$ is a codeword of weight exactly $n-k$. Two functions with the same divisor differ by a constant, and distinct subsets give codewords with distinct supports, so we obtain every minimum-weight codeword exactly once up to scaling. Writing $A_{n-k}$ for the number of codewords of weight $n-k$, we have
 \begin{align*}
 A_{n-k}&=(q-1)\cdot\#\mcS,\quad\text{where} \\
 \mcS&=\set*{S\subseteq\supp D:\#S=k,\ \textstyle\bigoplus_{P\in S} P=\Sigma(G)}.
 \end{align*}
-Counting the codewords of a given weight is hard in general. Here the group law reduces it to counting the solutions of a subset-sum problem in $\mcE(\bbF_q)$, which is the form in which the minimum distance of elliptic codes is usually studied \cite{li2015minimum}.
+Counting the codewords of a given weight is hard in general, but the group law reduces it to counting the solutions of a subset-sum problem in $\mcE(\bbF_q)$. This is often the form in which the minimum distance of elliptic codes is usually studied \cite{li2015minimum}.
 
-A second consequence concerns the shape of $G$ itself. Replacing $G$ by an equivalent divisor yields an equivalent code. Hence, up to coordinate scalings, we may take $G$ to be supported on up to two points, which is the case for all constructions in this report.
+A second consequence concerns the shape of $G$ itself. Replacing $G$ by an equivalent divisor yields an equivalent code. Hence, up to coordinate scalings, we may take $G$ to be supported on up to two points, which is the case for all constructions in \Cref{section:mds-ecc}.
 
 \begin{lemma}{\cite[Prop.~2.2.14]{stichtenoth2009algebraic}}{equiv-codes}
     If $G$ and $H$ are equivalent divisors whose supports are disjoint from $D$, then $C_\mcL(D,G)$ and $C_\mcL(D,G')$ differ at most by coordinate scaling.
@@ -395,7 +395,7 @@ There are several ways that an isogeny $\varphi$ can transform the code $C_\mcL(
 \end{enumerate}
 where $D$ and $G$ live on $\mcE_2$ for the pullbacks and on $\mcE_1$ for the pushforwards.
 
-This interaction is largely unexplored in the literature. We tasked Claude Opus 5.5 with writing SageMath code that constructs all four codes, and tested it on curves over small fields, notably a 3-isogeny from $\mcE_1:y^2=x^3+5$ to $\mcE_2:y^2=x^3+20$ over $\bbF_{31}$, whose 39 rational points form a cyclic group. The code can be found in \cite{our-github}. Running the experiments, we observe the following.
+This interaction is largely unexplored in the literature. We tasked Claude Opus 5.5 with writing SageMath code that constructs all four codes. We tested it on curves over small fields, notably a 3-isogeny from $\mcE_1:y^2=x^3+5$ to $\mcE_2:y^2=x^3+20$ over $\bbF_{31}$, whose 39 rational points form a cyclic group. The code can be found in \cite{our-github}. Running the experiments, we observe the following.
 \begin{itemize}
     \item Method 4 gives nonlinear codes, as $\varphi_*$ is multiplicative rather than additive on functions. The experiment with $k=3$ yielded only 3110 distinct nonzero vectors, whereas a linear $[12,3]_{31}$ code has $31^3-1=29790$.
     \item Method 2 gives invalid AG codes if $\supp D$ meets some fibre $\varphi^{-1}(Q)$ more than once, since $\varphi_*D$ then has a repeated point $Q$.
@@ -423,7 +423,7 @@ All results in the sequel assume the conditions and notation of \Cref{definition
 \begin{enumerate*}
     \item $\varphi(P\oplus T)=\varphi(P)$ for $T\in K$.
     \item Follows from \cite[Thm.~III.4.10]{silverman2009arithmetic}.
-    \item As $\varphi$ is separable, $\varphi^*(Q)$ is the sum of the $\ell$ distinct points of the fibre over $Q$. Distinct points have disjoint fibres. Comparing coefficients gives the claim. \qedhere
+    \item As $\varphi$ is separable, $\varphi^*(Q)$ is the sum of the $\ell$ distinct points of the fibre over $Q$. Since distinct points of $\mcE_2$ have disjoint fibres, comparing coefficients gives the claim. \qedhere
 \end{enumerate*}
 \end{proof}
 
@@ -690,22 +690,22 @@ As $\hat\varphi\circ\varphi=[\ell]$ is separable for $\ell\nmid q$, so is $\hat\
 
 At the beginning, we used Claude to evaluate our potential project directions. We then drafted a section-by-section outline of the report, which Claude referenced to search for relevant and recent publications, suggest results to include, evaluate their suitability for the report, and collate a bibliography containing those results.
 \begin{itemize}
-    \item ``Sort these project directions on elliptic codes into foundational, doable at undergraduate level, stretch, and novel, with research questions for each.''
-    \item ``Validate or disprove our comments with research. We want to survey recent constructions such as iso-dual elliptic codes, study conditions for an elliptic code to be MDS, and include a short exploration of isogenies.''
-    \item ``Suggest a few constructions that exploit the group law and are easiest to explain, avoiding references that need too much machinery. Motivate them by the fact that only elliptic curves have a group law.''
+    \item ``Assess the feasibility of these project directions for a one-semester course.''
+    \item ``Outline: preliminaries, elliptic codes (in general), group law (applications to AG codes), MDS and iso-dual codes (survey of constructions), quantum codes (survey of constructions), and isogenies. Find relevant publications for each and collate them in a table.''
 \end{itemize}
 
 \Cref{section:introduction,section:preliminaries,section:ecc} were fully human-written (other than grammatical fixes). For \Cref{section:group-law,section:mds-ecc}, we first reviewed the original papers that introduced the constructions that Claude suggested, and selected a few relevant ones. We then wrote a skeleton of \Cref{section:group-law,section:mds-ecc} based on those constructions and used Claude to expand the draft by filling in details such as theorems and references. Of course, we reviewed and revised the drafts.
 \begin{itemize}
+    \item ``Suggest a few constructions that exploit the group law and are easiest to explain, avoiding references that need too much machinery. Motivate them by the fact that only elliptic curves have a group law.''
     \item ``Proofread \Cref{section:introduction,section:preliminaries,section:ecc}, and expand the draft of \Cref{section:group-law,section:mds-ecc} in the same tone and style.''
-    \item ``Add one or two paragraphs to \Cref{section:group-law} on code automorphisms arising from the group law.''
+    \item ``Draft one or two paragraphs on code automorphisms arising from the group law.''
 \end{itemize}
 
 Ideation for \Cref{section:isogenies} was done without AI assistance. After hypothesising the outcome of the four methods, we compared our hypotheses against Claude's own predictions. Claude then generated SageMath code to construct our codes and test our hypotheses. Claude was asked to derive a generator matrix for $\varphi^*C$, from which we observed a matrix product pattern and asked it to prove it. Claude also wrote code to compute \Cref{example:mds-qc}.
 \begin{itemize}
-    \item ``Predict the outcome of each of the four isogeny transformations, and suggest how to analyse them in SageMath, with a sample code file to test each one.''
-    \item ``Suggest applications of method~1.''
-    \item ``How does the generator matrix of the code produced by method~1 look like?''
+    \item ``Predict the outcome of each of the four isogeny transformations. Suggest how to analyse them in SageMath, with a sample code file to test each one.''
+    \item ``Suggest applications of method 1.''
+    \item ``How does the generator matrix of the code produced by method 1 look like?''
 \end{itemize}
 
 We fed the statement and proof of \Cref{lemma:pullback-eigen} and \Cref{theorem:pullback-split} into ChatGPT and Gemini as a preliminary verification of whether the proof was valid. Thereafter, we (humans) manually verified the proof and refined it to make certain arguments clearer.
