@@ -438,16 +438,7 @@ $\varphi^*C$ is an $\br{\ell n,\;\ell k,\;\geq\ell(n-k)}_q$ elliptic code on $\m
 \begin{proof}
 The fibres over the points of $D$ form $n$ disjoint cosets of $K$ in $\mcE_1(\bbF_q)$, each with size $\ell$. Thus, $\varphi^*D$ is a sum of $\ell n$ distinct rational points, disjoint from $\supp\varphi^*G$. As $\deg\varphi^*G=\ell k$, the code $\varphi^*C$ is elliptic with the stated parameters by \Cref{section:ecc}.
 
-Now, we show that $\varphi^*C$ is quasi-cyclic of co-index $\ell$. Let $\bfc=f(\varphi^*D)\in\varphi^*C$ be a codeword, with $f\in\mcL(\varphi^*G)$. Let $K=\ang T$ and consider $\tau_T^*$. Since
-\[ (\tau_T^*f)(Q)=f(Q\oplus T) \qand Q\oplus T\in\supp\varphi^*D \]
-for all $Q\in\supp\varphi^*D$, $(\tau_T^*f)(\varphi^*D)$ is a permutation of $\bfc$ which cycles points in the same fibre. Since $K$ is cyclic and $\ord T=\ell$, such a permutation clearly consists of $n$ disjoint $\ell$-cycles. It remains to show that $\tau_T^*f\in\mcL(\varphi^*G)$, so that $(\tau_T^*f)(\varphi^*D)$ is a codeword.
-
-By \Cref{lemma:pullback-facts}\ref{enum:pf-translation}, $\tau_T^*$ fixes $\varphi^*G$. Then,
-\begin{align*}
-    \div(\tau_T^* f)+\varphi^*G&=\tau_T^*(\div f)+\tau_T^*(\varphi^*G) \\
-    &=\tau_T^*(\div f+\varphi^*G)\geq0,
-\end{align*}
-where the final inequality is due to \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}. Hence, $\tau_T^* f\in\mcL(\varphi^*G)$, and we are done.
+Now, we show that $\varphi^*C$ is quasi-cyclic of co-index $\ell$. Let $K=\ang T$. By \cite[Prop.~8.2.3(a)]{stichtenoth2009algebraic}, an automorphism $\sigma$ of $\mcE_1$ that fixes both $\varphi^*D$ and $\varphi^*G$ acts on $\varphi^*C$ by permuting coordinates, via $f(Q)\mapsto f(\sigma(Q))$ for $f\in\mcL(\varphi^*G)$. The translation $\tau_T$ fixes $\varphi^*G$ and $\varphi^*D$ by \Cref{lemma:pullback-facts}\ref{enum:pf-translation}, so it permutes $\supp\varphi^*D$ by cycling the points of each fibre. As $\ord T=\ell$, this permutation consists of $n$ disjoint $\ell$-cycles, so $\varphi^*C$ is quasi-cyclic of co-index $\ell$.
 \end{proof}
 
 Next, we show that $\varphi^*C$ inherits iso-duality from $C$.
@@ -485,7 +476,7 @@ the second implication by \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}. Hen
 We asked Claude to construct the generator matrix of $\varphi^*C$. Claude did this by examining the eigenspaces of the translation map. The resulting generator matrix was a block matrix consisting of generator matrices for these eigenspaces. We (humans) noticed that this matrix had the structure of the matrix product codes covered in class \cite{mh4310ld7,blackmore2001matrix}. We asked Claude to prove this structure in a more general setting. We then verified the proof manually and rewrote it in a clearer fashion. The proof relies on a lemma on the above eigenspaces using tools from arithmetic geometry, which we state first.
 
 \begin{lemma}{Eigenfunctions of translations}{pullback-eigen}
-    In \Cref{definition:pullback-code}, suppose $\ell\mid q-1$ and let $\zeta\in\bbF_q$ have order $\ell$. Write $K=\ang T$ and $\tau:=\tau_T^*$. Then there exist an \textbf{eigenfunction} $u\in\bbF_q(\mcE_1)^*$ and a divisor $A\in\Div\mcE_2$ with
+    In \Cref{definition:pullback-code}, suppose $\ell\mid q-1$ and let $\zeta\in\bbF_q$ have order $\ell$. Write $K=\ang T$ and $\tau:=\tau_T^*$. Then, there exist an eigenfunction $u\in\bbF_q(\mcE_1)^*$ and a divisor $A\in\Div\mcE_2$ with
     \begin{enumerate}
         \item \label{enum:eigen-u} $\tau u=\zeta u$, $\div u=\varphi^*A$, $\deg A=0$ and $\supp A\cap\supp D=\emptyset$;
         \item \label{enum:eigen-R} $R:=\Sigma(A)$ generates $\ker\hat\varphi$, which is therefore rational;

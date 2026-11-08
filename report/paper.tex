@@ -24,7 +24,7 @@
 
 \usection{Abstract}
 
-Isogenies of elliptic curves are central to post-quantum cryptography, but have so far played almost no role in coding theory. We pull back an elliptic code $C=C_\mcL(D,G)$ along a separable isogeny $\varphi:\mcE_1\to\mcE_2$ with cyclic kernel of order $\ell$, obtaining the \textit{pullback code} $\varphi^*C=C_\mcL(\varphi^*D,\varphi^*G)$ of length $\ell n$. We show that $\varphi^*C$ is quasi-cyclic of co-index $\ell$ with the same rate and relative designed distance as $C$, and that it inherits iso-duality. When $\ell\mid q-1$, $\varphi^*C$ is monomially equivalent to a matrix-product code whose constituents are scalings of $\ell$ twisted elliptic codes on $\mcE_2$, which yields a subset-sum condition that every MDS pullback code satisfies. Combining pullbacks with index-two subgroups, we construct quasi-cyclic MDS elliptic codes. From the hulls of pullback codes, we also obtain quasi-cyclic entanglement-assisted quantum codes with prescribed entanglement.
+Isogenies of elliptic curves are central to post-quantum cryptography, but have played almost no role in coding theory so far. We construct \textit{pullback codes} by pulling back an elliptic code along a separable cyclic isogeny. Pullback codes are quasi-cyclic, preserve the rate and relative designed distance of the original code, and inherit iso-duality and self-orthogonality. When the degree divides $q-1$, a pullback code is equivalent to a matrix-product code built from twisted elliptic codes on the base curve. This reduces its MDS property to a subset-sum condition on the twists, which gives long quasi-cyclic MDS elliptic codes. We then show that the hull of a pullback code splits along the twists, and apply this to hull variation. This gives quasi-cyclic MDS entanglement-assisted quantum codes with prescribed entanglement.
 
 \textbf{Keywords:} elliptic curves, isogenies, algebraic geometry codes, quasi-cyclic codes, matrix-product codes, MDS codes, hulls, entanglement-assisted quantum codes
 
@@ -179,6 +179,7 @@ and an EAQECC achieving it is called \textbf{MDS} \cite{lai2018linear}. EAQECCs 
 \begin{lemma}{Hull bound \cite[Lem.~16]{chen2023hulls}}{hull-eaqecc}
     Let $C$ be an $[n,k,d]_q$ code and put $h=\dim\Hull(C)$. Then, there exists an EAQECC with parameters $\llbracket n,\;k-h,\;d;\;n-k-h\rrbracket_q$.
 
+    \setlength{\parskip}{5pt}
     If $C$ is MDS and $d\leq\frac{n}{2}+1$ (equivalently, $k\geq\frac n2$), this EAQECC is also MDS.
 \end{lemma}
 
@@ -278,16 +279,7 @@ $\varphi^*C$ is an $\br{\ell n,\;\ell k,\;\geq\ell(n-k)}_q$ elliptic code on $\m
 \begin{proof}
 The fibres over the points of $D$ form $n$ disjoint cosets of $K$ in $\mcE_1(\bbF_q)$, each with size $\ell$. Thus, $\varphi^*D$ is a sum of $\ell n$ distinct rational points, disjoint from $\supp\varphi^*G$. As $\deg\varphi^*G=\ell k$, the code $\varphi^*C$ is elliptic with the stated parameters by \Cref{section:ecc}.
 
-Now, we show that $\varphi^*C$ is quasi-cyclic of co-index $\ell$. Let $\bfc=f(\varphi^*D)\in\varphi^*C$ be a codeword, with $f\in\mcL(\varphi^*G)$. Let $K=\ang T$ and consider $\tau_T^*$. Since
-\[ (\tau_T^*f)(Q)=f(Q\oplus T) \qand Q\oplus T\in\supp\varphi^*D \]
-for all $Q\in\supp\varphi^*D$, $(\tau_T^*f)(\varphi^*D)$ is a permutation of $\bfc$ which cycles points in the same fibre. Since $K$ is cyclic and $\ord T=\ell$, such a permutation clearly consists of $n$ disjoint $\ell$-cycles. It remains to show that $\tau_T^*f\in\mcL(\varphi^*G)$, so that $(\tau_T^*f)(\varphi^*D)$ is a codeword.
-
-By \Cref{lemma:pullback-facts}\ref{enum:pf-translation}, $\tau_T^*$ fixes $\varphi^*G$. Then,
-\begin{align*}
-    \div(\tau_T^* f)+\varphi^*G&=\tau_T^*(\div f)+\tau_T^*(\varphi^*G) \\
-    &=\tau_T^*(\div f+\varphi^*G)\geq0,
-\end{align*}
-where the final inequality holds because automorphisms preserve effectiveness (\Cref{section:divisors}). Hence, $\tau_T^* f\in\mcL(\varphi^*G)$, and we are done.
+Now, we show that $\varphi^*C$ is quasi-cyclic of co-index $\ell$. Let $K=\ang T$. By \cite[Prop.~8.2.3(a)]{stichtenoth2009algebraic}, an automorphism $\sigma$ of $\mcE_1$ that fixes both $\varphi^*D$ and $\varphi^*G$ acts on $\varphi^*C$ by permuting coordinates, via $f(Q)\mapsto f(\sigma(Q))$ for $f\in\mcL(\varphi^*G)$. The translation $\tau_T$ fixes $\varphi^*G$ and $\varphi^*D$ by \Cref{lemma:pullback-facts}\ref{enum:pf-translation}, so it permutes $\supp\varphi^*D$ by cycling the points of each fibre. As $\ord T=\ell$, this permutation consists of $n$ disjoint $\ell$-cycles, so $\varphi^*C$ is quasi-cyclic of co-index $\ell$.
 \end{proof}
 
 Next, we show that $\varphi^*C$ inherits iso-duality from $C$.
@@ -322,12 +314,30 @@ Now, we prove the forward inclusion. Suppose $\bfc:=f(\varphi^*D)\in\varphi^*C$ 
 the second implication by \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}. Hence, $\bfc=\varphi^*g(\varphi^*D)\in C_{\varphi^*\mcL}(\varphi^*D,G)$.
 \end{proof}
 
+For our construction to be useful in practice, a basis of $\mcL(\varphi^*G)$ must be easy to compute. Fortunately, this is the case for the usual one-point divisor $G=k(\infty)$, as \Cref{proposition:pullback-basis} shows. The basis only needs the $x$-coordinates of the points of $K$, and not the isogeny $\varphi$ itself.
+
+\begin{proposition}{Basis of $\mcL(\varphi^*G)$}{pullback-basis}
+    Suppose $\ell$ is odd and $G=k(\infty)$. Label the $\ell-1$ points of $K\bs\set\infty$ by $\opm T_1,\hdots,\opm T_{(\ell-1)/2}$, and put $d:=(x-x(T_1))\cdots(x-x(T_{(\ell-1)/2}))$.
+    Then, $\mcL(\varphi^*G)=d^{-k}\mcL(\ell k(\infty))$, which has basis
+    \[ \set*{x^iy^jd^{-k}:j\in\set{0,1},\ 2i+3j\leq\ell k}. \]
+\end{proposition}
+
+\begin{proof}
+    As $\ell$ is odd, each $T_r$ has order $>2$, so the $x(T_r)$ are distinct. From $\div(x-x(T_r))=(T_r)+(\ominus T_r)-2(\infty)$ and $\varphi^*G=k\sum_{T'\in K}(T')$, we obtain
+    \[ \div(d^k)=k\sum_{T'\in K\bs\set\infty}(T')-k(\ell-1)(\infty)=\varphi^*G-\ell k(\infty). \]
+    Adding $\div f+\ell k(\infty)$ to both sides gives
+    \[ \div(d^kf)+\ell k(\infty)=\div f+\varphi^*G \quad \forall f\in\bbF_q(\mcE_1). \]
+    Hence, $f\in\mcL(\varphi^*G)$ if and only if $d^kf\in\mcL(\ell k(\infty))$. The functions $x^iy^j$ with $j\in\set{0,1}$ and $2i+3j\leq\ell k$ form a basis of $\mcL(\ell k(\infty))$ \cite[\S III.3]{silverman2009arithmetic}, since $x$ and $y$ have poles of order 2 and 3 respectively at $\infty$. Dividing by $d^k$ gives the claimed basis.
+\end{proof}
+
+As $\supp\varphi^*D$ is disjoint from $K$, the function $d$ has no zeros on $\supp\varphi^*D$. So, evaluating this basis at $\varphi^*D$ gives a generator matrix of $\varphi^*C$ directly. The main computational cost of $\varphi^*C$ thus lies in finding the fibres $\varphi^{-1}(P_i)$, not in the Riemann--Roch space.
+
 \subsection{Splitting into twists} \label{subsection:splitting}
 
 The translation $\tau:=\tau_T^*$ is a linear operator of order $\ell$ on $\mcL(\varphi^*G)$. When $\ell\mid q-1$, it is diagonalisable over $\bbF_q$, and its eigenspaces decompose $\varphi^*C$ into codes of length $n$ on $\mcE_2$. We first describe the eigenspaces, using tools from arithmetic geometry.
 
 \begin{lemma}{Eigenfunctions of translations}{pullback-eigen}
-    In \Cref{definition:pullback-code}, suppose $\ell\mid q-1$ and let $\zeta\in\bbF_q$ have order $\ell$. Write $K=\ang T$ and $\tau:=\tau_T^*$. Then there exist an \textbf{eigenfunction} $u\in\bbF_q(\mcE_1)^*$ and a divisor $A\in\Div^0\mcE_2$ with
+    In \Cref{definition:pullback-code}, suppose $\ell\mid q-1$ and let $\zeta\in\bbF_q$ have order $\ell$. Write $K=\ang T$ and $\tau:=\tau_T^*$. Then, there exist an eigenfunction $u\in\bbF_q(\mcE_1)^*$ and a divisor $A\in\Div^0\mcE_2$ with
     \begin{enumerate}
         \item \label{enum:eigen-u} $\tau u=\zeta u$, $\div u=\varphi^*A$, and $\supp A\cap\supp D=\emptyset$;
         \item \label{enum:eigen-R} $R:=\Sigma(A)$ generates $\ker\hat\varphi$, which is therefore rational;
@@ -479,14 +489,14 @@ Let $Q\in\mcE_1(\bbF_{256})\setminus H$, and let $D$ be the sum of the 48 points
 Let $G=k(\infty)$ with $k$ odd. By \Cref{construction:index-two-pullback}\ref{enum:index-two-pullback-odd}, $\varphi^*C$ is a quasi-cyclic $[144,3k,145-3k]_{256}$ MDS code of co-index 3. Its length is $\floor{M/2}=144$. This is close to Munuera's upper bound $\frac{q+1}2+\sqrt q+\kappa=144.5+\kappa$ on the length of an MDS elliptic code of dimension $\kappa$ \cite{munuera1992main}.
 
 Next, we express $\varphi^*C$ as a matrix-product code. Take $\tilde P_i\in\varphi^{-1}(P_i)$ for each $i$, and order $\varphi^*D$ as in the proof of \Cref{theorem:pullback-split}. The twisted divisors are $G+jA=(k-j)(\infty)+j(R)$. Then, $\varphi^*C$ is the matrix-product code $(C_0,C_1,C_2)\cdot\bfV$ with
-\begin{align*}
-    \bfV&=\br*{\zeta^{jm}}_{j,m=0}^2=\begin{psmallmatrix}
+\begin{gather*}
+    \bfV=\br*{\zeta^{jm}}_{j,m=0}^2=\begin{psmallmatrix}
 1&1&1 \\
 1&\alpha^{85}&\alpha^{170} \\
 1&\alpha^{170}&\alpha^{85}
 \end{psmallmatrix}\quad\text{and} \\
-C_j&=\bfv_j\star C_\mcL(D,G+jA),\quad \bfv_j:=\pa*{u(\tilde P_i)^j}_{i=1}^{48}.
-\end{align*}
+C_j=\bfv_j\star C_\mcL(D,G+jA),\quad \bfv_j:=\pa*{u(\tilde P_i)^j}_{i=1}^{48}.
+\end{gather*}
 By \Cref{corollary:normal-form}, each twist is a scaling of $C_\mcL(D,G_j)$ with $G_j=(k-1)(\infty)+([j]R)$. Here, $[2]R=(\alpha^{51},\alpha^{65})$, and neither $R$ nor $[2]R$ lies in $\supp D$. By \Cref{corollary:pullback-twists-mds}, every twist is a $[48,k,49-k]_{256}$ MDS code. For instance, for $k=23$, $\varphi^*C$ is a $[144,69,76]_{256}$ code that glues together three $[48,23,26]_{256}$ MDS codes.
  
 Taking instead $D$ to be the sum of the 95 affine points of $\varphi(\mcE_1(\bbF_{256}))$, \Cref{theorem:pullback} gives quasi-cyclic $[285,3k]_{256}$ codes for $1\leq k\leq94$. Applying Munuera's bound to the code and to its dual, this shows that these codes are near-MDS, with minimum distance $285-3k$, except possibly for $k\in\set{47,48}$.
@@ -498,6 +508,7 @@ By \Cref{lemma:hull-eaqecc}, the entanglement needed by an EAQECC built from a c
 
 For the rest of this paper, we work in the setting of \Cref{theorem:pullback-split}. For convenience and clarity, we collate our notation.
 \begin{itemize}
+    \item $\Hull(C)=C\cap C^\perp$ is the Euclidean hull of a code $C$.
     \item $\varphi:\mcE_1\to\mcE_2$ is a separable isogeny with $\ker\varphi=:K=\ang T \subseteq\mcE_1(\bbF_q)$.
     \item $\#K=\ell$ is odd and $\ell\mid q-1$.
     \item $\zeta\in\bbF_q$ is a primitive $\ell\th$ root of unity.
@@ -514,7 +525,7 @@ For the rest of this paper, we work in the setting of \Cref{theorem:pullback-spl
 
 The standard tool for building EAQECCs is \textbf{hull variation} \cite{chen2023hullvariation,luo2024variable}. If $C$ is a self-dual $[n,k,d]_q$ code, scaling $s\leq k$ coordinates of an information set by elements $\lambda$ with $\lambda^2\neq1$ gives an equivalent code with hull of dimension $k-s$, so every entanglement between $0$ and $n-k$ can be reached. However, applying this to a pullback code generally destroys its quasi-cyclic structure, since translation can move a scaled coordinate to an unscaled one. Therefore, we scale whole fibres only.
 
-For $\bfa=(a_1,\hdots,a_n)\in(\bbF_q^*)^n$, let $\bfa^\varphi\in(\bbF_q^*)^{\ell n}$ take the same value $a_i$ on every coordinate of the fibre $\varphi^{-1}(P_i)$. Translation by $T$ permutes the coordinates inside each fibre, so $\bfa^\varphi\star \varphi^*C$ is again quasi-cyclic of co-index $\ell$, with the same parameters as $\varphi^*C$. We call such scalings \textbf{$K$-compatible}.
+For $\bfw=(w_1,\hdots,w_n)\in(\bbF_q^*)^n$, let $\bfw^\varphi\in(\bbF_q^*)^{\ell n}$ take the same value $w_i$ on every coordinate of the fibre $\varphi^{-1}(P_i)$. Translation by $T$ permutes the coordinates inside each fibre, so $\bfw^\varphi\star \varphi^*C$ is again quasi-cyclic of co-index $\ell$, with the same parameters as $\varphi^*C$. We call such scalings \textbf{$K$-compatible}.
 
 The results are as follows.
 \begin{itemize}
@@ -527,53 +538,55 @@ The results are as follows.
 
 We continue introducing notation that will be used henceforth.
 \begin{itemize}
-    \item $\bfa\in(\bbF_q^*)^n$ and $\bfa^\varphi\in(\bbF_q^*)^{\ell n}$ are fixed scaling vectors.
-    \item $W_j:=\set{\bfa^\varphi\star f(\varphi^*D):f\in L_j}$ is the image of $L_j$ in $\bfa^\varphi\star\varphi^*C$.
+    \item $\bfv,\bfw\in(\bbF_q^*)^n$ and $\bfv^\varphi,\bfw^\varphi\in(\bbF_q^*)^{\ell n}$ are scaling vectors.
+    \item $C^\natural=\bfw^\varphi\star\varphi^*C$ is a scaling of $\varphi^*C$ that is self-orthogonal.
+    \item $C^\sharp=\bfv^\varphi\star C^\natural$ is a scaling of $C^\natural$ to control its hull dimension.
+    \item $W_j:=\set{\bfw^\varphi\star f(\varphi^*D):f\in L_j}$ is the image of $L_j$ in $\bfw^\varphi\star\varphi^*C$.
     \item Put $m:=(\ell-1)/2$, so that $J:=\set{-m,\hdots,m}$ is a set of representatives of $\bbZ/\ell\bbZ$ that is closed under negation.
     \item For $j\in J$, define the map
         \begin{alignat*}{2}
-        \eps_j:\;&&\bfa\star B_j&\lra W_j\subseteq\bfa^\varphi\star\varphi^*C,\\
-        &&\bfa\star g(D)&\longmapsto\bfa^\varphi\star(u^j\varphi^*g)(\varphi^*D)
+        \eps_j:\;&&\bfw\star B_j&\lra W_j\subseteq\bfw^\varphi\star\varphi^*C,\\
+        &&\bfw\star g(D)&\longmapsto\bfw^\varphi\star(u^j\varphi^*g)(\varphi^*D)
         \end{alignat*}
         which embeds the scaled twisted code into the scaled pullback code.
 \end{itemize}
-Since $u^j\varphi^*g\in L_j$ for $g\in\mcL(G_j)$, the map $\eps_j$ is well defined. It is injective because evaluation at $D$ is injective on $\mcL(G_j)$ when $k<n$. Its image is all of $W_j$, so $\eps_j$ is bijective and $\bfa^\varphi\star \varphi^*C=\bigoplus_{j\in J}W_j$. As $\bfa^\varphi$ is constant on fibres, $W_j$ is the $\zeta^j$-eigenspace of translation by $T$ on $\bfa^\varphi\star\varphi^*C$.
+Since $u^j\varphi^*g\in L_j$ for $g\in\mcL(G_j)$, the map $\eps_j$ is well defined. It is injective because evaluation at $D$ is injective on $\mcL(G_j)$ when $k<n$. Its image is all of $W_j$, so $\eps_j$ is bijective and $\bfw^\varphi\star \varphi^*C=\bigoplus_{j\in J}W_j$. As $\bfw^\varphi$ is constant on fibres, $W_j$ is the $\zeta^j$-eigenspace of translation by $T$ on $\bfw^\varphi\star\varphi^*C$.
 
 \subsection{Hull decomposition} \label{subsection:hull-decomposition}
 
-The goal of this subsection is to analyse how the hull of $\varphi^*C$ behaves under $K$-compatible scalings $\bfa$. Ling and Sol\'e \cite[Prop.~4.1]{ling2001algebraic} study how a quasi-cyclic code decomposes into constituent codes, and how the Euclidean inner product interacts with these constituents. \Cref{lemma:twisted-pairing} and \Cref{theorem:hull-decomposition} translate their discussion from the language of polynomials into our language of pullback codes. In short, most eigenspaces are pairwise orthogonal, except each pair $W_j$ and $W_{-j}$.
+The goal of this subsection is to analyse how the hull of $\varphi^*C$ behaves under $K$-compatible scalings $\bfw$. Ling and Sol\'e \cite[Prop.~4.1]{ling2001algebraic} study how a quasi-cyclic code decomposes into constituent codes, and how the Euclidean inner product interacts with these constituents. \Cref{lemma:twisted-pairing} and \Cref{theorem:hull-decomposition} translate their discussion from the language of polynomials into our language of pullback codes. In short, most eigenspaces are pairwise orthogonal, except each pair $W_j$ and $W_{-j}$.
 
 \begin{lemma}{Twisted inner products}{twisted-pairing}
     Let $j,j'\in J$.
     \begin{enumerate}[label={(\alph*)}, left=-4pt, topsep=2pt, itemsep=0pt]
         \item \label{enum:tp-formula} Let $f=u^j\varphi^*g\in L_j$ and $f'=u^{j'}\varphi^*g'\in L_{j'}$, with $g\in\mcL(G_j)$ and $g'\in\mcL(G_{j'})$. Then,
         \begin{align*}
-            \bfa^\varphi \star &f(\varphi^*D)\dotpr\bfa^\varphi\star f'(\varphi^*D)= \\
+            \pa[\big]{\bfw^\varphi \star &f(\varphi^*D)} \dotpr \pa[\big]{\bfw^\varphi\star f'(\varphi^*D)}= \\
             &\begin{cases}
-            \textstyle \ell\sum_{i=1}^n a_i^2\,g(P_i)g'(P_i) &\text{if }j'=-j \\
+            \textstyle \ell\sum_{i=1}^n w_i^2\,g(P_i)g'(P_i) &\text{if }j'=-j \\
             0 &\text{otherwise.}
             \end{cases}
         \end{align*}
         \item \label{enum:tp-orth} $W_j\perp W_{j'}$ unless $j'=-j$.
-        \item \label{enum:tp-eps} For all $\bfc\in\bfa\star B_j$ and $\bfc'\in\bfa\star B_{-j}$, we have $\eps_j(\bfc)\dotpr\eps_{-j}(\bfc')=\ell\,\bfc\dotpr\bfc'$.
+        \item \label{enum:tp-eps} For all $\bfc\in\bfw\star B_j$ and $\bfc'\in\bfw\star B_{-j}$, we have $\eps_j(\bfc)\dotpr\eps_{-j}(\bfc')=\ell\,\bfc\dotpr\bfc'$.
     \end{enumerate}
 \end{lemma}
 
 \begin{proof}
     For \ref{enum:tp-formula}, since $\varphi^{-1}(P_i)=\set{\tilde P_i\oplus[t]T:0\leq t<\ell}$ and $f$ and $f'$ are eigenfunctions of $\tau$ with eigenvalues $\zeta^j$ and $\zeta^{j'}$, we have
     \begin{align*}
-        &\pa*{\bfa^\varphi\star f(\varphi^*D)}\dotpr\pa*{\bfa^\varphi\star f'(\varphi^*D)} \\
-        =&\sum_{i=1}^n \sum_{t=0}^{\ell-1} \pa*{a_i f(\tilde P_i\oplus[t] T)}\pa*{a_i f'(\tilde P_i\oplus[t] T)} \\
-        =&\sum_{i=1}^n \sum_{t=0}^{\ell-1} a_i^2 (\tau^t f)(\tilde P_i)\cdot(\tau^t f')(\tilde P_i) \\
-        =&\sum_{i=1}^n a_i^2 \sum_{t=0}^{\ell-1} \zeta^{jt} u(\tilde P_i)^j g(P_i)\cdot\zeta^{j't} u(\tilde P_i)^{j'} g'(P_i) \\
-        =&\sum_{i=1}^n a_i^2 u(\tilde P_i)^{j+j'} g(P_i) g'(P_i) \sum_{t=0}^{\ell-1} \zeta^{(j+j')t}.
+        &\pa*{\bfw^\varphi\star f(\varphi^*D)}\dotpr\pa*{\bfw^\varphi\star f'(\varphi^*D)} \\
+        =&\sum_{i=1}^n \sum_{t=0}^{\ell-1} \pa*{w_i f(\tilde P_i\oplus[t] T)}\pa*{w_i f'(\tilde P_i\oplus[t] T)} \\
+        =&\sum_{i=1}^n \sum_{t=0}^{\ell-1} w_i^2 (\tau^t f)(\tilde P_i)\cdot(\tau^t f')(\tilde P_i) \\
+        =&\sum_{i=1}^n w_i^2 \sum_{t=0}^{\ell-1} \zeta^{jt} u(\tilde P_i)^j g(P_i)\cdot\zeta^{j't} u(\tilde P_i)^{j'} g'(P_i) \\
+        =&\sum_{i=1}^n w_i^2 u(\tilde P_i)^{j+j'} g(P_i) g'(P_i) \sum_{t=0}^{\ell-1} \zeta^{(j+j')t}.
     \end{align*}
     The inner sum is $\ell$ if $\ell\mid j+j'$ and $0$ otherwise. As $j,j'\in J$, we have $\abs{j+j'}\leq\ell-1$, so $\ell\mid j+j'$ holds exactly when $j'=-j$, in which case $u(\tilde P_i)^{j+j'}=1$.
 
-    \ref{enum:tp-orth} follows from \ref{enum:tp-formula}, as $W_j$ and $W_{j'}$ consist of the vectors $\bfa^\varphi\star f(\varphi^*D)$ with $f\in L_j$ and $f\in L_{j'}$ respectively.
+    \ref{enum:tp-orth} follows from \ref{enum:tp-formula}, as $W_j$ and $W_{j'}$ consist of the vectors $\bfw^\varphi\star f(\varphi^*D)$ with $f\in L_j$ and $f\in L_{j'}$ respectively.
 
-    For \ref{enum:tp-eps}, write $\bfc=\bfa\star g(D)$ and $\bfc'=\bfa\star g'(D)$ with $g\in\mcL(G_j)$ and $g'\in\mcL(G_{-j})$. Then $\eps_j(\bfc)=\bfa^\varphi\star(u^j\varphi^*g)(\varphi^*D)$ and $\eps_{-j}(\bfc')=\bfa^\varphi\star(u^{-j}\varphi^*g')(\varphi^*D)$, so \ref{enum:tp-formula} gives
-    \[ \mathclap{\eps_j(\bfc)\dotpr\eps_{-j}(\bfc')=\ell\sum_{i=1}^n a_ig(P_i)\cdot a_ig'(P_i)=\ell\,\bfc\dotpr\bfc'.} \qedhere \]
+    For \ref{enum:tp-eps}, write $\bfc=\bfw\star g(D)$ and $\bfc'=\bfw\star g'(D)$ with $g\in\mcL(G_j)$ and $g'\in\mcL(G_{-j})$. Then $\eps_j(\bfc)=\bfw^\varphi\star(u^j\varphi^*g)(\varphi^*D)$ and $\eps_{-j}(\bfc')=\bfw^\varphi\star(u^{-j}\varphi^*g')(\varphi^*D)$, so \ref{enum:tp-formula} gives
+    \[ \mathclap{\eps_j(\bfc)\dotpr\eps_{-j}(\bfc')=\ell\sum_{i=1}^n w_ig(P_i)\cdot w_ig'(P_i)=\ell\,\bfc\dotpr\bfc'.} \qedhere \]
 \end{proof}
 
 \Cref{theorem:hull-decomposition}\ref{enum:hd-dim} needs another lemma from linear algebra.
@@ -591,67 +604,67 @@ The goal of this subsection is to analyse how the hull of $\varphi^*C$ behaves u
 \Cref{theorem:hull-decomposition} specialises to pullback codes the description of duals of quasi-cyclic codes through their constituents \cite[Prop.~4.1, Thm.~4.2]{ling2001algebraic}. The genus-1 contributions include a geometric meaning for the $j\leftrightarrow-j$ pairing, and that each constituent is an explicit elliptic code $B_j$, so the \textbf{cross-hulls} $H_j$ can be computed with the group law.
 
 \begin{theorem}{Hull decomposition}{hull-decomposition}
-    For $j\in J$, let $H_j:=(\bfa\star B_j)\cap(\bfa\star B_{-j})^\perp$ and $h_j:=\dim H_j$. Then,
+    For $j\in J$, let $H_j:=(\bfw\star B_j)\cap(\bfw\star B_{-j})^\perp$ and $h_j:=\dim H_j$. Then,
     \begin{enumerate}[label={(\alph*)}, left=-4pt, topsep=2pt, itemsep=0pt]
-        \item \label{enum:hd-decomp} $\Hull(\bfa^\varphi\star \varphi^*C)=\bigoplus_{j\in J}\eps_j(H_j)$;
-        \item \label{enum:hd-dim} $h_{-j}=h_j$ and $h_0=\dim\Hull(\bfa\star C)$, so
-        \[ \dim\Hull(\bfa^\varphi\star \varphi^*C)=h_0+2\sum_{j=1}^{m}h_j; \]
-        \item \label{enum:hd-qc} $\Hull(\bfa^\varphi\star \varphi^*C)$ is $K$-stable, and its $K$-fixed part is the $\ell$-fold repetition of $\Hull(\bfa\star C)$;
-        \item \label{enum:hd-lcd} if $\bfa^\varphi\star \varphi^*C$ is LCD, then so is $\bfa\star C$. In general, $\dim\Hull(\bfa^\varphi\star \varphi^*C)\geq\dim\Hull(\bfa\star C)$, and the two dimensions have the same parity.
+        \item \label{enum:hd-decomp} $\Hull(\bfw^\varphi\star \varphi^*C)=\bigoplus_{j\in J}\eps_j(H_j)$;
+        \item \label{enum:hd-dim} $h_{-j}=h_j$ and $h_0=\dim\Hull(\bfw\star C)$, so
+        \[ \dim\Hull(\bfw^\varphi\star \varphi^*C)=h_0+2\sum_{j=1}^{m}h_j; \]
+        \item \label{enum:hd-qc} $\Hull(\bfw^\varphi\star \varphi^*C)$ is $K$-stable, and its $K$-fixed part is the $\ell$-fold repetition of $\Hull(\bfw\star C)$;
+        \item \label{enum:hd-lcd} if $\bfw^\varphi\star \varphi^*C$ is LCD, then so is $\bfw\star C$. In general, $\dim\Hull(\bfw^\varphi\star \varphi^*C)\geq\dim\Hull(\bfw\star C)$, and the two dimensions have the same parity.
     \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-    For \ref{enum:hd-decomp}, let $\bfx\in\bfa^\varphi\star\varphi^*C$. Since $\bfa^\varphi\star\varphi^*C=\bigoplus_{j\in J} W_j$, we may write $\bfx=\sum_{j\in J}\bfx_j$ with $\bfx_j\in W_j$. Since $\eps_{j}$ is surjective, we may write $\bfx_{j}=\eps_{j}(\bfc_j)$ with $\bfc_j\in\bfa\star B_{j}$. By \Cref{lemma:twisted-pairing}\ref{enum:tp-orth}, $W_j\perp W_{j'}$ unless $j'=-j$. Using \Cref{lemma:twisted-pairing}\ref{enum:tp-eps} for the fifth equivalence, we obtain
+    For \ref{enum:hd-decomp}, let $\bfx\in\bfw^\varphi\star\varphi^*C$. Since $\bfw^\varphi\star\varphi^*C=\bigoplus_{j\in J} W_j$, we may write $\bfx=\sum_{j\in J}\bfx_j$ with $\bfx_j\in W_j$. Since $\eps_{j}$ is surjective, we may write $\bfx_{j}=\eps_{j}(\bfc_j)$ with $\bfc_j\in\bfw\star B_{j}$. By \Cref{lemma:twisted-pairing}\ref{enum:tp-orth}, $W_j\perp W_{j'}$ unless $j'=-j$. Using \Cref{lemma:twisted-pairing}\ref{enum:tp-eps} for the fifth equivalence, we obtain
     % TODO: reduce spacing
     \begin{align*}
-             & \bfx\in\Hull(\bfa^\varphi\star\varphi^*C) \\
-        \qiff& \bfx\perp\bfa^\varphi\star \varphi^*C \\
+             & \bfx\in\Hull(\bfw^\varphi\star\varphi^*C) \\
+        \qiff& \bfx\perp\bfw^\varphi\star \varphi^*C \\
         \qiff& \bfx\perp W_j\quad\forall j\in J \\
         \qiff& \bfx_{-j}\perp W_j\quad\forall j\in J \\
-        \qiff& \eps_{-j}(\bfc_{-j})\dotpr\eps_j(\bfc')=0\quad\forall j\in J\quad\forall \bfc'\in\bfa\star B_j \\
-        \qiff& \ell\bfc_{-j}\dotpr\bfc'=0 \quad\forall j\in J\quad\forall\bfc'\in\bfa\star B_j \\
-        \qiff& \bfc_{-j}\perp\bfa\star B_j\quad\forall j\in J \\
-        \qiff& \bfc_{-j}\in(\bfa\star B_{-j})\cap(\bfa\star B_j)^\perp=H_{-j}\quad\forall j\in J \\
+        \qiff& \eps_{-j}(\bfc_{-j})\dotpr\eps_j(\bfc')=0\quad\forall j\in J\quad\forall \bfc'\in\bfw\star B_j \\
+        \qiff& \ell\bfc_{-j}\dotpr\bfc'=0 \quad\forall j\in J\quad\forall\bfc'\in\bfw\star B_j \\
+        \qiff& \bfc_{-j}\perp\bfw\star B_j\quad\forall j\in J \\
+        \qiff& \bfc_{-j}\in(\bfw\star B_{-j})\cap(\bfw\star B_j)^\perp=H_{-j}\quad\forall j\in J \\
         \qiff& \bfx_{-j}\in\eps_{-j}(H_{-j})\quad\forall j\in J \\
         \qiff& \textstyle \bfx\in\bigoplus_{j\in J}\eps_j(H_j).
     \end{align*}
-    This proves \ref{enum:hd-decomp}. For \ref{enum:hd-dim}, $h_j=h_{-j}$ follows from \Cref{lemma:cross-orthogonal} with $U=\bfa\star B_j$ and $V=\bfa\star B_{-j}$. Also, $H_0=\Hull(\bfa\star C)$ because $G_0=G$.
+    This proves \ref{enum:hd-decomp}. For \ref{enum:hd-dim}, $h_j=h_{-j}$ follows from \Cref{lemma:cross-orthogonal} with $U=\bfw\star B_j$ and $V=\bfw\star B_{-j}$. Also, $H_0=\Hull(\bfw\star C)$ because $G_0=G$.
     
-    For \ref{enum:hd-qc}, translation by $T$ is a permutation automorphism of $\bfa^\varphi\star\varphi^*C$, hence of its dual and hull. As $\bfa^\varphi$ is constant on fibres, \Cref{proposition:pullback-fixed} shows that the $K$-fixed part of $\bfa^\varphi\star\varphi^*C$ is $W_0$. So the $K$-fixed part of the hull is $W_0\cap(\bfa^\varphi\star\varphi^*C)^\perp=\eps_0(H_0)$ by \ref{enum:hd-decomp}, and $\eps_0$ is the $\ell$-fold repetition map because $u^0=1$. Since $H_0=\Hull(\bfa\star C)$, the claim follows.
+    For \ref{enum:hd-qc}, translation by $T$ is a permutation automorphism of $\bfw^\varphi\star\varphi^*C$, hence of its dual and hull. As $\bfw^\varphi$ is constant on fibres, \Cref{proposition:pullback-fixed} shows that the $K$-fixed part of $\bfw^\varphi\star\varphi^*C$ is $W_0$. So the $K$-fixed part of the hull is $W_0\cap(\bfw^\varphi\star\varphi^*C)^\perp=\eps_0(H_0)$ by \ref{enum:hd-decomp}, and $\eps_0$ is the $\ell$-fold repetition map because $u^0=1$. Since $H_0=\Hull(\bfw\star C)$, the claim follows.
     
     \ref{enum:hd-lcd} follows from the dimension formula in \ref{enum:hd-dim}.
 \end{proof}
 
 \subsection{Self-orthogonality and self-duality} \label{subsection:self-dual}
 
-We begin with a sufficient condition for $\bfa\star C$ to be Euclidean self-orthogonal, extending \cite[Lem.~3--4]{wang2026generic}.
+We begin with a sufficient condition for $\bfw\star C$ to be Euclidean self-orthogonal, extending \cite[Lem.~3--4]{wang2026generic}.
 
 \begin{lemma}{Self-orthogonal scalings \cite{wang2026generic}}{so-criterion}
-    Suppose there exist $\lambda\in\bbF_q^*$ and $\eta\in\Omega_\mcE$ with $\div\eta\geq2G-D$ and $\Res_{P_i}(\eta)=\lambda\,a_i^2$ for all $i$. Then, $\bfa\star C$ is self-orthogonal. If moreover $\div\eta=2G-D$, then $\bfa\star C$ is self-dual.
+    Suppose there exist $\lambda\in\bbF_q^*$ and $\eta\in\Omega_\mcE$ with $\div\eta\geq2G-D$ and $\Res_{P_i}(\eta)=\lambda\,w_i^2$ for all $i$. Then, $\bfw\star C$ is self-orthogonal. Moreover, if $\div\eta=2G-D$, then $\bfw\star C$ is self-dual.
 \end{lemma}
 
 \begin{proof}
-    Let $\bfr:=(\Res_{P_i}(\eta))_{i=1}^n=\lambda\,\bfa\star\bfa$. By \cite[Lem.~3--4]{wang2026generic}, we have $\bfr\star C\subseteq C^\perp$, with equality if $\div\eta=2G-D$. Hence, for all $\bfc,\bfc'\in C$,
-    \[ (\bfa\star\bfc)\dotpr(\bfa\star\bfc')=\sum_{i=1}^na_i^2c_ic'_i=\lambda^{-1}(\bfr\star\bfc)\dotpr\bfc'=0, \]
-    so $\bfa\star C$ is self-orthogonal. If $\div\eta=2G-D$, then $(\bfa\star C)^\perp=\bfa^{-1}\star C^\perp=\bfa^{-1}\star\bfr\star C=\lambda\,\bfa\star C=\bfa\star C$.
+    Let $\bfr:=(\Res_{P_i}(\eta))_{i=1}^n=\lambda\,\bfw\star\bfw$. By \cite[Lem.~3--4]{wang2026generic}, we have $\bfr\star C\subseteq C^\perp$, with equality if $\div\eta=2G-D$. Hence, for all $\bfc,\bfc'\in C$,
+    \[ (\bfw\star\bfc)\dotpr(\bfw\star\bfc')=\sum_{i=1}^na_i^2c_ic'_i=\lambda^{-1}(\bfr\star\bfc)\dotpr\bfc'=0, \]
+    so $\bfw\star C$ is self-orthogonal. If $\div\eta=2G-D$, then $(\bfw\star C)^\perp=\bfw^{-1}\star C^\perp=\bfw^{-1}\star\bfr\star C=\lambda\,\bfw\star C=\bfw\star C$.
 \end{proof}
 
-Next, we show that self-orthogonality passes between $\bfa\star C$ and its pullback $\bfa^\varphi\star\varphi^*C$. Recall that self-orthogonality is equivalent to $\Hull(\bfa^\varphi\star\varphi^*C)=\varphi^*C$.
+Next, we show that self-orthogonality passes between $\bfw\star C$ and its pullback $\bfw^\varphi\star\varphi^*C$. Recall that self-orthogonality is equivalent to $\Hull(\bfw^\varphi\star\varphi^*C)=\varphi^*C$.
 
 \begin{theorem}{Self-orthogonality transfer}{so-transfer}
-    Let $k\geq3$ and $\bfa\in(\bbF_q^*)^n$. Then, $\bfa^\varphi\star \varphi^*C$ is self-orthogonal if and only if $\bfa\star C$ is self-orthogonal.
+    Let $k\geq3$ and $\bfw\in(\bbF_q^*)^n$. Then, $\bfw^\varphi\star \varphi^*C$ is self-orthogonal if and only if $\bfw\star C$ is self-orthogonal.
 \end{theorem}
 
 \begin{proof}
-    Put $\lambda_\bfa(f):=\sum_{i=1}^na_i^2f(P_i)$ for $f\in\mcL(2G)$. By \Cref{lemma:twisted-pairing}\ref{enum:tp-formula}, the inner products in $\bfa^\varphi\star \varphi^*C$ are $0$ or $\ell\lambda_\bfa(gg')$, where $u^j\varphi^*g\in L_j$, $u^{-j}\varphi^*g'\in L_{-j}$, and
+    Put $\lambda_\bfw(f):=\sum_{i=1}^na_i^2f(P_i)$ for $f\in\mcL(2G)$. By \Cref{lemma:twisted-pairing}\ref{enum:tp-formula}, the inner products in $\bfw^\varphi\star \varphi^*C$ are $0$ or $\ell\lambda_\bfw(gg')$, where $u^j\varphi^*g\in L_j$, $u^{-j}\varphi^*g'\in L_{-j}$, and
     \[ gg'\in\mcL(G_j)\cdot\mcL(G_{-j})\subseteq\mcL(G_j+G_{-j})=\mcL(2G). \]
-    If $\bfa^\varphi\star \varphi^*C$ is self-orthogonal, then so is the subcode $W_0=\eps_0(\bfa\star C)$. By \Cref{lemma:twisted-pairing}\ref{enum:tp-eps} with $j=0$, and as $\ell\neq0$ in $\bbF_q$, $\bfa\star C$ is self-orthogonal too. Conversely, suppose $\bfa\star C$ is self-orthogonal. Then
-    \[ 0=(\bfa\star h(D))\dotpr(\bfa\star h'(D))=\lambda_\bfa(hh') \quad\forall h,h'\in\mcL(G),\]
-    so $\lambda_\bfa$ vanishes on $\mcL(G)\cdot\mcL(G)$, which is $\mcL(2G)$ by \cite[Thm.~6]{mumford1970varieties}. In particular, $\lambda_\bfa(gg')=0$ for all $j\in J$, $g\in\mcL(G_j)$, and $g'\in\mcL(G_{-j})$, since $gg'\in\mcL(2G)$. By \Cref{lemma:twisted-pairing}\ref{enum:tp-formula}, every inner product in $\bfa^\varphi\star\varphi^*C$ therefore vanishes, proving self-orthogonality of $\bfa^\varphi\star \varphi^*C$.
+    If $\bfw^\varphi\star \varphi^*C$ is self-orthogonal, then so is the subcode $W_0=\eps_0(\bfw\star C)$. By \Cref{lemma:twisted-pairing}\ref{enum:tp-eps} with $j=0$, and as $\ell\neq0$ in $\bbF_q$, $\bfw\star C$ is self-orthogonal too. Conversely, suppose $\bfw\star C$ is self-orthogonal. Then
+    \[ 0=(\bfw\star h(D))\dotpr(\bfw\star h'(D))=\lambda_\bfw(hh') \quad\forall h,h'\in\mcL(G),\]
+    so $\lambda_\bfw$ vanishes on $\mcL(G)\cdot\mcL(G)$, which is $\mcL(2G)$ by \cite[Thm.~6]{mumford1970varieties}. In particular, $\lambda_\bfw(gg')=0$ for all $j\in J$, $g\in\mcL(G_j)$, and $g'\in\mcL(G_{-j})$, since $gg'\in\mcL(2G)$. By \Cref{lemma:twisted-pairing}\ref{enum:tp-formula}, every inner product in $\bfw^\varphi\star\varphi^*C$ therefore vanishes, proving self-orthogonality of $\bfw^\varphi\star \varphi^*C$.
 \end{proof}
 
-Suppose $k\geq3$ and $\bfa\star C$ is self-orthogonal (for instance, when \Cref{lemma:so-criterion} holds). By \Cref{theorem:so-transfer}, $\bfa^\varphi\star\varphi^*C$ is self-orthogonal too. The CSS construction \cite{ketkar2006nonbinary} (the case $c=0$ of \Cref{lemma:hull-eaqecc}) then gives a quasi-cyclic $\llbracket \ell n,\,\ell(n-2k),\,\geq\ell k;\,0\rrbracket_q$ code.
+Suppose $k\geq3$ and $\bfw\star C$ is self-orthogonal (for instance, when \Cref{lemma:so-criterion} holds). By \Cref{theorem:so-transfer}, $\bfw^\varphi\star\varphi^*C$ is self-orthogonal too. The CSS construction \cite{ketkar2006nonbinary} (the case $c=0$ of \Cref{lemma:hull-eaqecc}) then gives a quasi-cyclic $\llbracket \ell n,\;\ell(n-2k),\;\geq\ell k;\;0\rrbracket_q$ code.
 
 The next result makes \Cref{corollary:pullback-isodual} explicit by identifying the scaling vectors $\bfr$ and $\bfr^\varphi$ of the iso-duality. If, moreover, the entries of $\bfr$ are all quadratic residues or all nonresidues, we obtain a self-dual pullback code.
 
@@ -669,115 +682,180 @@ The next result makes \Cref{corollary:pullback-isodual} explicit by identifying 
 
 \subsection{Quasi-cyclic hull variation} \label{subsection:qc-hv}
 
-Starting from a self-orthogonal pullback code $C^\natural$ (such as from \Cref{theorem:so-transfer} or \Cref{proposition:self-dual-pullback}), we now show how $K$-compatible scalings lower its hull. First, we choose the fibres to be scaled. Number them from 1 to $n$, choose $0\leq s\leq k$ of them to be scaled, and represent them by an indexing set $I\subseteq\set{1,\hdots,n}$. Write $D_I:=\sum_{i\in I}(P_i)$ and $I\comp$ for the complement of $I$ in $\set{1,\hdots,n}$.
+Starting from a self-orthogonal pullback code $C^\natural:=\bfw^\varphi\star\varphi^*C$ (such as from \Cref{theorem:so-transfer} or \Cref{proposition:self-dual-pullback}), we now show how $K$-compatible scalings lower its hull. First, we choose the fibres to be scaled. Number the fibres from 1 to $n$, choose $1\leq s\leq k$ of them to be scaled, and represent them by an indexing set $I\subseteq\set{1,\hdots,n}$. Write $D_I:=\sum_{i\in I}(P_i)$ for the subdivisor of $D$ indexed by $I$, and $I\comp$ for the complement of $I$ in $\set{1,\hdots,n}$.
 
-Next, we choose the scaling. Choose $\lambda_i\in\bbF_q^*$ with $\lambda_i^2\neq1$ for $i\in I$, and define $\bfv\in(\bbF_q^*)^n$ by $v_i:=\lambda_i$ for $i\in I$ and $v_i:=1$ otherwise. \Cref{theorem:qc-hv} states that applying the $K$-compatible scaling $\bfv^\varphi$ to $C^\natural$ reduces its hull dimension by $\ell$ for each fibre scaled, up to $k-1$ fibres. The cases $s<k$ follow easily, but the case $s=k$ exhibits intricate behaviour. We study this special case using the hull decomposition in \Cref{theorem:hull-decomposition}.
+Next, we choose the scaling $\bfv\in(\bbF_q^*)^n$. For each $i\in I$, choose $\lambda_i\in\bbF_q^*$ with $\lambda_i^2\neq1$. Put $v_i:=\lambda_i$ for $i\in I$ and $v_i:=1$ otherwise, and write $C^\sharp:=\bfv^\varphi\star C^\natural$.
+The code $C^\sharp$ depends on $I$ and the $\lambda_i$, but we suppress this in the notation. \Cref{theorem:qc-hv} states that the hull dimension drops by $\ell$ for each fibre scaled, up to $k-1$ fibres. The case $s<k$ follows from our generalisation of \cite[Thm.~1(i)]{fang2020euclidean} from genus 0 to 1, but the case $s=k$ exhibits intricate behaviour due to the elliptic group law. We study this special case using the hull decomposition in \Cref{theorem:hull-decomposition}.
 
 \begin{theorem}{Quasi-cyclic hull variation}{qc-hv}
-    Let $\bfw\in(\bbF_q^*)^n$ be such that $C^\natural:=\bfw^\varphi\star \varphi^*C$ is self-orthogonal. Write $C_{I,\bm\lambda}:=\bfv^\varphi\star C^\natural$. Then,
+    Let $C^\natural$, $I$, $\lambda_i$, and $C^\sharp$ be as above. Then
     \begin{enumerate}[label={(\alph*)}, left=-4pt, topsep=2pt, itemsep=0pt]
-        \item \label{enum:qchv-qc} $C_{I,\bm\lambda}$ is quasi-cyclic of co-index $\ell$;
-        \item \label{enum:qchv-small} if $s<k$, then $\dim\Hull(C_{I,\bm\lambda})=\ell(k-s)$;
-        \item \label{enum:qchv-half} if $s=k$, $D-2G$ is principal, and $C^\natural$ is self-dual. Then, $\dim\Hull(C_{I,\bm\lambda})$ is
+        \item \label{enum:qchv-qc} $C^\sharp$ is quasi-cyclic of co-index $\ell$;
+        \item \label{enum:qchv-small} if $s<k$, then $\dim\Hull(C^\sharp)=\ell(k-s)$;
+        \item \label{enum:qchv-half} suppose $s=k=\frac n2$ and $C^\natural$ is self-dual. Then, $\dim\Hull(C^\sharp)$ is
         \[ \begin{cases}
             0 & \text{if } \Sigma(D_I)\ominus\Sigma(G)\notin\ker\hat\varphi, \\
             2 & \text{if } \Sigma(D_I)\ominus\Sigma(G)\in\ker\hat\varphi\bs\set\infty, \\
             1\text{ or }2 & \text{if } \Sigma(D_I)=\Sigma(G).
         \end{cases} \]
         In the last case, the dimension is 2 if and only if
-        \[ \textstyle\sum_{i\in I}w_i^2g(P_i)^2/(\lambda_i^2-1)=0, \eqlabel{eqn:hull-one} \]
+        \[ \sum_{i\in I}\frac{w_i^2g(P_i)^2}{\lambda_i^2-1}=0, \eqlabel{eqn:hull-one} \]
         where $g$ spans $\mcL(G-D_{I\comp})$. In particular, it is 2 when all $\lambda_i$ are equal.
     \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-    \ref{enum:qchv-qc} The scaling $\bfv^\varphi\star\bfw^\varphi$ is constant on fibres (i.e. $K$-compatible), so $C_{I,\bm\lambda}$ is quasi-cyclic.
+    \ref{enum:qchv-qc} The scaling $\bfv^\varphi\star\bfw^\varphi$ is constant on fibres (i.e. $K$-compatible), so $C^\sharp$ is quasi-cyclic.
 
-    For the remaining parts, put $\bfa:=\bfv\star\bfw$, so that $C_{I,\bm\lambda}=\bfa^\varphi\star\varphi^*C$. We apply \Cref{theorem:hull-decomposition} with this $\bfa$. For $j\in J$, consider the evaluation map
+    For the remaining parts, put $\bfa:=\bfv\star\bfw$, so that $C^\sharp=\bfa^\varphi\star\varphi^*C$. For $j\in J$, consider the evaluation map
     \[ \ev_j:\mcL(G_j)\to\bbF_q^I,\qquad g\mapsto(g(P_i))_{i\in I}. \]
-    Its kernel is $\mcL(G_j-D_I)$. Put $\mu_i:=(\lambda_i^2-1)w_i^2\neq0$ for $i\in I$, and define the nondegenerate bilinear form $\beta(\bfx,\bfy):=\sum_{i\in I}\mu_ix_iy_i$ on $\bbF_q^I$.
+    Its kernel is $\mcL(G_j-D_I)$. Define $\bm\mu\in(\bbF_q^*)^I$ by $\mu_i:=(\lambda_i^2-1)w_i^2\neq0$ for $i\in I$, and define the nondegenerate bilinear form $\beta(\bfx,\bfy):=\bfx\dotpr(\bm\mu\star\bfy)=\sum_{i\in I}\mu_ix_iy_i$ on $\bbF_q^I$. Write $\bfx\perp_\beta\bfy$ to denote $\beta(\bfx,\bfy)=0$.
 
-    Let $g\in\mcL(G_j)$ and $g'\in\mcL(G_{-j})$. As $C^\natural$ is self-orthogonal, \Cref{lemma:twisted-pairing}\ref{enum:tp-formula} with $\bfa=\bfw$ gives $\sum_{i=1}^nw_i^2g(P_i)g'(P_i)=0$. As $v_i=1$ for $i\notin I$, it follows that
-    \[ (\bfa\star g(D))\dotpr(\bfa\star g'(D))=\beta\pa[\big]{\ev_j(g),\ev_{-j}(g')}. \]
-    Hence $\bfa\star g(D)\in H_j$ if and only if $\ev_j(g)$ is $\beta$-orthogonal to the image of $\ev_{-j}$.
+    We apply \Cref{theorem:hull-decomposition} with $\bfa$ in place of $\bfw$, so that hull membership reduces to membership of the cross-hulls $H_j=(\bfa\star B_j)\cap(\bfa\star B_{-j})^\perp$. Let $\bfa\star g(D)\in B_j$ be arbitrary, where $g\in\mcL(G_j)$. Then, $\bfa\star g(D)\in H_j$ if and only if $(\bfa\star g(D))\perp(\bfa\star g'(D))$ for all $g'\in\mcL(G_{-j})$. Given such a $g'$, write $c_i:=w_i^2 g(P_i)g'(P_i)$ for $1\leq i\leq n$. As $C^\natural$ is self-orthogonal, \Cref{lemma:twisted-pairing}\ref{enum:tp-formula} gives $\sum_{i=1}^n c_i=0$. As $v_i=1$ for $i\in I\comp$, we have
+    \begin{align*}
+        0&=\pa[\big]{\bfa\star g(D)}\dotpr\pa[\big]{\bfa\star g'(D)}=\sum_{i=1}^n v_i^2 c_i-0 \\
+        &=\sum_{i=1}^n v_i^2 c_i-\sum_{i=1}^n c_i=\sum_{i\in I\sqcup I\comp} (v_i^2-1) c_i \\
+        &=\sum_{i\in I} (\lambda_i^2-1) c_i= \beta\pa[\big]{\ev_j(g),\ev_{-j}(g')}.
+    \end{align*}
+    Hence, $\bfa\star g(D)\in H_j$ if and only if $\ev_j(g)\perp_\beta\im(\ev_{-j})$.
 
-    \ref{enum:qchv-small} As $s<k$, the kernel of $\ev_{-j}$ has dimension $k-s$ by Riemann--Roch. So $\ev_{-j}$ is onto. As $\beta$ is nondegenerate, $H_j$ corresponds to $\ker \ev_j$, so $h_j=k-s$ for every $j\in J$. By \Cref{theorem:hull-decomposition}\ref{enum:hd-dim}, $\dim\Hull(C_{I,\bm\lambda})=(2m+1)(k-s)=\ell(k-s)$.
+    \ref{enum:qchv-small} When $s<k$, the Riemann--Roch theorem gives
+    \begin{align*}
+        \dim\ker(\ev_{-j})&=\deg(G_{-j}-D_I)=k-s>0,\quad\text{so} \\
+        \rank(\ev_{-j})&=k-(k-s)=s=\dim\bbF_q^I
+    \end{align*}
+    and $\ev_{-j}$ is surjective. Hence,
+    \begin{gather*}
+        \bfa\star g(D)\in H_j \qiff \ev_j(g) \perp_\beta \im(\ev_{-j}) \\
+        \iff\quad \ev_j(g) \perp_\beta \bbF_q^I 
+        \qiff \ev_j(g)=0
+    \end{gather*}
+    since $\beta$ is nondegenerate. Thus,
+    \[ H_j=\set{\bfa\star g(D):g\in\ker(\ev_j)}\qand h_j=k-s.\]
+    By \Cref{theorem:hull-decomposition}\ref{enum:hd-dim}, $\dim\Hull(C^\sharp)=\sum_{j\in J}h_j=\ell(k-s)$.
 
-    \ref{enum:qchv-half} Now $s=k$, so each $\ev_j$ is a map between spaces of dimension $k$. Its kernel $\mcL(G_j-D_I)$ has degree 0. So it is nonzero, and then of dimension 1, if and only if $G_j\sim D_I$. By \Cref{lemma:abel-jacobi} and $\Sigma(G_j)=\Sigma(G)\oplus[j]R$ (\Cref{theorem:pullback-split}), this holds if and only if $[j]R=\Sigma(D_I)\ominus\Sigma(G)$. As $R$ has order $\ell$, at most one $j\in J$ satisfies this.
+    \ref{enum:qchv-half} Now $s=k$, so each $\ev_j$ is a map between spaces of dimension $k$. Since $G_j-D_I$ has degree 0, $\ker(\ev_j)=\mcL(G_j-D_I)$ has dimension 1 if and only if $G_j-D_I$ is principal. By \Cref{lemma:abel-jacobi} and \Cref{theorem:pullback-split}, this holds if and only if $\Sigma(D_I)=\Sigma(G_j)=\Sigma(G)\oplus[j]R$, or equivalently, $[j]R=\Sigma(D_I)\ominus\Sigma(G)$. As $R$ has order $\ell$, at most one $j\in J$ satisfies this.
 
-    Suppose first that $\Sigma(D_I)\ominus\Sigma(G)\notin\ker\hat\varphi$. Then every $\ev_j$ is bijective. So $h_j=0$ for all $j$, and $C_{I,\bm\lambda}$ is LCD by \Cref{theorem:hull-decomposition}\ref{enum:hd-decomp}.
+    Suppose first that $\Sigma(D_I)\ominus\Sigma(G)\notin\ker\hat\varphi=\ang R$. Then, every $\ev_j$ is bijective, so every $h_j=0$ as in \ref{enum:qchv-small}. Thus, $C^\sharp$ is LCD by \Cref{theorem:hull-decomposition}\ref{enum:hd-decomp}.
 
-    Suppose next that $\Sigma(D_I)\ominus\Sigma(G)=[j_0]R$ with $j_0\neq0$. Then $\ev_j$ is bijective for $j\neq j_0$, so $h_j=0$ for $j\notin\set{\pm j_0}$. As $\ev_{-j_0}$ is onto, $H_{j_0}$ corresponds to $\ker \ev_{j_0}$, so $h_{j_0}=1$. By \Cref{theorem:hull-decomposition}\ref{enum:hd-dim}, $h_{-j_0}=1$ and $\dim\Hull(C_{I,\bm\lambda})=2$.
+    Suppose next that $\Sigma(D_I)\ominus\Sigma(G)=[j_0]R$ with $j_0\neq0$. Then, $\ev_j$ is bijective for $j\neq j_0$, so $h_j=0$ for $j\notin\set{\pm j_0}$. As $\ev_{-j_0}$ is surjective and $\beta$ is nondegenerate, the argument in \ref{enum:qchv-small} gives $\bfa\star g(D)\in H_{j_0}$ if and only if $\ev_{j_0}(g)=0$. This gives $h_{j_0}=\dim\ker(\ev_{j_0})=1$. By \Cref{theorem:hull-decomposition}\ref{enum:hd-dim}, $h_{-j_0}=1$ and $\dim\Hull(C^\sharp)=2$.
 
-    Suppose finally that $\Sigma(D_I)=\Sigma(G)$. Then $h_j=0$ for $j\neq0$, so $\dim\Hull(C_{I,\bm\lambda})=h_0$. Let $V$ be the image of $\ev_0$, a hyperplane in $\bbF_q^I$. Let $g$ span $\mcL(G-D_{I\comp})$, and put $\bfb:=(w_i^2g(P_i))_{i\in I}$. As $\div g=D_{I\comp}-G$, the entries of $\bfb$ are nonzero. For $g'\in\mcL(G)$, we have $\bfb\dotpr \ev_0(g')=(\bfw\star g(D))\dotpr(\bfw\star g'(D))$, since $g$ vanishes on $D_{I\comp}$. This is $0$, because $\bfw\star C$ is self-orthogonal. Indeed, $W_0=\eps_0(\bfw\star C)$ (with $\bfa=\bfw$) lies in $C^\natural$, so \Cref{lemma:twisted-pairing}\ref{enum:tp-eps} applies. Hence $V=\bfb^\perp$.
+    Suppose finally that $\Sigma(D_I)=\Sigma(G)$. Then, $\ev_j$ is bijective for $j\neq 0$, so $h_j=0$ for $j\neq0$ and $\dim\Hull(C^\sharp)=h_0$. Let $V:=\im(\ev_0)$, which is a hyperplane in $\bbF_q^I$ since $\dim\ker(\ev_0)=1$, and let $\bfb$ span $V^\perp\subseteq\bbF_q^I$.
 
-    Now $h_0=\dim\ker \ev_0+\dim(V\cap V^{\perp_\beta})=1+\dim(V\cap V^{\perp_\beta})$. Here $V^{\perp_\beta}$ is spanned by $\bm\mu^{-1}\star\bfb$. So $h_0=2$ if and only if $\bm\mu^{-1}\star\bfb\in V$, that is,
-    \[ \textstyle(\bm\mu^{-1}\star\bfb)\dotpr\bfb=\sum_{i\in I}w_i^2g(P_i)^2/(\lambda_i^2-1)=0, \]
-    which is \Cref{eqn:hull-one}. Otherwise, $h_0=1$. If all $\lambda_i$ equal $\lambda$, the sum is $(\lambda^2-1)^{-1}(\bfw\star g(D))\dotpr(\bfw\star g(D))=0$, so $h_0=2$.
+    We first describe $\bfb$. As $C^\natural$ is self-orthogonal, so is $\bfw\star C$, by the forward direction of \Cref{theorem:so-transfer} (which does not need $k\geq3$). As $\dim(\bfw\star C)=k=\frac n2$, $\bfw\star C$ is self-dual. Define $\bfy\in\bbF_q^n$ by $y_i:=b_i/w_i$ for $i\in I$ and $y_i:=0$ for $i\in I\comp$. Since 
+    \[ \bfy\dotpr(\bfw\star g'(D))=\bfb\dotpr\ev_0(g')=0 \quad\forall g'\in\mcL(G), \]
+    it follows that $\bfy\in(\bfw\star C)^\perp=\bfw\star C$, i.e. $\bfy=\bfw\star g(D)$ for some $g\in\mcL(G)^*$. As $\bfy$ vanishes on $I\comp$, we have $\div g\geq D_{I\comp}-G$. Both divisors have degree $0=(n-s)-k$, so $\div g=D_{I\comp}-G$, i.e. $g$ is nonzero at each $P_i$, $i\in I$. Thus, $\bfb=(w_iy_i)_{i\in I}=\pa[\big]{w_i^2g(P_i)}_{i\in I}\in(\bbF_q^*)^I$.
+    
+    By the criterion before the proof of \ref{enum:qchv-small} with $j=0$,
+    \begin{align*}
+        H_0&=\set{\bfa\star g(D):\ev_0(g)\in V\cap V^{\perp_\beta}},\quad\text{so} \\
+        \dim H_0&=\dim\ker(\ev_0)+\dim(V\cap V^{\perp_\beta}) \\
+        h_0&=1+\dim(V\cap V^{\perp_\beta}).
+    \end{align*}
+    But
+    \begin{align*}
+        V^{\perp_\beta}&=\set{\bfy:V\dotpr(\bm\mu\star\bfy)=0}=\set{\bfy:\bm\mu\star\bfy\in V^\perp} \\
+        &=\bm\mu^{-1}\star V=\ang{\bm\mu^{-1}\star\bfb},\quad\text{so}
+    \end{align*}
+    \begin{align*}
+        h_0=2 &\qiff \dim(V\cap V^{\perp_\beta})=1 \\
+        &\qiff \bm\mu^{-1}\star\bfb\in V=\ang\bfb^\perp \\
+        &\qiff (\bm\mu^{-1}\star\bfb)\dotpr\bfb=\sum_{i\in I}\frac{w_i^2g(P_i)^2}{\lambda_i^2-1}=0,
+    \end{align*}
+    which is \Cref{eqn:hull-one}. Otherwise, $h_0=1$.
+    
+    If all $\lambda_i$ equal $\lambda$, the sum is $(\lambda^2-1)^{-1}(\bfw\star g(D))\dotpr(\bfw\star g(D))=0$, so $h_0=2$.
 \end{proof}
 
-\medskip
-With the aid of \Cref{theorem:hull-decomposition}\ref{enum:hd-decomp}, the proof of \Cref{theorem:qc-hv} also locates the hull. Let $W_j$ be defined with $\bfa=\bfv\star\bfw$. In the second case of \ref{enum:qchv-half}, the hull is $\eps_{j_0}(H_{j_0})\oplus\eps_{-j_0}(H_{-j_0})\subseteq W_{j_0}\oplus W_{-j_0}$. In the third case, it is $\eps_0(H_0)\subseteq W_0$, so it is a repetition code. In the first case, every $\ev_j$ is bijective, so $\varphi^*D_I$ is an information set of $\varphi^*C$. This is the hypothesis of the original hull-variation theorem \cite[Thm.~3.1]{chen2023hullvariation}. Here, it becomes a subset-sum condition.
+With the aid of \Cref{theorem:hull-decomposition}\ref{enum:hd-decomp}, the proof of \Cref{theorem:qc-hv} also locates the hull explicitly. Let $W_j$ and $\eps_j$ be defined with $\bfv\star\bfw$ in place of $\bfw$. In the second case of \ref{enum:qchv-half}, the hull is $\eps_{j_0}(H_{j_0})\oplus\eps_{-j_0}(H_{-j_0})\subseteq W_{j_0}\oplus W_{-j_0}$. In the third case, it is $\eps_0(H_0)\subseteq W_0$, so it is a repetition code. In the first case, every $\ev_j$ is bijective, so $\varphi^*D_I$ is an information set of $\varphi^*C$.
 
-\Cref{theorem:qc-hv}\ref{enum:qchv-small} also explains why $K$-compatible scalings change the hull in steps of $\ell$. Scaling fewer than $k$ fibres lowers every $h_j$ by the same amount $s$. Other dimensions arise only when half the fibres are scaled. There, the group law decides between $0$, $1$, and $2$. By \Cref{theorem:hull-decomposition}\ref{enum:hd-lcd}, odd dimensions can only come from $h_0$, which explains why dimension 1 needs $\Sigma(D_I)=\Sigma(G)$. If $\Sigma(G)\in\varphi(\mcE_1(\bbF_q))$ and $\mcE_1[\ell]\cap\mcE_1(\bbF_q)=K$, then the middle case cannot occur. Indeed, $\Sigma(D_I)\in\varphi(\mcE_1(\bbF_q))$, and $\ker\hat\varphi\cap\varphi(\mcE_1(\bbF_q))=\varphi(\mcE_1[\ell](\bbF_q))=\set\infty$.
+\section{Quasi-cyclic EAQECCs} \label{section:qc-eaqecc}
 
-\subsection{Quasi-cyclic EAQECCs} \label{subsection:qc-eaqecc}
+Combining \Cref{theorem:qc-hv} with \Cref{lemma:hull-eaqecc}, we obtain EAQECCs whose classical codes are quasi-cyclic, with a prescribed amount of entanglement. We call such EAQECCs \textbf{quasi-cyclic} as the check matrices inherit the block-circulant structure.
 
-Combining \Cref{theorem:qc-hv} with \Cref{lemma:hull-eaqecc}, we obtain EAQECCs whose classical codes are quasi-cyclic, with a prescribed amount of entanglement. We call such EAQECCs \textbf{quasi-cyclic} as the check matrices inherit a similar circulant structure.
+Physically, this structure is a symmetry of the qudits. Group the sender's $\ell n$ qudits into $n$ blocks of $\ell$, one for each fibre $\varphi^{-1}(P_i)$. Translation by $T$ induces a permutation $\pi$ (and hence, a unitary operator $U_\pi$) that cycles the qudits inside each block. The stabiliser group on the sender's qudits (resp. its commuting subspace) is generated by $X(\bfc)$ and $Z(\bfc)$, for $\bfc\in(C^\sharp)^\perp$ (resp. $\bfc\in\Hull(C^\sharp)$). As $(C^\sharp)^\perp$ (resp. $\Hull(C^\sharp)$) is $\pi$-invariant, conjugation by $U_\pi$ merely permutes these generators. We leave a full description of quasi-cyclic EAQECCs, including the behaviour of the receiver's qudits under this symmetry, to future work.
 
 \begin{corollary}{LCD and quasi-cyclic EAQECCs}{qc-eaqecc}
     Assume the hypotheses of \Cref{proposition:self-dual-pullback}, so that $n=2k$. Assume also that $q\geq4$. Let $d:=d(\varphi^*C)\in\set{\ell k,\ell k+1}$.
     \begin{enumerate}[label={(\alph*)}]
-        \item \label{enum:qce-lcd} For $\#I=k$, the code $C_{I,\bm\lambda}$ is LCD if and only if $\Sigma(D_I)\ominus\Sigma(G)\notin\ker\hat\varphi$. If $\varphi^*C$ is MDS, this holds for every $k$-subset $I$.
-        \item \label{enum:qce-codes} For $1\leq s\leq k-1$, there is an EAQECC with parameters $\llbracket2\ell k,\;\ell s,\;d;\;\ell s\rrbracket_q$ whose classical code is quasi-cyclic of co-index $\ell$. If some $k$-subset satisfies the condition in \ref{enum:qce-lcd}, the same holds for $s=k$.
-        \item \label{enum:qce-mds} If $\varphi^*C$ is MDS, the codes in \ref{enum:qce-codes} are MDS EAQECCs $\llbracket2\ell k,\;\ell s,\;\ell k+1;\;\ell s\rrbracket_q$ for all $1\leq s\leq k$.
-        \item \label{enum:qce-small} If some $k$-subset has $\Sigma(D_I)\ominus\Sigma(G)\in\ker\hat\varphi$, there are such codes with parameters $\llbracket2\ell k,\;\ell k-2,\;d;\;\ell k-2\rrbracket_q$. If some $k$-subset has $\Sigma(D_I)=\Sigma(G)$, and $q\geq7$ when $q$ is odd, there are also codes with parameters $\llbracket2\ell k,\;\ell k-1,\;d;\;\ell k-1\rrbracket_q$.
+        \item \label{enum:qce-lcd} For $\#I=k$, the code $C^\sharp$ is LCD if and only if $\Sigma(D_I)\ominus\Sigma(G)\notin\ker\hat\varphi$, which is automatic if $\varphi^*C$ is MDS.
+        \item \label{enum:qce-codes} For $1\leq s\leq k-1$, there exists a quasi-cyclic EAQECC with parameters $\llbracket2\ell k,\;\ell s,\;d;\;\ell s\rrbracket_q$. If some $k$-subset $I$ satisfies the condition in \ref{enum:qce-lcd}, the same holds for $s=k$.
+        \item \label{enum:qce-mds} If $\varphi^*C$ is MDS, the codes in \ref{enum:qce-codes} are $\llbracket2\ell k,\;\ell s,\;\ell k+1;\;\ell s\rrbracket_q$ MDS EAQECCs for all $1\leq s\leq k$.
+        \item \label{enum:qce-hull2} If some $k$-subset $I$ has $\Sigma(D_I)\ominus\Sigma(G)\in\ker\hat\varphi$, there exists a quasi-cyclic EAQECC with parameters $\llbracket2\ell k,\;\ell k-2,\;d;\;\ell k-2\rrbracket_q$.
+        \item \label{enum:qce-hull1} If some $k$-subset $I$ has $\Sigma(D_I)=\Sigma(G)$, and $q\geq7$ when $q$ is odd, there exists a quasi-cyclic EAQECC with parameters $\llbracket2\ell k,\;\ell k-1,\;d;\;\ell k-1\rrbracket_q$.
     \end{enumerate}
     More generally, if $\bfw^\varphi\star \varphi^*C$ is self-orthogonal with $n\geq2k$, then \Cref{theorem:qc-hv}\ref{enum:qchv-small} gives quasi-cyclic $\llbracket\ell n,\;\ell s,\;d(\varphi^*C);\;\ell(n-2k+s)\rrbracket_q$ codes for $0\leq s\leq k-1$.
 \end{corollary}
 
 \begin{proof}
-    The bounds on $q$ provide $\lambda\in\bbF_q^*$ with $\lambda^2\neq1$. Part \ref{enum:qce-lcd} is \Cref{theorem:qc-hv}\ref{enum:qchv-half}, together with \Cref{corollary:pullback-twists-mds} in the MDS case. Applying \Cref{lemma:hull-eaqecc} to the $[2\ell k,\ell k,d]$ code $C_{I,\bm\lambda}$ with hull dimension $h$ gives $\llbracket2\ell k,\ell k-h,d;\ell k-h\rrbracket_q$, and $h=\ell(k-s)$ by \Cref{theorem:qc-hv}\ref{enum:qchv-small}. This proves \ref{enum:qce-codes}. Since $\ell k=\frac{2\ell k}{2}$, the MDS clause of \Cref{lemma:hull-eaqecc} gives \ref{enum:qce-mds}. For \ref{enum:qce-small}, use equal $\lambda_i$ for hull dimension 2. For hull dimension 1, take $\lambda_i=\lambda$ for $i\neq i_0$ and $\lambda_{i_0}=\lambda'$ with $1,\lambda^2,\lambda'^2$ distinct, which is possible as $\bbF_q^*$ has at least three squares. The left side of \Cref{eqn:hull-one} then equals $c_{i_0}\pa[\big]{(\lambda'^2-1)^{-1}-(\lambda^2-1)^{-1}}\neq0$, where $c_{i_0}=w_{i_0}^2g(P_{i_0})^2\neq0$, because $\sum_{i\in I}w_i^2g(P_i)^2=0$. The last claim follows from \Cref{lemma:hull-eaqecc} in the same way.
+    The bounds on $q$ give $\lambda\in\bbF_q^*$ with $\lambda^2\neq1$.
+    
+    \ref{enum:qce-lcd} Apply \Cref{theorem:qc-hv}\ref{enum:qchv-half}, together with \Cref{corollary:pullback-twists-mds} in the MDS case.
+    
+    \ref{enum:qce-codes} Applying \Cref{lemma:hull-eaqecc} to the $[2\ell k,\ell k,d]$ code $C^\sharp$ with hull dimension $h$ gives $\llbracket2\ell k,\;\ell k-h,\;d;\;\ell k-h\rrbracket_q$, where $h=\ell(k-s)$ by \Cref{theorem:qc-hv}\ref{enum:qchv-small}.
+    
+    \ref{enum:qce-mds} Apply the MDS clause of \Cref{lemma:hull-eaqecc}, which applies since $\dim(\varphi^*C)=\ell k=\frac{2\ell k}{2}$.
+    
+    \ref{enum:qce-hull2} Apply \Cref{theorem:qc-hv}\ref{enum:qchv-half} with $\lambda_i=\lambda$ for every $i\in I$ to obtain hull dimension 2.
+    
+    \ref{enum:qce-hull1} Put $\lambda_i=\lambda$ for $i\in I\bs\set{i_0}$ and $\lambda_{i_0}=\lambda'\in\bbF_q^*$ with $1,\lambda^2,\lambda'^2$ distinct, which is possible as $\bbF_q^*$ has at least three squares. Adopting the notation of \Cref{theorem:qc-hv}\ref{enum:qchv-half}, writing $c_i:=w_i^2 g(P_i)^2$, and using $\sum_{i\in I} c_i=0$ (self-orthogonality of $C^\natural$), the left side of \Cref{eqn:hull-one} then collapses to
+    \begin{align*}
+        \sum_{i\in I}\frac{c_i}{\lambda_i^2-1}&=\frac{1}{\lambda^2-1}\sum_{i\neq i_0} c_i+\frac{1}{\lambda'^2-1} c_{i_0} \\
+        &=c_{i_0}\pa[\big]{(\lambda'^2-1)^{-1}-(\lambda^2-1)^{-1}}.
+    \end{align*}
+    Each factor is nonzero, so \Cref{eqn:hull-one} fails and the hull dimension is 1. The last claim follows from \Cref{lemma:hull-eaqecc} in the same way.
 \end{proof}
 
-\begin{example}{QC MDS EAQECCs over $\sf{\bbF_{256}}$}{qc-eaqecc-256} \setlength{\parskip}{5pt}
-Take $k=23$ in \Cref{example:mds-qc}. Remove from $D$ the two points with $x=\alpha^5$, and call the result $D'$. Then, $D'$ has $n=46=2k$ points. As $\supp D'$ is closed under negation $\ominus$ and contains no point of order 2, its points cancel in pairs, so $\Sigma(D')=\infty=\Sigma(2G)$, hence $D'-2G$ is principal. By \Cref{construction:index-two-pullback} applied to the subdivisor $D'$, $\varphi^*C=C_\mcL(\varphi^*D',\varphi^*G)$ is a quasi-cyclic $[138,69,70]_{256}$ MDS code of co-index 3.
+\begin{example}{QC MDS EAQECCs over $\sf{\bbF_{2^8}}$ \cite{our-github}}{qc-eaqecc-256} \setlength{\parskip}{5pt}
+Take $k=23$ in \Cref{example:mds-qc}. Remove from $D$ the two points with $x=\alpha^5$, and call the result $D'$. Then, $D'$ has $n=46=2k$ points. As $\supp D'$ is closed under negation $\ominus$ and contains no point of order 2, its points cancel in pairs, so $\Sigma(D')=\infty=\Sigma(2G)$, hence $D'-2G$ is principal. Applying \Cref{construction:index-two-pullback} to $D'$ gives the quasi-cyclic $[138,69,70]_{256}$ MDS code $\varphi^*C=C_\mcL(\varphi^*D',\varphi^*G)$ of co-index 3, where $C=C_\mcL(D',23(\infty))$.
  
-As $q$ is even, \Cref{proposition:self-dual-pullback} gives $\bfw\in(\bbF_{256}^*)^{46}$ such that $\bfw^\varphi\star\varphi^*C$ is self-dual. \Cref{corollary:qc-eaqecc} then gives MDS EAQECCs
-\[ \llbracket138,\;3s,\;70;\;3s\rrbracket_{256},\qquad 1\leq s\leq23, \]
-whose classical codes are quasi-cyclic of co-index 3. Scaling $s$ fibres by $\lambda=\alpha$ gives hull dimension $3(23-s)$ for $s=0,\hdots,23$, as predicted by \Cref{theorem:qc-hv} \cite{our-github}.
- 
-Characteristic 2 avoids two obstructions over fields of odd characteristic. First, self-dual codes over $\bbF_q$ with $q\equiv3\pmod4$ only exist in lengths divisible by 4. Second, the residues of \Cref{proposition:self-dual-pullback} must all lie in one square class, which rarely happens for long $D$.
+As $q$ is even, \Cref{proposition:self-dual-pullback} gives $\bfw\in(\bbF_{256}^*)^{46}$ such that $\bfw^\varphi\star\varphi^*C$ is self-dual. By \Cref{theorem:qc-hv}, scaling $s$ fibres by $\lambda=\alpha$ gives hull dimension $3(23-s)$ for $s=0,\hdots,23$. \Cref{corollary:qc-eaqecc} then gives quasi-cyclic $\llbracket138,\;3s,\;70;\;3s\rrbracket_{256}$ MDS EAQECCs for each $1\leq s\leq 23$.
+
+Characteristic 2 avoids two obstructions over fields of odd characteristic. First, the only self-dual codes over $\bbF_q$ with $q\equiv3\pmod4$ have lengths divisible by 4. Second, the residues of \Cref{proposition:self-dual-pullback} must all lie in one square class, which rarely happens for long $D$.
+\end{example}
+
+\begin{example}{QC MDS CSS codes over $\sf{\bbF_{2^8}}$}{qc-css-256} \setlength{\parskip}{5pt}
+The pullback codes of \Cref{example:mds-qc} also give quantum codes without entanglement via the CSS construction following \Cref{theorem:so-transfer}. Let $D'$, $C$, and $\bfw$ be as in \Cref{example:qc-eaqecc-256}, so that $\bfw\star C$ is self-dual. For odd $3\leq k'\leq21$, put $C':=C_\mcL(D',k'(\infty))$. Then, $\bfw\star C'$ is a subcode of the self-dual code $\bfw\star C$, so it is self-orthogonal. By \Cref{theorem:so-transfer}, $\bfw^\varphi\star\varphi^*C'$ is self-orthogonal too. By \Cref{construction:index-two-pullback}, $\varphi^*C'$ is a $[138,\;3k',\;139-3k']_{256}$ MDS code, so its dual is a $[138,\;138-3k',\;3k'+1]_{256}$ MDS code. The CSS construction then gives quasi-cyclic $\llbracket138,\;138-6k',\;3k'+1\rrbracket_{256}$ MDS codes.
+
+For instance, $k'=11$ gives a quasi-cyclic $\llbracket138,72,34\rrbracket_{256}$ quantum MDS code. Quantum MDS codes with these parameters have already been obtained from Euclidean self-orthogonal GRS codes \cite[Thm.~5.3]{jin2012euclidean}, but they carry no quasi-cyclic structure.
 \end{example}
 
 \begin{example}{Beyond length $\sf{q+1}$ over $\sf{\bbF_{64}}$}{qc-eaqecc-64} \setlength{\parskip}{5pt}
-Let $\bbF_{64}=\bbF_2(\alpha)$ with $\alpha^6=\alpha+1$, and $\mcE_1:y^2+xy=x^3+\beta$ with $\beta=\alpha^3+\alpha^2+\alpha+1$. Then, $N=72$ and $\mcE_1[3]\subseteq\mcE_1(\bbF_{64})$.
+Let $\bbF_{64}=\bbF_2(\alpha)$ with $\alpha^6=\alpha+1$, and $\mcE_1:y^2+xy=x^3+\beta$ with $\beta=\alpha^3+\alpha^2+\alpha+1$. Then, $N=72$ and $\mcE_1(\bbF_{64})$ has rational 3-torsion. Take
+\begin{itemize}
+    \item $T=(\alpha^2,\alpha)\in\mcE_1$ of order $\ell=3$,
+    \item $\varphi:\mcE_1\to\mcE_2$ the 3-isogeny with kernel $\ang T$,
+    \item $Q=(0,\alpha^9)\in\mcE_1$ of order 2,
+    \item $D$ the sum of the 22 points of $\varphi(\mcE_1(\bbF_{64}))$ excluding $\infty$ and $\varphi(Q)$, and
+    \item $G=11(\infty)$.
+\end{itemize}
+Then, $\supp D$ is closed under negation $\ominus$ and $\varphi^*C$ is a quasi-cyclic $[66,33,33]_{64}$ code. Its length exceeds $q+1=65$, the length of the longest GRS codes over $\bbF_{64}$.
 
-Take $T=(\alpha^2,\alpha)$ of order $\ell=3$, $Q=(0,\alpha^9)$ of order 2, $D$ the sum of the 22 points of $\varphi(\mcE_1(\bbF_{64}))$ excluding $\infty$ and $\varphi(Q)$, and $G=11(\infty)$. Then, $\supp D$ is closed under negation $\ominus$ and $\varphi^*C$ is a quasi-cyclic $[66,33,33]_{64}$ code. Its length exceeds $q+1=65$, the length of the longest GRS codes.
-
-As $q$ is even, $\bfw^\varphi\star \varphi^*C$ is self-dual. For $s<11$ the hull dimensions are $3(11-s)$. For $s=11$, all three cases of \Cref{theorem:qc-hv}\ref{enum:qchv-half} occur \cite{our-github}, giving quasi-cyclic EAQECCs
+As $q$ is even, $\bfw^\varphi\star \varphi^*C$ is self-dual. For $s<11$, the hull dimensions are $3(11-s)$. For $s=11$, all three cases of \Cref{theorem:qc-hv}\ref{enum:qchv-half} occur \cite{our-github}, giving quasi-cyclic EAQECCs
 \[ \llbracket66,\;c,\;33;\;c\rrbracket_{64},\quad c\in\set{3,6,\hdots,30,31,32,33}. \]
-For comparison, the same parameters, without quasi-cyclicity, follow from the hull-variation theorem of \cite{chen2023hullvariation} applied to the self-dual near-MDS elliptic codes of \cite{jin2019selfdual}.
+For comparison, the same parameters follow from the hull-variation theorem of \cite{chen2023hullvariation} applied to the self-dual near-MDS elliptic codes of \cite{jin2019selfdual}, but without quasi-cyclicity.
 \end{example}
 
-We have not analysed scalings $\bfv$ with $v_{P\oplus T}=\zeta^bv_P$. These also preserve quasi-cyclicity, and they replace $G$ by $G-bA$, which changes how the twists are paired. Analysing them, together with a Hermitian analogue for the Hermitian self-orthogonal elliptic codes of Sok \cite{sok2021new}, are natural next steps. In the Hermitian case, if $\ell\mid q+1$ then $\zeta^q=\zeta^{-1}$, so each twist is paired with itself rather than with its negative.
+There are other scalings $\bfv$ preserving quasi-cyclicity but are not constant on fibres. One example is given by $v_{P\oplus T}=\zeta^bv_P$, which changes how the twists are paired. It is also natural to search for a Hermitian analogue of \Cref{section:hulls}, as the Hermitian construction of quantum codes yields better parameters. In the Hermitian case, if $\ell\mid q+1$ then $\zeta^q=\zeta^{-1}$, so each twist is paired with itself rather than with its negative. We leave these directions to future work.
 
 \section{Conclusion} \label{section:conclusion}
 
-We introduced pullback codes, which transport an elliptic code $C$ on $\mcE_2$ along a separable isogeny $\varphi:\mcE_1\to\mcE_2$ to a code $\varphi^*C$ on $\mcE_1$ that is $\ell$ times longer. The group structure of $\ker\varphi$ makes $\varphi^*C$ quasi-cyclic of co-index $\ell$ with the same rate and relative designed distance as $C$. The pullback preserves iso-duality, and when $\ell\mid q-1$, the eigenfunctions of the translations split $\varphi^*C$ into a matrix-product code of twists of $C$. These twists control the MDS property of $\varphi^*C$, and together with index-two subgroups they yield quasi-cyclic MDS elliptic codes. The hull of $\varphi^*C$ splits along the same twists, so hull variation on whole fibres produces quasi-cyclic EAQECCs with prescribed entanglement, governed by a subset-sum condition in $\Sigma(G)\oplus\ker\hat\varphi$.
+We introduced pullback codes, which transport an elliptic code $C$ on $\mcE_2$ along a separable isogeny $\varphi:\mcE_1\to\mcE_2$ to a code $\varphi^*C$ on $\mcE_1$ that is $\ell$ times longer. The group structure of $\ker\varphi$ makes $\varphi^*C$ quasi-cyclic of co-index $\ell$ with the same rate and relative designed distance as $C$. When $\ell\mid q-1$, $\varphi^*C$ is a matrix-product code whose constituents are twists of $C$. This yielded quasi-cyclic MDS elliptic codes. The hull of $\varphi^*C$ splits along the same twists, so hull variation on whole fibres produces quasi-cyclic EAQECCs with prescribed entanglement, governed by a subset-sum condition in $\Sigma(G)\oplus\ker\hat\varphi$.
 
-To our knowledge, this is the first use of isogenies in the construction of codes. Open questions include
+To our knowledge, this is the first use of isogenies in the construction of codes. Some natural next steps include
 \begin{itemize}
     \item efficient decoding of $\varphi^*C$ through its twists,
     \item hull variation using scalings that are not constant on fibres,
-    \item hull variation using Hermitian analogues of \Cref{section:hulls}, and
-    \item analogues for isogenies of higher-dimensional abelian varieties, such as Jacobians of genus-2 curves.
+    \item hull variation using Hermitian analogues of \Cref{section:hulls},
+    \item a comprehensive study of quasi-cyclic EAQECCs, together with physical and mathematical descriptions,
+    \item an extension to non-cyclic isogenies, and
+    \item analogues for isogenies of higher-dimensional abelian varieties, such as Jacobians of hyperelliptic curves.
 \end{itemize}
 
 \printbibliography
 
 \usection{AI declaration}
 
-% TODO
+Claude Opus 5.5 was consulted to generalise the proofs of \cite[Prop.~4.1, Thm.~4.2]{ling2001algebraic}, \cite[Lem.~3--4]{wang2026generic}, and \cite[Thm.~1(i)]{fang2020euclidean} to our pullback codes in \Cref{section:hulls}. All proofs were human-verified, reformulated to improve clarity, and hand-typed. Additionally, Claude constructed the codes of \Cref{example:mds-qc,example:qc-eaqecc-256,example:qc-eaqecc-64} in SageMath \cite{our-github} and verified the quasi-cyclic and MDS properties.
 
 \end{document}

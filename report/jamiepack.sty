@@ -168,8 +168,12 @@ linkcolor=blue
 
 % Font
 \loadfont
+% \textbf is coloured jptextbf: Navy by default, and the title colour of the
+% surrounding box inside \claimbox environments.
+\newcommand{\jptextbfdefault}{Navy}
+\ifbubumax\colorlet{jptextbf}{\jptextbfdefault}\fi
 \renewcommand{\textbf}[1]{%
-	\textcolor{Navy}{\bfseries{#1}}%
+	\textcolor{jptextbf}{\bfseries{#1}}%
 }
 
 % General Formatting
@@ -317,7 +321,9 @@ linkcolor=blue
 % TODO: add styling for scrreprt and scrbook
 \makeatletter
 \@ifclassloaded{scrartcl}{%
-	\renewcommand{\headfont}{}%
+	% Boxes recolour \textbf locally; reset it in the header, which may be
+	% typeset while a breakable box is still open.
+	\renewcommand{\headfont}{\colorlet{jptextbf}{\jptextbfdefault}}%
 	\ihead{\bubuiheadcontent}%
 	\automark{section}%
 	\renewcommand*{\sectionmark}[1]{%
@@ -429,6 +435,7 @@ linkcolor=blue
 	% Framed box with the title in a banner on the top edge
 	defnstyle/.style 2 args={%
 		breakable,
+		code={\colorlet{jptextbf}{#2}},
 		enhanced,
 		before skip=12pt,
 		after skip=12pt,
@@ -465,6 +472,7 @@ linkcolor=blue
 	% line ("Theorem 3 (Name)", then the body).
 	claimstyle/.style 2 args={%
 		breakable,
+		code={\colorlet{jptextbf}{#2}},
 		enhanced,
 		before skip=12pt,
 		after skip=12pt,
@@ -484,6 +492,7 @@ linkcolor=blue
 	% Framed box with square corners (not used by \claimbox)
 	examplestyle/.style 2 args={%
 		breakable,
+		code={\colorlet{jptextbf}{#2}},
 		enhanced,
 		before skip=16pt,
 		after skip=16pt,
@@ -626,11 +635,11 @@ linkcolor=blue
 	{definition}{Definition}{Definitions}
 \claimbox{blue!5}{Navy}
 	{theorem}{Theorem}{Theorems}
-\claimbox{DodgerBlue!6}{DodgerBlue!45!black}
+\claimbox{DodgerBlue!10}{DodgerBlue!80!black}
 	{lemma}{Lemma}{Lemmas}
-\claimbox{DodgerBlue!6}{DodgerBlue!45!black}
-	{corollary}{Corollary}{Corollaries}
 \claimbox{blue!5}{Navy}
+	{corollary}{Corollary}{Corollaries}
+\claimbox{DodgerBlue!10}{DodgerBlue!80!black}
 	{proposition}{Proposition}{Propositions}
 \claimbox{Gold!8}{Olive!50!DarkGoldenrod!75!black}
 	{conjecture}{Conjecture}{Conjectures}
