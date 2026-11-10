@@ -394,7 +394,7 @@ There are several ways that an isogeny $\varphi$ can transform the code $C_\mcL(
 \end{enumerate}
 where $D$ and $G$ live on $\mcE_2$ for the pullbacks and on $\mcE_1$ for the pushforwards.
 
-This interaction is largely unexplored in the literature. We tasked Claude Opus 5.5 with writing SageMath code that constructs all four codes. We tested it on curves over small fields, notably a 3-isogeny from $\mcE_1:y^2=x^3+5$ to $\mcE_2:y^2=x^3+20$ over $\bbF_{31}$, whose 39 rational points form a cyclic group. The code can be found in \cite{code-f251}. Running the experiments, we observe the following.
+This interaction is largely unexplored in the literature. We tasked Claude Opus 5.5 with writing SageMath code that constructs all four codes. We tested it on curves over small fields, notably a 3-isogeny from $\mcE_1:y^2=x^3+5$ to $\mcE_2:y^2=x^3+20$ over $\bbF_{31}$, whose 39 rational points form a cyclic group. The code can be found in \cite{code-experiments}. Running the experiments, we observe the following.
 \begin{itemize}
     \item Method 4 gives nonlinear codes, as $\varphi_*$ is multiplicative rather than additive on functions. The experiment with $k=3$ yielded only 3110 distinct nonzero vectors, whereas a linear $[12,3]_{31}$ code has $31^3-1=29790$.
     \item Method 2 gives invalid AG codes if $\supp D$ meets some fibre $\varphi^{-1}(Q)$ more than once, since $\varphi_*D$ then has a repeated point $Q$.
@@ -627,7 +627,7 @@ At the beginning, we used Claude to evaluate our potential project directions. W
     \item ``Draft one or two paragraphs on code automorphisms arising from the group law.''
 \end{itemize}
 
-Ideation for \Cref{section:isogenies} was done without AI assistance. After hypothesising the outcome of the four methods, we compared our hypotheses against Claude's own predictions. Claude then generated SageMath code to construct our codes and test our hypotheses. Claude was asked to derive a generator matrix for $\varphi^*C$, from which we observed a matrix product pattern and asked it to prove it. Claude also wrote code to compute \Cref{example:mds-qc}.
+Ideation for \Cref{section:isogenies} was done without AI assistance. After hypothesising the outcome of the four methods, we compared our hypotheses against Claude's own predictions. Claude then generated SageMath code \cite{code-experiments} to construct our codes and test our hypotheses. Claude was asked to derive a generator matrix for $\varphi^*C$, from which we observed a matrix product pattern and asked it to prove it. Claude also wrote code \cite{code-f251} to compute \Cref{example:mds-qc}.
 \begin{itemize}
     \item ``Predict the outcome of each of the four isogeny transformations. Suggest how to analyse them in SageMath, with a sample code file to test each one.''
     \item ``Suggest applications of method 1.''
