@@ -24,7 +24,7 @@
 
 \usection{Abstract}
 
-Elliptic curves are the only algebraic curves whose points admit a canonical group structure. Algebraic geometry code constructions using elliptic curves can therefore exploit the group law to obtain better parameters and properties. This report introduces the machinery behind elliptic curve codes and surveys recent constructions of MDS elliptic curve codes. As a novel direction, we also explore how isogenies interact with elliptic codes and their parameters, culminating in a new family of quasi-cyclic MDS codes.
+Elliptic curves are the only smooth projective curves whose points admit a canonical group structure. Algebraic geometry code constructions using elliptic curves can therefore exploit the group law to obtain better parameters and properties. This report introduces the machinery behind elliptic curve codes and surveys recent constructions of MDS elliptic curve codes. As a novel direction, we also explore how isogenies interact with elliptic codes and their parameters, culminating in a new family of quasi-cyclic MDS codes.
 
 \section{Introduction} \label{section:introduction}
 
@@ -32,7 +32,7 @@ Algebraic geometry (AG) codes are a family of linear error-correcting codes intr
 
 The code parameters are closely related to the geometry of the chosen curve, particularly its genus and the number of rational points. AG codes therefore provide a natural connection between algebraic geometry and coding theory. In 1982, Tsfasman, Vl\u{a}du\c{t} and Zink took this idea further, using curves with many rational points to construct the first code families whose asymptotic parameters surpass the Gilbert--Varshamov bound \cite{tsfasman1982modular}, demonstrating the ability for algebraic geometry to produce asymptotically good codes and sparking further research of AG codes constructed from a diverse range of algebraic curves.
 
-The simplest AG codes inequivalent to GRS codes arise from elliptic curves, which are smooth projective curves of genus 1. They are the only algebraic curves whose points admit a canonical abelian group structure \cite[\S X.3]{silverman2009arithmetic}.\footnote{Provided they have an $\bbF_q$-rational point, elliptic curves are the only algebraic curves isomorphic to their own Jacobians and hence are abelian varieties.} AG codes defined using elliptic curves are called elliptic curve codes, or simply elliptic codes. Using the group structure, algebraic constructions unique to genus 1 have been discovered, yielding codes with better parameters (e.g. maximum distance separable (MDS) codes) and desirable properties like iso-duality, with applications in quantum error correction. The group structure also supplies arguments for proving bounds on code parameters.
+The simplest AG codes inequivalent to GRS codes arise from elliptic curves, which are smooth projective curves of genus 1. They are the only smooth projective curves whose points admit a canonical abelian group structure \cite[\S X.3]{silverman2009arithmetic}.\footnote{Provided they have an $\bbF_q$-rational point, elliptic curves are the only smooth projective curves isomorphic to their own Jacobians and hence are abelian varieties.} AG codes defined using elliptic curves are called elliptic curve codes, or simply elliptic codes. Using the group structure, algebraic constructions unique to genus 1 have been discovered, yielding codes with better parameters (e.g. maximum distance separable (MDS) codes) and desirable properties like iso-duality, with applications in quantum error correction. The group structure also supplies arguments for proving bounds on code parameters.
 
 Elliptic curves also carry isogenies, which are curve morphisms preserving the group structure. Isogenies are heavily used in post-quantum cryptography \cite{jamielow2027,basso2026prism,NISTPQC-ADD-R3:SQIsign26}, but their applications to coding theory remain largely unexplored. We embark on an AI-assisted project, using Claude and SageMath to explore the different ways in which isogenies can transform an elliptic curve's function field, and hence the parameters of an elliptic code.
 
@@ -47,7 +47,7 @@ We summarise key definitions and results pertaining to elliptic curves and ellip
 \end{itemize}
 Henceforth, let $q=p^m$ denote a prime power.
 
-An \textbf{elliptic curve} $\mcE$ over $\bbF_q$ is a smooth projective curve of genus 1. Equivalently, $\mcE$ is the set of points $(x,y)\in\Fbar{q}^2$ satisfying an equation of the form
+An \textbf{elliptic curve} $\mcE$ over $\bbF_q$ is a smooth projective curve of genus 1 with an $\bbF_q$-rational point. Equivalently, $\mcE$ is the set of points $(x,y)\in\Fbar{q}^2$ satisfying an equation of the form
 \[ y^2+a_1xy+a_3y=x^3+a_2x^2+a_4x+a_6, \quad a_i\in\bbF_q \eqlabel{eqn:ec} \]
 together with a point at infinity $\infty$, provided that no point is singular. A point $P\in\mcE$ is \textbf{$\bbF_q$-rational} if $P\in\bbF_q^2\cup\set\infty$. The set of $\bbF_q$-rational points is denoted by $\mcE(\bbF_q)$, and the set $\mcE(\bbF_q)\bs\set\infty$ of affine $\bbF_q$-rational points by $\mcE(\bbF_q)^*$. Its cardinality is constrained by the Hasse--Weil bound \cite[\S V.1]{silverman2009arithmetic}
 \[ \abs{\#\mcE(\bbF_q)-(q+1)}\leq\floor{2\sqrt q}. \]
@@ -99,7 +99,7 @@ The divisors $\div\omega$ are called \textbf{canonical}. In genus 1, the sets of
 
 This section introduces general elliptic codes, their parameters, and their encoding and decoding mechanisms. In later sections, we consider specialised codes with better properties.
 
-Let $n\in\bbZ^+$, $\mcE$ be an elliptic curve and $D,G\in\Div\mcE$ be two divisors such that $1\leq\deg G\leq n-1$, $\supp D\cap\supp G=\emptyset$, and $D=(P_1)+\cdots+(P_n)$ is a sum of $n$ distinct $\bbF_q$-rational points. We adopt the notation
+Let $n\in\bbZ^+$, $\mcE$ be an elliptic curve and $D,G\in\Div\mcE$ be two $\bbF_q$-rational divisors (that is, divisors fixed by the $q$-power Frobenius) such that $1\leq\deg G\leq n-1$, $\supp D\cap\supp G=\emptyset$, and $D=(P_1)+\cdots+(P_n)$ is a sum of $n$ distinct $\bbF_q$-rational points. We adopt the notation
 \[ f(D):=(f(P_1),\hdots,f(P_n))\in\bbF_q^n\qtx{for}f\in\mcL(G). \]
 Construct an ordered basis $(\varphi_1,\hdots,\varphi_k)$ of $\mcL(G)$, where $k=\ell(G)=\deg G$ by Riemann--Roch. Then, there exists an $[n,k,d]_q$ code
 \[ C_\mcL(D,G):=\set{f(D):f\in\mcL(G)}=\ang{\varphi_1(D),\hdots,\varphi_k(D)}, \]
@@ -127,10 +127,10 @@ Let $f,g\in\mcL(s(Q))\subset\mcL(G)$, where $s=\floor{k/2}$, so that $fg\in\mcL(
 \vspace{-1.9em}
 Hence, the space
 \[ K=\set[\big]{f\in\mcL(s(Q)):S(fg)=0\ \forall g\in \mcL(s(Q))} \]
-contains the functions $f$ vanishing at $\supp\bfe$, and thus, reveals the error positions. Sampling $f\in K^*$, the coordinate set $I$ where $f$ vanishes contains $\supp\bfe$. As $S$ is linear, it suffices to consider $S(\varphi_i\varphi_j)$ for $1\leq i,j\leq s$.
+contains the functions $f$ vanishing at $\supp\bfe$, and thus, reveals the error positions. Conversely, if $\wt(\bfe)\leq\floor{k/2}-1$, then every $f\in K$ vanishes on $\supp\bfe$ \cite[\S6.2]{hoholdt1998algebraic}. Sampling $f\in K^*$, the coordinate set $I$ where $f$ vanishes then contains $\supp\bfe$. As $S$ is linear, it suffices to consider $S(\varphi_i\varphi_j)$ for $1\leq i,j\leq s$.
 
 Finally, we use \cite[Prop.~6.1]{o2008key} to find the error values. Assuming $\#I<d(C)$, $\bfe$ is the unique solution $\bfx$ of the system
-\[ \bfx\dotpr f_i(D)=S(f_i)\quad\forall 1\leq i\leq k\qand x_i=0\quad\forall i\notin I. \]
+\[ \bfx\dotpr \varphi_i(D)=S(\varphi_i)\quad\forall 1\leq i\leq k\qand x_i=0\quad\forall i\notin I. \]
 \cite[Prop.~6.5]{o2008key} shows that this decoding algorithm can correct $\floor{k/2}-1$ errors (which is suboptimal if $C$ is MDS) with complexity $\mcO(n^3)$.
 
 \begin{algorithm}{Basic Decoding \cite[\S6.2]{hoholdt1998algebraic}}{}
@@ -155,7 +155,7 @@ Finally, we use \cite[Prop.~6.1]{o2008key} to find the error values. Assuming $\
 
 Every smooth projective curve $\mcC$ of genus $g$ carries an abelian variety of dimension $g$, its Jacobian $\Jac\mcC$, whose points are the divisor classes of degree zero on $\mcC$ (cf. \Cref{section:preliminaries}). What distinguishes genus 1 is that the group structure can be transported from the Jacobian to the curve. Specifically, for an elliptic curve, the \textbf{Abel--Jacobi map}
 \[ \mcE\lra\Jac\mcE, \qquad P\longmapsto\br{(P)-(\infty)} \]
-is a bijection whose inverse is the sum map $\Sigma$ of \Cref{section:preliminaries}, and the group law it induces on $\mcE$ agrees with the geometric one in \cite[\S III.3]{silverman2009arithmetic}. This is the isomorphism with the Jacobian noted in the abstract.
+is a bijection whose inverse is the sum map $\Sigma$ of \Cref{section:preliminaries}, and the group law it induces on $\mcE$ agrees with the geometric one in \cite[\S III.3]{silverman2009arithmetic}. This is the isomorphism with the Jacobian noted in \Cref{section:preliminaries}.
 
 In coding theory, one can exploit this group law to obtain better codes. For an AG code $C_\mcL(D,G)$ with $g=1$, the points in $D$ and $G$ lie in a group. Conditions on $D$ and $G$, which govern the code parameters, may therefore be rewritten as conditions on sums of these evaluation points using tools such as the Abel--Jacobi Theorem. For $g\geq2$ the group lives on a higher-dimensional variety, and no such translation is available.
 
@@ -163,9 +163,9 @@ In coding theory, one can exploit this group law to obtain better codes. For an 
     $A\in\Div^0\mcE$ is principal if and only if $\Sigma(A)=\infty$.
 \end{lemma}
 
-Henceforth we assume, as is standard, that $\supp G\subset\mcE(\bbF_q)$, so that $\Sigma(G)\in\mcE(\bbF_q)$. \Cref{section:ecc} established that an elliptic code is either MDS or near-MDS. The following criterion decides which.
+As $G$ is $\bbF_q$-rational, $\Sigma(G)$ is fixed by the Frobenius, so $\Sigma(G)\in\mcE(\bbF_q)$ even if the points of $\supp G$ are not themselves rational. \Cref{section:ecc} established that an elliptic code is either MDS or near-MDS. The following criterion decides which.
 
-\begin{theorem}{Subset-sum criterion \cite{munuera1993mds,li2015minimum}}{mds-criterion}
+\begin{theorem}{Subset-sum criterion \cite{munuera1993mds,li2015minimum}, \cite[Lem.~3.4]{han2024maximal}}{mds-criterion}
     Let $C_\mcL(D,G)$ be as in \Cref{section:ecc}, with $D=(P_1)+\cdots+(P_n)$ and $k=\deg G$. Then $d=n-k$ if and only if there are $k$ distinct points $P_{i_1},\hdots,P_{i_k}\in\supp D$ with
     \[ P_{i_1}\oplus\cdots\oplus P_{i_k}=\Sigma(G). \eqlabel{eqn:mds-criterion} \]
     Otherwise, $d=n-k+1$, and the code is MDS.
@@ -181,7 +181,7 @@ Counting the codewords of a given weight is hard in general, but the group law r
 A second consequence concerns the shape of $G$ itself. Replacing $G$ by an equivalent divisor yields an equivalent code. Hence, up to coordinate scalings, we may take $G$ to be supported on up to two points, which is the case for all constructions in \Cref{section:mds-ecc}.
 
 \begin{lemma}{\cite[Prop.~2.2.14]{stichtenoth2009algebraic}}{equiv-codes}
-    If $G$ and $H$ are equivalent divisors whose supports are disjoint from $D$, then $C_\mcL(D,G)$ and $C_\mcL(D,G')$ differ at most by coordinate scaling.
+    If $G$ and $H$ are equivalent divisors whose supports are disjoint from $D$, then $C_\mcL(D,G)$ and $C_\mcL(D,H)$ differ at most by coordinate scaling.
 \end{lemma}
 
 \begin{corollary}{Two-point normal form \cite{wang2025nonrs,zhu2026isodual}}{normal-form}
@@ -213,7 +213,7 @@ The simplest way to obtain the condition of \Cref{theorem:mds-criterion} is a pa
 \begin{construction}{Index-two codes \cite{wang2025nonrs}}{index-two}
     Let $N=\#\mcE(\bbF_q)$ be even and let $H\leq\mcE(\bbF_q)$ be a subgroup of index 2. Choose $Q\in\mcE(\bbF_q)\setminus H$.
     \begin{enumerate}
-        \item If $k$ is odd, set $D=\sum_{P\in H}(P)$ and $G=k(Q)$. Then $C_\mcL(D,G)$ is an $\br{N/2,\;k,\;N/2-k+1}_q$ MDS code.
+        \item \label{enum:index-two-odd} If $k$ is odd, set $D=\sum_{P\in H}(P)$ and $G=k(Q)$. Then $C_\mcL(D,G)$ is an $\br{N/2,\;k,\;N/2-k+1}_q$ MDS code.
         \item \label{enum:index-two-even} If $k$ is even, choose $P\in H$ and set $D=\sum_{P'\in H\setminus\set P}(P')$ and $G=(k-1)(P)+(Q)$. Then $C_\mcL(D,G)$ is an $\br{N/2-1,\;k,\;N/2-k}_q$ MDS code.
     \end{enumerate}
 \end{construction}
@@ -258,27 +258,26 @@ For the bound on $n$, $Q\notin\mcE_\mathrm{odd}$ implies $[\mcE(\bbF_q):\mcE_\ma
 
 \subsection{Bounds}
 
-Another important question to ask is how long an MDS elliptic code can be. Write $\MEC(k,q)$ for the maximum length of a nontrivial $q$-ary MDS elliptic code of dimension $k$, where we temporarily allow $\supp G$ to contain non-rational points. By \Cref{theorem:mds-criterion}, the problem is one in additive combinatorics. How large can a subset $\mcT\subseteq\mcE(\bbF_q)$ be before every point of the group is a sum of $k$ distinct elements of $\mcT$? Once $\supp D$ is that large, no choice of $G$ yields the MDS property.
+Another important question to ask is how long an MDS elliptic code can be. Write $\MEC(k,q)$ for the maximum length of a nontrivial $q$-ary MDS elliptic code of dimension $k$, where $\supp G$ may contain non-rational points. By \Cref{theorem:mds-criterion}, the problem is one in additive combinatorics. How large can a subset $\mcT\subseteq\mcE(\bbF_q)$ be before every point of the group is a sum of $k$ distinct elements of $\mcT$? Once $\supp D$ is that large, no choice of $G$ yields the MDS property.
 
-The first bound is due to Munuera \cite{munuera1992main}, who showed
-\[ \MEC(k,q)\leq\frac{q+1}{2}+\sqrt q+k, \eqlabel{eqn:munuera} \]
-already confining an MDS elliptic code to about half of the rational points. This was improved by Li, Wan and Zhang \cite{li2015minimum} for large $k$, and by Han and Ren \cite{han2023tight,han2024maximal} for small $k$, before the exact value was determined by Chen et al.~\cite{chen2026maximal}, also for small $k$.
-
-\begin{theorem}{Maximal length \cite[Table~1]{chen2026maximal}}{mec}
-    Let $q\geq289$ and $3\leq k\leq\frac{1}{10}\pa[\big]{q+1-2\sqrt q}$. Then
-    \[ \MEC(k,q)=\floor*{\tfrac{M}{2}}. \]
-    If we further impose $2\mid k$ and $\supp G\subseteq\mcE(\bbF_q)$, the maximal length is instead $\floor[\big]{\frac M2}-1$.
-\end{theorem}
-
-On a maximal curve with $N$ even, so that $N=M$, both constructions of \Cref{construction:index-two} meet this bound, part (b) in its form with $\supp G$ rational.
-
-One may ask whether, given $\mcE$, we can bound the length of an MDS elliptic code on $\mcE$ using $\#\mcE(\bbF_q)$ instead of the generic Hasse--Weil upper bound $M$. This is clearly stronger than \Cref{theorem:mec}.
-
-\begin{conjecture}{Tighter MDS elliptic bound}{mec-bound-conj}
+\begin{conjecture}{MDS elliptic length bound}{mec-bound-conj}
     Let $C$ be an MDS $[n,k]_q$ elliptic code on $\mcE$, with $N=\#\mcE(\bbF_q)$. If $q$ (equivalently, $N$) is sufficiently large and $3\leq k\leq n-3$, then $n\leq\floor{N/2}$.\footnote{The bound on $k$ excludes trivial cases.}
 \end{conjecture}
 
-\Cref{conjecture:mec-bound-conj} is open in general, but proven for iso-dual codes with $N\geq255$ \cite[Thm.~3.1]{zhu2026isodual}.
+The first bound is due to Munuera \cite{munuera1992main}, who showed
+\[ \MEC(k,q)\leq\frac{q+1}{2}+\sqrt q+k, \]
+already confining an MDS elliptic code to about half of the rational points. Han and Ren \cite{han2023tight,han2024maximal} later removed the dependence on $k$.
+
+\begin{theorem}{Han--Ren bound \cite[Thm.~1.2]{han2024maximal}}{han-ren}
+    Let $C$ be an MDS $[n,k]_q$ elliptic code on $\mcE$, with $N=\#\mcE(\bbF_q)$ and $2\leq k\leq n-2$. Then
+    \[ n\leq\begin{cases}
+        \frac{N+4}{2} & \text{if } k\in\set{2,n-2}, \\
+        \frac{N+6}{2} & \text{if } k\in\set{3,n-3}, \\
+        \frac{N+5}{2} & \text{if } 3<k<n-3.
+    \end{cases} \]
+\end{theorem}
+
+In particular, $\MEC(k,q)\leq(M+6)/2$, and \Cref{conjecture:mec-bound-conj} holds up to an additive constant of at most 3. The conjecture itself is proven for large $q$ ($q\geq289$) and small $k$ ($3\leq k\leq \frac{N}{10}$) \cite{han2023tight}, and hence, by duality, for large $k$ ($n-\frac{N}{10}\leq k\leq n-3$). The conjecture was also proven for iso-dual codes with $N\geq255$ \cite[Thm.~3.1]{zhu2026isodual}. Note that \Cref{construction:index-two}\ref{enum:index-two-odd} and the extension of \Cref{construction:index-two}\ref{enum:index-two-even} both achieve the bound with equality, and so, are as long as possible.
 
 \mycomment{
 \section{Quantum elliptic codes} \label{section:quantum-ecc}
@@ -382,7 +381,7 @@ where $e_P$ denotes the ramification index of $P\in\mcE_1$ in $\varphi^{-1}(Q)$,
     \bbF_q(\mcE_1)&\to\bbF_q(\mcE_2), & \quad f \mapsto \pa[\Bigg]{\varphi_*f:Q&\mapsto\prod_{P\in\varphi^{-1}(Q)}f(P)} \\
     \Div\mcE_1&\to\Div\mcE_2, & \quad \sum_{P\in\mcE_1} n_P(P) &\mapsto \sum_{P\in\mcE_1} n_P\pa[\big]{\varphi(P)},
 \end{alignat*}
-where $\varphi_*f$ is simply the algebraic norm and $(\varphi_*f)(Q)$ is defined whenever $f$ is regular on $\varphi^{-1}(Q)$. Every isogeny $\varphi$ comes with a \textbf{dual isogeny} $\hat\varphi:\mcE_2\to\mcE_1$, which satisfies $\hat\varphi\circ\varphi=\varphi_*\circ\varphi^*=[\ell]$ \cite[\S III.6]{silverman2009arithmetic}.
+where $\varphi_*f$ is simply the algebraic norm and $(\varphi_*f)(Q)$ is defined whenever $f$ is regular on $\varphi^{-1}(Q)$. Every isogeny $\varphi$ comes with a \textbf{dual isogeny} $\hat\varphi:\mcE_2\to\mcE_1$, which satisfies $\hat\varphi\circ\varphi=[\ell]$ \cite[\S III.6]{silverman2009arithmetic}. By contrast, $\varphi_*\varphi^*B=\ell B$ for $B\in\Div\mcE_2$ and $\varphi_*\varphi^*f=f^\ell$ for $f\in\bbF_q(\mcE_2)$.
 
 \subsection{Exploration} \label{subsection:exploration}
 
@@ -395,11 +394,11 @@ There are several ways that an isogeny $\varphi$ can transform the code $C_\mcL(
 \end{enumerate}
 where $D$ and $G$ live on $\mcE_2$ for the pullbacks and on $\mcE_1$ for the pushforwards.
 
-This interaction is largely unexplored in the literature. We tasked Claude Opus 5.5 with writing SageMath code that constructs all four codes. We tested it on curves over small fields, notably a 3-isogeny from $\mcE_1:y^2=x^3+5$ to $\mcE_2:y^2=x^3+20$ over $\bbF_{31}$, whose 39 rational points form a cyclic group. The code can be found in \cite{our-github}. Running the experiments, we observe the following.
+This interaction is largely unexplored in the literature. We tasked Claude Opus 5.5 with writing SageMath code that constructs all four codes. We tested it on curves over small fields, notably a 3-isogeny from $\mcE_1:y^2=x^3+5$ to $\mcE_2:y^2=x^3+20$ over $\bbF_{31}$, whose 39 rational points form a cyclic group. The code can be found in \cite{code-f251}. Running the experiments, we observe the following.
 \begin{itemize}
     \item Method 4 gives nonlinear codes, as $\varphi_*$ is multiplicative rather than additive on functions. The experiment with $k=3$ yielded only 3110 distinct nonzero vectors, whereas a linear $[12,3]_{31}$ code has $31^3-1=29790$.
     \item Method 2 gives invalid AG codes if $\supp D$ meets some fibre $\varphi^{-1}(Q)$ more than once, since $\varphi_*D$ then has a repeated point $Q$.
-    \item Method 3 gives a subcode of method 1, as $\varphi^*\mcL(G)\subseteq\mcL(\varphi^*G)$. Since $(\varphi^*f)(\varphi^*(P))=f(\varphi_*(\varphi^*P))=f(\ell(P))$, $C_{\varphi^*\mcL}(\varphi^*D,G)$ is the $\ell$-fold repetition of $C_\mcL(D,G)$, in which each coordinate is repeated along its fibre. The code has parameters $[\ell n,k,\ell d]$. For $k\geq3$, it is not an elliptic code itself, as $\ell d\leq\ell(n-k+1)<\ell n-k$ violates the bound of \Cref{section:ecc}.
+    \item Method 3 gives a subcode of method 1, as $\varphi^*\mcL(G)\subseteq\mcL(\varphi^*G)$. Since $(\varphi^*f)(\tilde P)=f(\varphi(\tilde P))=f(P)$ for every $\tilde P\in\varphi^{-1}(P)$, $C_{\varphi^*\mcL}(\varphi^*D,G)$ is the $\ell$-fold repetition of $C_\mcL(D,G)$, in which each coordinate is repeated along its fibre. The code has parameters $[\ell n,k,\ell d]$. For $k\geq3$, it is not an elliptic code itself, as $\ell d\leq\ell(n-k+1)<\ell n-k$ violates the bound of \Cref{section:ecc}.
     \item Method 1 is the most interesting, and we study it for the rest of the section. It deserves its own definition and a more compact notation.
 \end{itemize}
 
@@ -412,6 +411,7 @@ This interaction is largely unexplored in the literature. We tasked Claude Opus 
 All results in the sequel assume the conditions and notation of \Cref{definition:pullback-code}. We first record three facts from arithmetic geometry that subsequent results rely on.
 
 \begin{lemma}{Pullback facts}{pullback-facts}
+\vspace{-6pt}
     \begin{enumerate}
         \item \label{enum:pf-translation} $\tau_T^*\varphi^*=\varphi^*$ for every $T\in K$.
         \item \label{enum:pf-galois} $\bbF_q(\mcE_1)/\varphi^*\bbF_q(\mcE_2)$ is Galois with group $\set{\tau_T^*:T\in K}$, so the functions fixed by every $\tau_T^*$ are exactly the pullbacks.
@@ -456,11 +456,11 @@ Next, we show that $\varphi^*C$ inherits iso-duality from $C$.
 We also observed that the code from method 3 is the subcode of $\varphi^*C$ fixed by $\ker\varphi$, where elements of $\ker\varphi$ act by translations.
 
 \begin{proposition}{Fixed subcode}{pullback-fixed}
-    The subcode of $\varphi^*C$ fixed by $K$ is $C_{\varphi^*\mcL}(\varphi^*D,G)$, which has parameters $[\ell n,k,\ell d]$.
+    The subcode of $\varphi^*C$ fixed by $K$ is $C_{\varphi^*\mcL}(\varphi^*D,G)$, which has parameters $[\ell n,k,\ell d]$, where $d$ is the minimum distance of $C$.
 \end{proposition}
 
 \begin{proof}
-Let $T\in K$. First, we prove the backward inclusion. By \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}, $\varphi^*\mcL(G)\subseteq\mcL(\varphi^*G)$, and each $\varphi^*f=f\circ\varphi=f\circ\varphi\circ\tau_T$ is constant on fibres. So, $C_{\varphi^*\mcL}(\varphi^*D,G)\subseteq\varphi^*C$ is the subcode fixed by $K$.
+Let $T\in K$. First, we prove the backward inclusion. By \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}, $\varphi^*\mcL(G)\subseteq\mcL(\varphi^*G)$, and each $\varphi^*f=f\circ\varphi=f\circ\varphi\circ\tau_T$ is constant on fibres. So, $C_{\varphi^*\mcL}(\varphi^*D,G)\subseteq\varphi^*C$ is fixed by $K$.
 
 Now, we prove the forward inclusion. Suppose $\bfc:=f(\varphi^*D)\in\varphi^*C$ is fixed by $K$. In other words, the function $\tau_T^*f-f\in\mcL(\varphi^*G)$ vanishes on $\varphi^*D$, which has $\ell n>\deg\varphi^*G$ points. Hence, $\tau_T^*f-f$ must be identically zero, i.e. $f$ is fixed by $\tau_T^*$. By \Cref{lemma:pullback-facts}\ref{enum:pf-galois}, $f\in\varphi^*\bbF_q(\mcE_2)$, i.e. $f=\varphi^*g$ for some $g\in\bbF_q(\mcE_2)$. But
 \begin{align*}
@@ -484,12 +484,13 @@ We asked Claude to construct the generator matrix of $\varphi^*C$. Claude did th
     \end{enumerate}
 \end{lemma}
 
-Due to the length of (and lack of coding theory in) the proof, we postpone it to page \pageref{proof:pullback-eigen} in the appendix.
+\begin{proof}
+    Due to the length of (and lack of coding theory in) the proof, we refer the interested reader to \cite[Lem.~15]{upcoming-paper} in our unreleased paper.
+\end{proof}
 
 \begin{theorem}{Splitting into twists}{pullback-split}
-    Adopt the notation and hypotheses of \Cref{lemma:pullback-eigen}. Then, $\varphi^*C$ is monomially equivalent to the matrix product code $[C_0,\hdots,C_{\ell-1}]\cdot \bfV$ with $\bfV:=\br{\zeta^{jm}}_{j,m=0}^{\ell-1}$, where each $C_j$ is a scaling of the twist $C_\mcL(D,G+jA)$.
-    
-    \setlength{\parskip}{5pt}
+    Adopt the notation and hypotheses of \Cref{lemma:pullback-eigen}. Then, $\varphi^*C$ is monomially equivalent to the matrix product code $(C_0,\hdots,C_{\ell-1})\cdot \bfV$ with $\bfV:=\br{\zeta^{jm}}_{j,m=0}^{\ell-1}$, where each $C_j$ is a scaling of the twist $C_\mcL(D,G+jA)$.
+
     Up to scaling, one may replace $G+jA$ by any divisor $G_j$ disjoint from $D$ with $\deg G_j=k$ and $\Sigma(G_j)=\Sigma(G)\oplus[j]R$, where $R$ is a suitable generator for $\ang R=\ker\hat\varphi$.
 \end{theorem}
 
@@ -511,28 +512,19 @@ Due to the length of (and lack of coding theory in) the proof, we postpone it to
         f(\tilde P_i\oplus[m]T)&=(\tau^mf)(\tilde P_i)=\zeta^{jm}f(\tilde P_i),\quad\text{so} \\
         W_j&=\set*{\pa*{\bfc,\zeta^j\bfc,\cdots,\zeta^{j(\ell-1)}\bfc}:\bfc\in C_j}.
     \end{align*}
-    Hence, $\varphi^*C=\bigoplus_jW_j=[C_0,\hdots,C_{\ell-1}]\cdot\bfV$.
+    Hence, $\varphi^*C=\bigoplus_jW_j=(C_0,\hdots,C_{\ell-1})\cdot\bfV$.
     
     For the second part of the theorem statement, observe that $G+jA$ satisfies the same conditions as $G_j$, so they are equivalent by \Cref{lemma:abel-jacobi}. \Cref{lemma:equiv-codes} then asserts that $C_\mcL(D,G_j)$ is a scaling of $C_\mcL(D,G+jA)$.
 \end{proof}
 
-Next, we present a necessary condition for $\varphi^*C$ to be MDS. This differs from \Cref{theorem:mds-criterion}, which concerns sums of $\ell k$ points as opposed to $k$ points in \Cref{corollary:pullback-twists-mds}.
+Next, we present a necessary condition for $\varphi^*C$ to be MDS. Unlike \Cref{theorem:mds-criterion}, which concerns sums of $\ell k$ points of $\mcE_1$, \Cref{corollary:pullback-twists-mds} concerns $\ell$ sums of only $k$ points of $\mcE_2$.
 
 \begin{corollary}{MDS twists}{pullback-twists-mds}
     If $\varphi^*C$ is MDS, then no $k$ points of $\supp D$ sum into $\Sigma(G)\oplus\ker\hat\varphi$. In the setting of \Cref{theorem:pullback-split}, every twist $C_\mcL(D,G+jA)$ is then MDS.
 \end{corollary}
 
 \begin{proof}
-    By the construction of $\hat\varphi$ \cite[Thm.~III.6.1(b)]{silverman2009arithmetic}, every divisor $B\in\Div\mcE_2$ of degree 0 satisfies $\Sigma(\varphi^*B)=\hat\varphi(\Sigma(B))$. Replacing $B$ by $B-b(\infty)$, every divisor $B$ of degree $b$ satisfies
-    \[ \Sigma(\varphi^*B)=\hat\varphi(\Sigma(B))\oplus[b]s_K \qwhr s_K:=\Sigma(\varphi^*(\infty)). \]
-    Suppose that distinct points $P_{i_1},\hdots,P_{i_k}\in\supp D$ satisfy $P_{i_1}\oplus\cdots\oplus P_{i_k}\in\Sigma(G)\oplus\ker\hat\varphi$. Applying the identity to both $B=\sum_j(P_{i_j})$ and $G$, which both have degree $k$, we obtain
-    \begin{align*}
-        \textstyle \Sigma\pa*{\varphi^*\sum_j(P_{i_j})}&=\hat\varphi\pa[\big]{P_{i_1}\oplus\cdots\oplus P_{i_k}}\oplus[k]s_K \\
-        &=\hat\varphi(\Sigma(G))\oplus[k]s_K=\Sigma(\varphi^*G).
-    \end{align*}
-    Since $\varphi^*\sum_j(P_{i_j})$ contains $\ell k$ distinct points of $\supp\varphi^*D$, $\varphi^*C$ is not MDS by \Cref{theorem:mds-criterion}. The main result follows by contraposition.
-    
-    In the setting of \Cref{theorem:pullback-split}, we have $\ker\hat\varphi=\ang R$, so $\Sigma(G+jA)=\Sigma(G)\oplus[j]R$ runs over $\Sigma(G)\oplus\ker\hat\varphi$. Hence, if $\varphi^*C$ is MDS, no $k$ points of $\supp D$ sum to any $\Sigma(G+jA)$, and each twist $C_\mcL(D,G+jA)$ is MDS by \Cref{theorem:mds-criterion}.
+    Due to the length of (and lack of coding theory in) the proof, we refer the interested reader to \cite[Cor.~17]{upcoming-paper} in our unreleased paper.
 \end{proof}
 
 \subsection{Comparison with previous work}
@@ -541,7 +533,7 @@ We found no publications discussing the application of isogenies to elliptic cur
 
 \begin{itemize}
     \item \textbf{Symmetry:} group automorphisms of $\mcE$ \textit{vs} translations by $\ker\varphi$
-    \item \textbf{Co-index:} $\leq 6$ \textit{vs} any $\ell\mid N$
+    \item \textbf{Co-index:} $\leq 6$ \textit{vs} any $\ell$ dividing the exponent of $\mcE_1(\bbF_q)$
     \item \textbf{$G$:} $k(\infty)$ \textit{vs} a pullback divisor
     \item \textbf{Orbit sizes:} sometimes varied \textit{vs} uniform (size $\ell$)
     \item \textbf{MDS:} exclusively near-MDS \textit{vs} possibly MDS
@@ -549,26 +541,26 @@ We found no publications discussing the application of isogenies to elliptic cur
 
 \subsection{Applications}
 
-The results in the previous subsections have three immediate applications. The first is \textbf{longer iso-dual elliptic codes}. The hypothesis of \Cref{corollary:pullback-isodual} holds for the iso-dual codes of \Cref{construction:isodual} as $\Sigma(D)=\infty=[2]Q=\Sigma(2G)$. Method 1 therefore turns a short iso-dual MDS code of length $2k<\frac N\ell$ into a long iso-dual code of length $2\ell k$ with the same rate $\frac12$ and relative designed distance $\frac{n-k}{n}$, but typically at the cost of the MDS property (i.e. 1 unit of distance).
+The results above have three immediate applications. First, they give \textbf{longer iso-dual elliptic codes}. The codes of \Cref{construction:isodual} satisfy $\Sigma(D)=\infty=\Sigma(2G)$, so if $\supp D\subseteq\varphi(\mcE_1(\bbF_q))$, so that the fibres over $\supp D$ are rational, \Cref{corollary:pullback-isodual} turns an iso-dual MDS code of length $2k$ into an iso-dual code of length $2\ell k$. The rate $\frac12$ and relative designed distance are preserved, but typically not the MDS property.
 
-The second is \textbf{decoding via twists}. Ling and Sol\'e showed that every quasi-cyclic code decomposes into shorter constituent codes \cite{ling2001algebraic}. \Cref{theorem:pullback-split} identifies the constituents of $\varphi^*C$ as scalings of the twists $C_\mcL(D,G_j)$, which are $[n,k,\geq\! n-k]$ elliptic codes on $\mcE_2$. Decoding the $\ell$ twists separately, each up to half its minimum distance, corrects every error pattern meeting at most $\floor{(n-k-1)/2}$ fibres $\varphi^{-1}(P_i)$, however many errors each fibre contains. Thus, errors concentrated on few fibres can be corrected by $\ell$ decoders of length $n$, rather than one of length $\ell n$.
+Second, they allow \textbf{decoding via twists}. By \Cref{theorem:pullback-split}, the Ling--Sol\'e constituents \cite{ling2001algebraic} of $\varphi^*C$ are scalings of the twists, which are $[n,k,\geq n-k]$ elliptic codes. Decoding the $\ell$ twists separately corrects any error pattern meeting at most $\floor{(n-k-1)/2}$ fibres, however many errors each fibre contains.
 
-The third is a supply of \textbf{quasi-cyclic elliptic codes}. Quasi-cyclic codes generalise cyclic codes and have a rich algebraic structure \cite{ling2001algebraic}. By \Cref{theorem:pullback}, the pullback produces quasi-cyclic elliptic codes of co-index $\ell$ with the same rate $\frac kn$ and relative designed distance $\frac{n-k}{n}$ as $C$, provided $\mcE_1(\bbF_q)$ has a cyclic subgroup of order $\ell$. We can combine this with \Cref{construction:index-two} to obtain \textbf{MDS quasi-cyclic elliptic codes}, provided that the index-two subgroup is compatible with the fibres of $\varphi$. This is illustrated in \Cref{construction:index-two-pullback} and \Cref{example:mds-qc}.
+Third, they supply \textbf{quasi-cyclic elliptic codes} of co-index $\ell$ with the rate and relative designed distance of $C$ (\Cref{theorem:pullback}). Combined with \Cref{construction:index-two}, they give \textbf{MDS quasi-cyclic elliptic codes} (\Cref{construction:index-two-pullback}, \Cref{example:mds-qc}).
 
 \begin{construction}{MDS QC pullback codes}{index-two-pullback}
     Let $\varphi:\mcE_1\to\mcE_2$ and $K$ be as in \Cref{theorem:pullback}, with $\ell$ odd. Let $N=\#\mcE_1(\bbF_q)$ be even, let $H\leq\mcE_1(\bbF_q)$ be a subgroup of index 2, and choose $Q\in\mcE_1(\bbF_q)\setminus H$.
     \begin{enumerate}
-        \item \label{enum:index-two-pullback-odd} If $k$ is odd, set $D=\sum_{P\in\varphi(Q\oplus H)}(P)$ and $G=k(\infty)$. Then $\varphi^*C=C_\mcL(\varphi^*D,\varphi^*G)$ is an $\br{N/2,\;\ell k,\;N/2-\ell k+1}_q$ MDS code.
-        \item \label{enum:index-two-pullback-any} For any $k$, set $D=\sum_{P\in\varphi(H)\setminus\set\infty}(P)$ and $G=(k-1)(\infty)+(\varphi(Q))$. Then $\varphi^*C$ is an $\br{N/2-\ell,\;\ell k,\;N/2-\ell-\ell k+1}_q$ MDS code.
+        \item \label{enum:index-two-pullback-odd} If $k$ is odd with $\ell k<N/2$, set $D=\sum_{P\in\varphi(Q\oplus H)}(P)$ and $G=k(\infty)$. Then $\varphi^*C=C_\mcL(\varphi^*D,\varphi^*G)$ is an $\br{N/2,\;\ell k,\;N/2-\ell k+1}_q$ MDS code.
+        \item \label{enum:index-two-pullback-any} For any $k\geq1$ with $\ell k<N/2-\ell$, set $D=\sum_{P\in\varphi(H)\setminus\set\infty}(P)$ and $G=(k-1)(\infty)+(\varphi(Q))$. Then $\varphi^*C$ is an $\br{N/2-\ell,\;\ell k,\;N/2-\ell-\ell k+1}_q$ MDS code.
     \end{enumerate}
     In both cases, $\varphi^*C$ is quasi-cyclic of co-index $\ell$.
 \end{construction}
 
 \begin{proof}
-    See page \pageref{proof:index-two-pullback} in the appendix.
+    Due to the length of (and lack of coding theory in) the proof, we refer the interested reader to \cite[Constr.~18]{upcoming-paper} in our unreleased paper.
 \end{proof}
 
-\begin{example}{$\sf{[140,5k]_{251}}$ MDS\hspace{-1pt} QC\hspace{-1pt} codes \cite{our-github}}{mds-qc} \setlength{\parskip}{5pt}
+\begin{example}{$\sf{[140,5k]_{251}}$ MDS\hspace{-1pt} QC\hspace{-1pt} codes \cite{code-f251}}{mds-qc}
 Consider $\mcE_1:y^2=x^3+x+100$ over $\bbF_{251}$. Then, $N=\#\mcE_1(\bbF_{251})=280$, which is 3 off from the upper Hasse--Weil bound $q+1+\floor{2\sqrt q}=283$. $(199,0)$ is its only rational point of order 2, so $H:=[2]\mcE_1(\bbF_{251})$ has index 2.
 
 The point $T=(65,14)$ has order $\ell=5$, and V\'elu's formulae give the isogeny $\varphi:\mcE_1\to\mcE_2:y^2=x^3+231x+13$ with kernel $K=\ang T$. As $5\mid250=q-1$, we may take $\zeta=20$, an element of order 5 in $\bbF_{251}$. Then
@@ -596,7 +588,7 @@ C_j&=\bfv_j\star C_\mcL(D,G+jA),\quad \bfv_j:=\pa*{u(\tilde P_i)^j}_{i=1}^{28}.
 \end{align*}
 By \Cref{corollary:pullback-twists-mds}, every twist is a $[28,k,29-k]_{251}$ MDS code. For instance, for $k=15$, $\varphi^*C$ is a $[140,75,66]_{251}$ code that glues together five $[28,15,14]_{251}$ MDS codes.
 
-Taking instead $D$ to be the sum of the 55 affine points of $\varphi(\mcE_1(\bbF_{251}))$, \Cref{theorem:pullback} gives quasi-cyclic $[275,5k]_{251}$ codes for $1\leq k\leq54$. By \Cref{eqn:munuera}, the codes are near-MDS with minimum distance $275-5k$.
+Taking instead $D$ to be the sum of the 55 affine points of $\varphi(\mcE_1(\bbF_{251}))$, \Cref{theorem:pullback} gives quasi-cyclic $[275,5k]_{251}$ codes for $1\leq k\leq54$. As $5k\notin\set{1,274}$, these codes are non-trivial, so they are near-MDS, with minimum distance $275-5k$, by \Cref{theorem:han-ren}, as $275>\frac{N+6}2$.
 \end{example}
 
 \section{Conclusion} \label{section:conclusion}
@@ -606,7 +598,7 @@ This report has demonstrated that amongst all AG codes, the genus 1 case possess
 \begin{itemize}
     \item Showing whether a code is MDS reduces to the subset-sum criterion (\Cref{theorem:mds-criterion}), an algebraic combinatorial problem. This was used to construct MDS codes (\Cref{construction:index-two,construction:isodual,construction:index-two-pullback}).
     \item Up to equivalence, we need only consider one- or two-point codes (\Cref{corollary:normal-form}).
-    \item Code automorphisms are abundant, arising from translations (\Cref{theorem:translations}) as well as from $\Aut(\mcE,\infty)$.
+    \item Code automorphisms are abundant, arising from translations (\Cref{theorem:translations}) as well as automorphisms fixing $\infty$.
     \item Pulling back along an isogeny produces longer elliptic codes that preserve the rate and relative designed distance, inherit iso-duality, are quasi-cyclic, and split into twisted elliptic codes (\Cref{section:isogenies}).
 \end{itemize}
 
@@ -619,64 +611,7 @@ However, the current research landscape focusing specifically on elliptic codes 
 
 \printbibliography
 
-\usection{Appendix}
-
-\mycomment{
-\begin{proof}[Proof of \Cref{theorem:eaqecc-elliptic}]\refstepcounter{figure}\label{proof:eaqecc-elliptic}
-    $C$ satisfies the conditions of \Cref{lemma:hull-eaqecc}, yielding an MDS EAQECC with parameters $\llbracket n,\;k-h,\;d;\;n-k-h\rrbracket_q$. The dimension and the entanglement parameter both equal $c$. The bound on $n$ is inherited from \Cref{construction:isodual}. Lastly, Zhu and Zhao bound $h\leq k-1$ \cite[Cor.~4.1]{zhu2026isodual}, which gives $c\geq1$.
-\end{proof}
-
-\begin{proof}[Proof of \Cref{theorem:hso-criterion}]\refstepcounter{figure}\label{proof:hso-criterion}
-    Since $\ord_{P_i}(\omega)=-1$, we have $C_\mcL(D,G)^{\perp_\rmE}=\bfr\star C_\mcL(D,H)$ with $r_i=\Res_{P_i}(\omega)$ \cite[Prop.~2.2.10]{stichtenoth2009algebraic}.\footnote{This generalises the case $\omega=\eta$ of \Cref{section:ecc}.} Let $f,g\in\mcL(G)$. Then $g^q\in\mcL(qG)\subseteq\mcL(H)$, so
-    \begin{align*}
-        \ang[\big]{\bfv\star f(D),\bfv\star g(D)}_\rmH&=\sum_{i=1}^n r_if(P_i)g^q(P_i)\\
-        &=f(D)\dotpr\pa[\big]{\bfr\star g^q(D)}=0. \qedhere
-    \end{align*}
-\end{proof}
-} % end of comment
-
-\begin{proof}[Proof of \Cref{lemma:pullback-eigen}]\refstepcounter{figure}\label{proof:pullback-eigen}
-\ref{enum:eigen-u} By Dedekind's lemma, $1,\tau,\hdots,\tau^{\ell-1}$ are linearly independent over $\bbF_q(\mcE_1)$, and so over $\varphi^*\bbF_q(\mcE_2)$. Thus, $\tau$ has minimal polynomial $X^\ell-1$ on $\bbF_q(\mcE_1)$. Hence, there is $u\in\bbF_q(\mcE_1)^*$ with $\tau(u)=\zeta u$. Since
-\[ \tau(\div u)=\div(\tau(u))=\div(\zeta u)=\div u,\]
-$\div u$ is fixed by $K$. \Cref{lemma:pullback-facts}\ref{enum:pf-divisors} gives $\div u=\varphi^*A$ for some $A\in\Div\mcE_2$. Also, $u^\ell$ is fixed by $\tau$, so $u^\ell=\varphi^*h$ for some $h\in\bbF_q(\mcE_2)$. Taking $\div$ on both sides gives
-\[ \div(u^\ell)=\ell\div u=\ell\varphi^*A=\varphi^*(\ell A)=\varphi^*\div h,\]
-which forces $\ell A=\div h$. In particular, $\deg A=0$.
-
-By the approximation theorem \cite[Thm.~1.3.1]{stichtenoth2009algebraic}, replacing $u$ by $u\cdot\varphi^*a$ for suitable $a\in\bbF_q(\mcE_2)^*$, we may assume $\supp A\cap\supp D=\emptyset$.
-
-\ref{enum:eigen-R} Put $R:=\Sigma(A)\in\mcE_2(\bbF_q)$. As $\varphi^*A=\div u$ is principal and $\deg A=0$, we have $\hat\varphi(\Sigma(A))=\Sigma(\varphi^*A)=\infty$ by \Cref{lemma:abel-jacobi}, so $R\in\ker\hat\varphi$.
-
-We show that $R$ has order $\ell$. Suppose $[m]R=\infty$ with $m<\ell$. Then, $mA=\div a$ for some $a$. Consider the function $v:=u^m/\varphi^*a$. Its divisor is $\div v=m\varphi^*(A)-\varphi^*(mA)=0$, so $v$ is a nonzero constant, hence fixed by $\tau$. But $\tau(v)=(\zeta u)^m/\varphi^*a=\zeta^m v$, which forces $\zeta^m=1$, a contradiction. Thus, $R$ has order $\ell$.
-
-As $\hat\varphi\circ\varphi=[\ell]$ is separable for $\ell\nmid q$, so is $\hat\varphi$, and $\#\ker\hat\varphi=\ell$. Hence $R$ generates $\ker\hat\varphi$, which is therefore rational.
-
-\ref{enum:eigen-space} Let $f\in\mcL(\varphi^*G)$, so $\div f\geq-\varphi^*G$. $f$ lies in the $\zeta^j$-eigenspace if and only if $f/u^j$ is fixed by $\tau$, if and only if $f=u^j\varphi^*g$ for some $g\in\bbF_q(\mcE_2)$. This already shows that $u^j\varphi^*\mcL(G+jA)$ lies in the $\zeta^j$-eigenspace. For the reverse inclusion, note that \Cref{lemma:pullback-facts}\ref{enum:pf-divisors} gives $\div f=\varphi^*(jA+\div g)\geq-\varphi^*G$, so $g\in\mcL(G+jA)$.
-\end{proof}
-
-\begin{proof}[Proof of \Cref{construction:index-two-pullback}]\refstepcounter{figure}\label{proof:index-two-pullback}
-    We check that the codes $C$ and $\varphi^*C$ are well-defined, i.e. the supports of $D$ and $G$ (resp. $\varphi^*D$ and $\varphi^*G$) are disjoint and $\bbF_q$-rational.
-    
-    The image of $K$ in $\mcE_1(\bbF_q)/H\cong\bbZ/2\bbZ$ has order dividing both $\#K=\ell$ and 2, so it is trivial, and $K\subseteq H$. Hence, $H$ and $Q\oplus H$ are unions of cosets of $K$, i.e. they are partitioned by the fibres of $\varphi$. So $\varphi^{-1}(\varphi(H))=H$, $\varphi^{-1}(\varphi(Q\oplus H))=Q\oplus H$, and $\varphi(H)\cap\varphi(Q\oplus H)=\emptyset$. In \ref{enum:index-two-pullback-odd}, this shows that
-    \begin{align*}
-        \supp \varphi^*G&=\varphi^{-1}(\infty)=K\subseteq\mcE_1(\bbF_q) \quad\text{and} \\
-        \supp \varphi^*D&=\varphi^{-1}(\varphi(Q\oplus H))\subseteq Q\oplus H\subseteq\mcE_1(\bbF_q)
-    \end{align*}
-    are $\bbF_q$-rational. Likewise, in \ref{enum:index-two-pullback-any}, both
-    \begin{align*}
-        \supp \varphi^*G&=K\cup (Q\oplus K)\subseteq\mcE_1(\bbF_q) \quad\text{and} \\
-        \supp \varphi^*D&=\varphi^{-1}(\varphi(H\bs\set{\infty}))\subseteq H\subseteq\mcE_1(\bbF_q)
-    \end{align*}
-    are $\bbF_q$-rational. As $\infty=\varphi(\infty)\in\varphi(H)$ and $\varphi(Q)\in\varphi(Q\oplus H)$, the supports of $D$ and $G$ are disjoint in both cases, so $C$ is well-defined. It follows that the supports of $\varphi^*D$ and $\varphi^*G$ are also disjoint, so $\varphi^*C$ is well-defined. 
-    
-    Now, we show that $\varphi^*C$ is MDS by means of \Cref{theorem:mds-criterion}. Write $K=\ang T$ and $s_K:=\sum_{T'\in K}T'=[\ell(\ell-1)/2]T$. Since $\ell$ is odd, $s_K=\infty$.
-
-    For \ref{enum:index-two-pullback-odd}, $\Sigma(\varphi^*G)=[k]s_K=\infty\in H$. But $\supp\varphi^*D=Q\oplus H$, so any $\ell k$ of its points sum into $[\ell k]Q\oplus H=Q\oplus H$, as $\ell k$ is odd.
-
-    For \ref{enum:index-two-pullback-any}, the fibre over $\varphi(Q)$ is $Q\oplus K$, so $\Sigma(\varphi^*G)=[k-1]s_K\oplus[\ell]Q\oplus s_K=[\ell]Q$, which lies in $Q\oplus H$ as $\ell$ is odd. But $\supp\varphi^*D\subseteq H$, so any $\ell k$ of its points sum into $H$.
-
-    In both cases, no $\ell k$ points of $\supp\varphi^*D$ sum to $\Sigma(\varphi^*G)$, so $\varphi^*C$ is MDS by \Cref{theorem:mds-criterion}.
-\end{proof}
-
+\vfill\pagebreak
 \usection{AI prompts}
 
 At the beginning, we used Claude to evaluate our potential project directions. We then drafted a section-by-section outline of the report, which Claude referenced to search for relevant and recent publications, suggest results to include, evaluate their suitability for the report, and collate a bibliography containing those results.
