@@ -24,7 +24,7 @@
 
 \usection{Abstract}
 
-Isogenies of elliptic curves are central to post-quantum cryptography, but have played almost no role in coding theory so far. We construct \textit{pullback codes} by pulling back an elliptic code along a separable cyclic isogeny. Pullback codes are quasi-cyclic, preserve the rate and relative designed distance of the original code, and inherit iso-duality and self-orthogonality. When the degree divides $q-1$, a pullback code is equivalent to a matrix-product code built from twisted elliptic codes on the base curve. If a pullback code is MDS, then so is every twist, and a subset-sum argument on the covering curve gives long quasi-cyclic MDS elliptic codes. We then show that the hull of a pullback code splits along the twists, and apply this to hull variation. This gives quasi-cyclic MDS entanglement-assisted quantum codes with prescribed entanglement.
+Isogenies of elliptic curves are central to post-quantum cryptography, but have largely played no role in coding theory to date. We construct \textit{pullback codes} by pulling back an elliptic code along a separable cyclic isogeny. Pullback codes are quasi-cyclic, preserve the rate and relative designed distance of the original code, and inherit iso-duality and self-orthogonality. When the degree divides $q-1$, a pullback code is equivalent to a matrix-product code built from twisted elliptic codes on the base curve. Using a subset-sum argument, we construct long quasi-cyclic MDS elliptic codes. We then show that the hull of a pullback code splits along the twists. Applying this to hull variation yields quasi-cyclic MDS entanglement-assisted quantum codes with prescribed entanglement.
 
 \textbf{Keywords:} elliptic curves, isogenies, algebraic geometry codes, quasi-cyclic codes, matrix-product codes, MDS codes, hulls, entanglement-assisted quantum codes
 
@@ -32,11 +32,11 @@ Isogenies of elliptic curves are central to post-quantum cryptography, but have 
 
 Algebraic geometry (AG) codes were introduced by Goppa \cite{goppa1983algebraico} in the early 1980s. Their codewords are evaluations of functions in a Riemann--Roch space at rational points of a curve. They generalise the generalised Reed--Solomon (GRS) codes \cite{macwilliams1977theory} and have Singleton defect at most the genus of the curve \cite{stichtenoth2009algebraic}. They garnered strong interest after some families of AG codes were shown to beat the Gilbert--Varshamov bound \cite{tsfasman1982modular}.
 
-Elliptic curves give the simplest AG codes inequivalent to GRS codes. They are the only smooth projective curves whose points canonically form an abelian group, so conditions on the defining divisors become conditions on sums of points under the group law. This reduces the MDS property to a subset-sum problem \cite{munuera1993mds,li2015minimum}, and has led to MDS \cite{wang2025nonrs}, iso-dual \cite{zhu2026isodual} and self-dual \cite{jin2019selfdual} elliptic codes, with applications to quantum codes \cite{sok2021new,zhu2026isodual}.
+Elliptic curves give the simplest AG codes inequivalent to GRS codes. Elliptic curves are distinguished by the fact that their rational points carry a canonical abelian group structure. Consequently, conditions on divisors can often be translated into conditions on sums of points with respect to this group law. This reduces the MDS property to a subset-sum problem \cite{munuera1993mds,li2015minimum}, and has led to MDS \cite{wang2025nonrs}, iso-dual \cite{zhu2026isodual} and self-dual \cite{jin2019selfdual} elliptic codes, with applications to quantum codes \cite{sok2021new,zhu2026isodual}.
 
-Quasi-cyclic (QC) codes \cite{ling2001algebraic} arise on AG codes from curve automorphisms. Tong and Ding \cite{tong2013quasicyclic} built QC elliptic codes from automorphisms fixing the point at infinity, which have order at most 6. Translations \cite{ma2023automorphism} have larger orders, but they move the point at infinity, so the usual one- and two-point divisors are not invariant.
+Quasi-cyclic (QC) codes \cite{ling2001algebraic} arise on AG codes from curve automorphisms. Tong and Ding \cite{tong2013quasicyclic} built QC elliptic codes from automorphisms fixing the point at infinity, which have order at most 6. Although translations \cite{ma2023automorphism} can have larger orders, they do not fix the point at infinity, so the usual one- and two-point divisors are not preserved by these automorphisms.
 
-Isogenies are morphisms of elliptic curves respecting the group law, and are a source of divisors invariant under translations.  They are central to post-quantum cryptography \cite{NISTPQC-ADD-R3:SQIsign26,basso2026prism}, yet virtually unseen in coding theory. Given a separable isogeny $\varphi:\mcE_1\to\mcE_2$ with cyclic kernel $K$ of order $\ell$ and an elliptic code $C=C_\mcL(D,G)$ on $\mcE_2$, we study the \textbf{pullback code} $\varphi^*C:=C_\mcL(\varphi^*D,\varphi^*G)$. Translations by $K$ preserve $\varphi^*D$ and $\varphi^*G$, and hence act on $\varphi^*C$. We show the following.
+An isogeny is a morphism between elliptic curves that preserves their group structures. In addition to playing a central role in post-quantum cryptography \cite{NISTPQC-ADD-R3:SQIsign26,basso2026prism}, isogenies provide a natural way to construct divisors that are invariant under translations. Despite their cryptographic importance, however, they have hardly been used in coding theory. Given a separable isogeny $\varphi:\mcE_1\to\mcE_2$ with cyclic kernel $K$ of order $\ell$ and an elliptic code $C=C_\mcL(D,G)$ on $\mcE_2$, we study the \textbf{pullback code} $\varphi^*C:=C_\mcL(\varphi^*D,\varphi^*G)$. Translations by $K$ preserve $\varphi^*D$ and $\varphi^*G$, and hence act on $\varphi^*C$. We show the following.
 \begin{itemize}
     \item $\varphi^*C$ is an $[\ell n,\ell k,\geq\ell(n-k)]_q$ QC code of co-index $\ell$ (\Cref{theorem:pullback}), whose $K$-fixed subcode is the $\ell$-fold repetition of $C$ (\Cref{proposition:pullback-fixed}), and which inherits iso-duality from $C$ (\Cref{corollary:pullback-isodual}).
     \item If $\ell\mid q-1$, then $\varphi^*C$ is monomially equivalent to a matrix-product code whose constituents are scalings of twists $C_\mcL(D,G_j)$ of $C$ (\Cref{theorem:pullback-split}). If $\varphi^*C$ is MDS, so is every twist (\Cref{corollary:pullback-twists-mds}).
@@ -129,7 +129,7 @@ The points of $\mcE$ form an abelian group $(\mcE,\oplus)$ with identity $\infty
 
 We now specialise \Cref{section:divisors} to $\mcC=\mcE$, where $g=1$. The function field $\bbF_q(\mcE)$ is the field $\bbF_q(x,y)$, where $x$ is transcendental over $\bbF_q$ and $y$ is algebraic over $\bbF_q(x)$ subject to \Cref{eqn:ec}. The Riemann--Roch Theorem gives us $\ell(G)\geq\deg G$, with equality when $\deg G\geq1$. The sets of canonical and principal divisors coincide \cite[Cor.~1.4.12]{stichtenoth2009algebraic}. Moreover, the Jacobian $\Jac\mcE$ is famously isomorphic to $\mcE$ (cf. \Cref{section:group-law}).
 
-The \textbf{sum map} $\Sigma$ on divisors evaluates the formal sum using the elliptic group law and is denoted by
+The \textbf{sum map} $\Sigma$ on divisors evaluates the formal sum using the elliptic group law, and is denoted by
 \[ \Sigma(D):=\bigoplus_{P\in\mcE} [n_P]P. \]
 
 \subsection{Isogenies} \label{section:isogeny-background}
@@ -187,9 +187,9 @@ and an EAQECC achieving it is called \textbf{MDS} \cite{lai2018linear}. EAQECCs 
 
 The group law on an elliptic curve allows conditions on divisors to be rewritten as conditions on sums of points. This section collects the consequences of this principle that we will use as tools in \Cref{section:isogenies}. They are known, and we state them in the form we need.
 
-Every curve $\mcC$ of genus $g$ carries an abelian variety of dimension $g$, its Jacobian $\Jac\mcC$. What distinguishes genus 1 is that the group structure can be transported from the Jacobian to the curve. Specifically, for an elliptic curve, the \textbf{Abel--Jacobi map}
+Every curve $\mcC$ of genus $g$ carries an abelian variety of dimension $g$, its Jacobian $\Jac\mcC$. The genus-one case is special because the group structure on the Jacobian can be transferred directly to the curve. Indeed, for an elliptic curve, the \textbf{Abel--Jacobi map}
 \[ \mcE\lra\Jac\mcE, \qquad P\longmapsto\br{(P)-(\infty)} \]
-is a bijection whose inverse is the sum map $\Sigma$ of \Cref{section:elliptic-curves}, and the group law it induces on $\mcE$ agrees with the geometric one in \cite[\S~III.3]{silverman2009arithmetic}. For $g\geq2$ the group lives on a higher-dimensional variety, and no such translation is available.
+is a bijection, with inverse given by the sum map $\Sigma$ of \Cref{section:elliptic-curves} The induced group law agrees with the usual geometric group law \cite[\S~III.3]{silverman2009arithmetic}. In higher genera, the Jacobian is a higher-dimensional variety, and its group structure cannot be transferred to the curve in this way.
 
 \begin{lemma}{Abel--Jacobi \cite[Cor.~III.3.5]{silverman2009arithmetic}}{abel-jacobi}
     $A\in\Div^0\mcE$ is principal if and only if $\Sigma(A)=\infty$.
@@ -242,7 +242,7 @@ Elliptic curves have many more curve automorphisms than curves of higher genus \
 
 \section{Pullback codes along isogenies} \label{section:isogenies}
 
-Isogenies are widely used in cryptography, for instance in the post-quantum signature scheme SQIsign \cite{NISTPQC-ADD-R3:SQIsign26} and related protocols \cite{basso2026prism,jamielow2027}, but they are virtually unseen in coding theory. In this section, we use them to transform elliptic codes on one curve into longer elliptic codes on another, and study the properties of the resulting codes.
+Isogenies have found important applications in cryptography, notably in the post-quantum signature scheme SQIsign \cite{NISTPQC-ADD-R3:SQIsign26} and related protocols \cite{basso2026prism,jamielow2027}. Their potential applications in coding theory, however, remain largely unexplored. In this section, we use isogenies to transform elliptic codes on one curve into longer elliptic codes on another, and study the properties of the resulting codes.
 
 Given an isogeny $\varphi:\mcE_1\to\mcE_2$ and an elliptic code $C_\mcL(D,G)$ on $\mcE_2$, the most natural code on $\mcE_1$ is obtained by pulling back both divisors. We impose mild constraints on $\varphi$ so that the resulting code is nice.
 
@@ -312,7 +312,7 @@ Now, we prove the forward inclusion. Suppose $\bfc:=f(\varphi^*D)\in\varphi^*C$ 
 the second implication by \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}. Hence, $\bfc=\varphi^*g(\varphi^*D)\in C_{\varphi^*\mcL}(\varphi^*D,G)$.
 \end{proof}
 
-For our construction to be useful in practice, a basis of $\mcL(\varphi^*G)$ must be easy to compute. Fortunately, this is the case for the usual one-point divisor $G=k(\infty)$, as \Cref{proposition:pullback-basis} shows. The basis only needs the $x$-coordinates of the points of $K$, and not the isogeny $\varphi$ itself.
+For our construction to be useful in practice, a basis of $\mcL(\varphi^*G)$ must be easy to compute. Fortunately, this is the case for the usual one-point divisor $G=k(\infty)$, as \Cref{proposition:pullback-basis} shows. The basis only needs the $x$-coordinates of the kernel points, and not the explicit isogeny $\varphi$.
 
 \begin{proposition}{Basis of $\mcL(\varphi^*G)$}{pullback-basis}
     Suppose $\ell$ is odd and $G=k(\infty)$. Label the $\ell-1$ points of $K\bs\set\infty$ by $\opm T_1,\hdots,\opm T_{(\ell-1)/2}$, and put $z:=(x-x(T_1))\cdots(x-x(T_{(\ell-1)/2}))$.
@@ -361,11 +361,10 @@ As $\hat\varphi\circ\varphi=[\ell]$ is separable for $\ell\nmid q$, so is $\hat\
 \ref{enum:eigen-space} By \Cref{lemma:pullback-facts}\ref{enum:pf-galois}, a function $f\in\bbF_q(\mcE_1)$ satisfies $\tau f=\zeta^jf$ if and only if $f/u^j$ is fixed by $\tau$, that is, $f=u^j\varphi^*g$ for some $g\in\bbF_q(\mcE_2)$. For such $f$, we have $\div f=\varphi^*(jA+\div g)$, so by \Cref{lemma:pullback-facts}\ref{enum:pf-divisors}, $f\in\mcL(\varphi^*G)$ if and only if $jA+\div g\geq-G$, that is, $g\in\mcL(G+jA)$.
 \end{proof}
 
-We can now describe $\varphi^*C$ as a matrix-product code \cite{blackmore2001matrix}, whose constituents are \textbf{twists} of $C$, namely elliptic codes on $\mcE_2$ with the same evaluation points but a different divisor $G$.
+We are now ready to express $\varphi^*C$ as a matrix-product code \cite{blackmore2001matrix}. Each constituent is an elliptic code on $\mcE_2$ obtained from $C$ by `twisting' its defining divisor $G$ but retaining the evaluation points $D$. We refer to these constituent codes as the \textbf{twists} of $C$.
 
 \begin{theorem}{Splitting into twists}{pullback-split}
     Adopt the notation and hypotheses of \Cref{lemma:pullback-eigen}. Then, up to a reordering of $\varphi^* D$, $\varphi^*C$ is the matrix product code $(C_0,\hdots,C_{\ell-1})\cdot \bfV$ with $\bfV:=\br{\zeta^{jm}}_{j,m=0}^{\ell-1}$, where each $C_j$ is a scaling of the twist $C_\mcL(D,G+jA)$.
-
 
     Up to scaling, one may replace $G+jA$ by any divisor $G_j$ disjoint from $D$ with $\deg G_j=k$ and $\Sigma(G_j)=\Sigma(G)\oplus[j]R$, where $R$ is a suitable generator for $\ang R=\ker\hat\varphi$.
 \end{theorem}
@@ -414,8 +413,7 @@ Next, we present a necessary condition for $\varphi^*C$ to be MDS. Unlike \Cref{
 
 \subsection{Comparison with previous work}
 
-We found no publications applying isogenies to elliptic codes. The most similar publication is by Tong and Ding \cite{tong2013quasicyclic}, which also constructed quasi-cyclic elliptic codes, but based on the group automorphisms of $\mcE$. There are fundamental differences between the two constructions, which we state below in the format: \cite{tong2013quasicyclic} \textit{vs} ours.
-
+To the best of our knowledge, isogenies have not previously been used to construct elliptic codes. The closest related work is that of Tong and Ding \cite{tong2013quasicyclic}, who constructed quasi-cyclic elliptic codes using automorphisms of the underlying elliptic curve. Although both approaches produce quasi-cyclic codes, their underlying symmetries and resulting code properties differ substantially. We summarise these differences below in the format: \cite{tong2013quasicyclic} \textit{vs} ours.
 \begin{itemize}
     \item \textbf{Symmetry:} automorphisms fixing $\infty$ \textit{vs} translations by $\ker\varphi$
     \item \textbf{Co-index:} $\leq 6$ \textit{vs} any $\ell$ dividing the exponent of $\mcE_1(\bbF_q)$
@@ -428,9 +426,9 @@ We found no publications applying isogenies to elliptic codes. The most similar 
 
 The results in the previous subsections have three immediate applications. The first is \textbf{longer iso-dual elliptic codes}. Zhu and Zhao \cite[Constr.~1]{zhu2026isodual} construct iso-dual MDS codes of length $2k$ with
 \[ D=\sum_{i=1}^k\pa[\big]{(Q\oplus P_i)+(Q\ominus P_i)},\quad G=(k-1)(\infty)+(Q),\]
-where $Q$ has order 2. These satisfy the hypothesis of \Cref{corollary:pullback-isodual}, as $\Sigma(D)=\infty=[2]Q=\Sigma(2G)$. If $\supp D\subseteq\varphi(\mcE_1(\bbF_q))$, so that the fibres over $\supp D$ are rational, pulling back therefore turns a short iso-dual MDS code of length $2k$ into a long iso-dual code of length $2\ell k$ with the same rate $\frac12$ and relative designed distance $\frac{n-k}{n}$, but typically at the cost of the MDS property (i.e. 1 unit of distance).
+where $Q$ has order 2. These codes satisfy the hypothesis of \Cref{corollary:pullback-isodual}, since $\Sigma(D)=\infty=[2]Q=\Sigma(2G)$. If $\supp D\subseteq\varphi(\mcE_1(\bbF_q))$, then all fibres above $D$ consist of rational points. The pullback construction consequently extends the original iso-dual MDS code of length $2k$ to an iso-dual code of length $2\ell k$, without changing its rate or relative designed distance. The resulting code is not necessarily MDS, however, and may incur a loss of one unit in minimum distance.
 
-The second is \textbf{decoding via twists}. Ling and Sol\'e showed that every quasi-cyclic code decomposes into shorter constituent codes \cite{ling2001algebraic}. \Cref{theorem:pullback-split} identifies the constituents of $\varphi^*C$ as scalings of the twists $C_\mcL(D,G_j)$, which are $[n,k,\geq\! n-k]$ elliptic codes on $\mcE_2$. Decoding the $\ell$ twists separately, each up to half its minimum distance, corrects every error pattern meeting at most $\floor{(n-k-1)/2}$ fibres $\varphi^{-1}(P_i)$, however many errors each fibre contains. Thus, errors concentrated on few fibres can be corrected by $\ell$ decoders of length $n$, rather than one of length $\ell n$.
+The second is \textbf{decoding via twists}. Ling and Sol\'e showed that every quasi-cyclic code decomposes into shorter constituent codes \cite{ling2001algebraic}. \Cref{theorem:pullback-split} identifies the constituents of $\varphi^*C$ as scalings of the twists $C_\mcL(D,G_j)$, which are $[n,k,\geq\! n-k]$ elliptic codes on $\mcE_2$. Each of the $\ell$ twists can be decoded independently up to half its minimum distance. Consequently, this approach corrects any error pattern supported on at most $\floor{(n-k-1)/2}$ fibres $\varphi^{-1}(P_i)$, regardless of the number of errors within an individual fibre. In this setting, decoding reduces to $\ell$ instances of length $n$, instead of a single instance of length $\ell n$.
 
 The third is a supply of \textbf{quasi-cyclic elliptic codes}. By \Cref{theorem:pullback}, the pullback produces quasi-cyclic elliptic codes of co-index $\ell$ with the same rate $\frac kn$ and relative designed distance $\frac{n-k}{n}$ as $C$, provided $\mcE_1(\bbF_q)$ has a cyclic subgroup of order $\ell$. We can combine this with the index-two construction of Wang et al. \cite{wang2025nonrs} to obtain \textbf{MDS quasi-cyclic elliptic codes}, provided that the index-two subgroup is compatible with the fibres of $\varphi$. In \cite{wang2025nonrs}, $D$ is supported on a subgroup $H\leq\mcE(\bbF_q)$ of index 2 or its non-trivial coset, and $\Sigma(G)$ is chosen in the other coset, so that \Cref{eqn:mds-criterion} fails by a parity argument. This is illustrated in \Cref{construction:index-two-pullback} and \Cref{example:mds-qc}.
 
@@ -521,7 +519,7 @@ For the rest of this paper, we work in the setting of \Cref{theorem:pullback-spl
     \item $L_j=u^j\varphi^*\mcL(G_j)$ is the $\zeta^j$-eigenspace of $\tau$ on $\mcL(\varphi^*G)$.
 \end{itemize}
 
-The standard tool for building EAQECCs is \textbf{hull variation} \cite{chen2023hullvariation,luo2024variable}. If $C$ is a self-dual $[n,k,d]_q$ code, scaling $s\leq k$ coordinates of an information set by elements $\lambda$ with $\lambda^2\neq1$ gives an equivalent code with hull of dimension $k-s$, so every entanglement between $0$ and $n-k$ can be reached. However, applying this to a pullback code generally destroys its quasi-cyclic structure, since translation can move a scaled coordinate to an unscaled one. Therefore, we scale whole fibres only.
+The standard tool for building EAQECCs is \textbf{hull variation} \cite{chen2023hullvariation,luo2024variable}. If $C$ is a self-dual $[n,k,d]_q$ code, scaling $s\leq k$ coordinates of an information set by elements $\lambda$ with $\lambda^2\neq1$ gives an equivalent code with hull of dimension $k-s$, so every entanglement between $0$ and $n-k$ can be reached. However, applying this procedure directly to a pullback code will generally destroy quasi-cyclicity, as translation by an element of the kernel may send a scaled coordinate to one that has not been scaled. To preserve the quasi-cyclic structure, we restrict our attention to scalings that act uniformly on each fibre.\footnote{Note that this is not a necessary condition for preserving quasi-cyclicity.}
 
 For $\bfw=(w_1,\hdots,w_n)\in(\bbF_q^*)^n$, let $\bfw^\varphi\in(\bbF_q^*)^{\ell n}$ take the same value $w_i$ on every coordinate of the fibre $\varphi^{-1}(P_i)$. Translation by $T$ permutes the coordinates inside each fibre, so $\bfw^\varphi\star \varphi^*C$ is again quasi-cyclic of co-index $\ell$, with the same parameters as $\varphi^*C$. We call such scalings \textbf{$K$-compatible}.
 
@@ -552,7 +550,7 @@ Since $u^j\varphi^*g\in L_j$ for $g\in\mcL(G_j)$, the map $\eps_j$ is well defin
 
 \subsection{Hull decomposition} \label{subsection:hull-decomposition}
 
-The goal of this subsection is to analyse how the hull of $\varphi^*C$ behaves under $K$-compatible scalings $\bfw$. Ling and Sol\'e \cite[Prop.~4.1]{ling2001algebraic} study how a quasi-cyclic code decomposes into constituent codes, and how the Euclidean inner product interacts with these constituents. \Cref{lemma:twisted-pairing} and \Cref{theorem:hull-decomposition} translate their discussion from the language of polynomials into our language of pullback codes. In short, most eigenspaces are pairwise orthogonal, except each pair $W_j$ and $W_{-j}$.
+The goal of this subsection is to analyse how the hull of $\varphi^*C$ behaves under $K$-compatible scalings $\bfw$. Ling and Sol'e \cite[Prop.~4.1]{ling2001algebraic} analyse the decomposition of quasi-cyclic codes into constituent codes and the interaction of these constituents with the Euclidean inner product. \Cref{lemma:twisted-pairing} and \Cref{theorem:hull-decomposition} adapt these ideas to the setting of pullback codes. The resulting decomposition has a particularly simple orthogonality structure, where two eigenspaces are orthogonal unless their indices are negatives of one another.
 
 \begin{lemma}{Twisted inner products}{twisted-pairing}
     Let $j,j'\in J$.
@@ -844,7 +842,7 @@ There are other scalings $\bfv$ that preserve quasi-cyclicity but are not consta
 
 \section{Conclusion} \label{section:conclusion}
 
-We introduced pullback codes, which transport an elliptic code $C$ on $\mcE_2$ along a separable isogeny $\varphi:\mcE_1\to\mcE_2$ to a code $\varphi^*C$ on $\mcE_1$ that is $\ell$ times longer. The group structure of $\ker\varphi$ makes $\varphi^*C$ quasi-cyclic of co-index $\ell$ with the same rate and relative designed distance as $C$. When $\ell\mid q-1$, $\varphi^*C$ is a matrix-product code whose constituents are twists of $C$. Combined with the index-two construction of \cite{wang2025nonrs}, pullbacks yielded quasi-cyclic MDS elliptic codes. The hull of $\varphi^*C$ splits along the same twists, so hull variation on whole fibres produces quasi-cyclic EAQECCs with prescribed entanglement, governed by a subset-sum condition in $\Sigma(G)\oplus\ker\hat\varphi$.
+We introduced the notion of pullback codes, which are constructed by pulling back an elliptic code $C$ on $\mcE_2$ to a code $\varphi^*C$ on $\mcE_1$ via a separable cyclic isogeny $\varphi:\mcE_1\to \mcE_2$. This construction multiplies the code length by a factor of $\ell$, while preserving its rate and relative designed distance. Moreover, the kernel translations endow the pullback code with a quasi-cyclic structure of co-index $\ell$. When $\ell\mid q-1$, the code admits a matrix-product decomposition into twists of the original code. This decomposition, together with the index-two construction \cite{wang2025nonrs}, provides quasi-cyclic MDS elliptic codes. Finally, the hull decomposes according to the same constituent codes. By scaling entire fibres, we obtain quasi-cyclic EAQECCs with prescribed entanglement, subject to a subset-sum condition on $\mcE_2$.
 
 To our knowledge, this is the first use of isogenies in the construction of codes. Some natural next steps include
 \begin{itemize}
@@ -860,6 +858,6 @@ To our knowledge, this is the first use of isogenies in the construction of code
 
 \usection{AI declaration}
 
-Claude Opus 5.5 was consulted to generalise the proofs of \cite[Prop.~4.1, Thm.~4.2]{ling2001algebraic}, \cite[Lem.~3--4]{wang2026generic}, and \cite[Thm.~1(i)]{fang2020euclidean} to our pullback codes in \Cref{section:hulls}. All proofs were human-verified, reformulated to improve clarity, and hand-typed. Additionally, Claude constructed the codes of \Cref{example:mds-qc,example:qc-eaqecc-256,example:qc-eaqecc-64} in SageMath \cite{code-f256,code-f64} and verified the quasi-cyclic and MDS properties.
+Claude Opus 5.5 was consulted to generalise the proofs of \cite[Prop.~4.1, Thm.~4.2]{ling2001algebraic}, \cite[Lem.~3--4]{wang2026generic}, and \cite[Thm.~1(i)]{fang2020euclidean} to our setting in \Cref{section:hulls}. All proofs were human-verified, reformulated to improve clarity, and hand-typed. Additionally, Claude constructed the codes of \Cref{example:mds-qc,example:qc-eaqecc-256,example:qc-eaqecc-64} in SageMath \cite{code-f256,code-f64} and verified the quasi-cyclic and MDS properties.
 
 \end{document}
