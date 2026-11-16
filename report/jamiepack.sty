@@ -168,8 +168,12 @@ linkcolor=blue
 
 % Font
 \loadfont
+% \textbf is coloured jptextbf: Navy by default, and the title colour of the
+% surrounding box inside \claimbox environments.
+\newcommand{\jptextbfdefault}{Navy}
+\ifbubumax\colorlet{jptextbf}{\jptextbfdefault}\fi
 \renewcommand{\textbf}[1]{%
-	\textcolor{Navy}{\bfseries{#1}}%
+	\textcolor{jptextbf}{\bfseries{#1}}%
 }
 
 % General Formatting
@@ -199,17 +203,18 @@ linkcolor=blue
 \mleftright
 \let\l\mleft
 \let\r\mright
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{M}{>{$}c<{$}}
 \allowdisplaybreaks
 \AtBeginDocument{
-    \setlength{\abovedisplayskip}{6pt}
-    \setlength{\abovedisplayshortskip}{3pt}
-    \setlength{\belowdisplayskip}{6pt}
-    \setlength{\belowdisplayshortskip}{3pt}
+    \setlength{\abovedisplayskip}{6pt plus 3pt}
+    \setlength{\abovedisplayshortskip}{3pt plus 3pt}
+    \setlength{\belowdisplayskip}{6pt plus 3pt}
+    \setlength{\belowdisplayshortskip}{3pt plus 3pt}
 }
 
 % List Formatting
-\setlist{topsep=-2pt, itemsep=-2pt, left=0pt, beginpenalty=0, midpenalty=0, endpenalty=0}
+\setlist{topsep=-2pt plus 2pt, itemsep=-2pt plus 2pt, left=0pt, beginpenalty=0, midpenalty=0, endpenalty=0}
 \setlist[enumerate,1]{label={(\alph*)}, left=-4pt, topsep=2pt}
 \setlist[enumerate,2]{label={(\roman*)}}
 % \setlist[itemize,2]{label=$\diamond$}
@@ -317,7 +322,9 @@ linkcolor=blue
 % TODO: add styling for scrreprt and scrbook
 \makeatletter
 \@ifclassloaded{scrartcl}{%
-	\renewcommand{\headfont}{}%
+	% Boxes recolour \textbf locally; reset it in the header, which may be
+	% typeset while a breakable box is still open.
+	\renewcommand{\headfont}{\colorlet{jptextbf}{\jptextbfdefault}}%
 	\ihead{\bubuiheadcontent}%
 	\automark{section}%
 	\renewcommand*{\sectionmark}[1]{%
@@ -390,9 +397,9 @@ linkcolor=blue
 }
 \makeatother
 
-\RedeclareSectionCommand[beforeskip=0.1em, afterskip=0.1em]{section}
-\RedeclareSectionCommand[beforeskip=0.1em, afterskip=0.1em]{subsection}
-\RedeclareSectionCommand[beforeskip=0.1em, afterskip=0.1em]{subsubsection}
+\RedeclareSectionCommand[beforeskip=0.1em plus 0.1em, afterskip=0.1em plus 0.1em]{section}
+\RedeclareSectionCommand[beforeskip=0.1em plus 0.05em, afterskip=0.1em plus 0.05em]{subsection}
+\RedeclareSectionCommand[beforeskip=0.1em plus 0.05em, afterskip=0.1em plus 0.05em]{subsubsection}
 \renewcommand*{\sectionformat}{%
 	\color{violet}\thesection\enskip%
 }
@@ -405,6 +412,9 @@ linkcolor=blue
 \addtokomafont{paragraph}{\color{orange!35!black}\P\ }
 \KOMAoptions{numbers=noenddot}
 
+% Paragraph spacing inside boxes (tcolorbox otherwise sets \parskip to 0pt).
+\newcommand{\jpboxparskip}{\setlength{\parskip}{6pt plus 4pt minus 0pt}}
+
 % Box styles. Each takes two arguments: {<background>}{<text>}.
 % The background colour fills the box (and the banner); the text colour is
 % used for the title, the frame, and all other lines. Body text stays black.
@@ -414,7 +424,7 @@ linkcolor=blue
 % line break.
 \makeatletter
 \newcommand{\jp@titledot}{{\color{tcbcoltitle}\bfseries\sffamily.}\ }
-\newcommand{\jp@titlebreak}{\par\medskip}
+\newcommand{\jp@titlebreak}{\par}% the box \parskip gives the gap
 \newcommand{\jp@description}[1]{%
 	\global\let\jp@aftertitle\jp@titlebreak
 	{\mdseries(#1)}%
@@ -429,9 +439,12 @@ linkcolor=blue
 	% Framed box with the title in a banner on the top edge
 	defnstyle/.style 2 args={%
 		breakable,
+		code={\colorlet{jptextbf}{#2}},
+		fontupper=\jpboxparskip,
+		fontlower=\jpboxparskip,
 		enhanced,
-		before skip=12pt,
-		after skip=12pt,
+		before skip=12pt plus 4pt minus 2pt,
+		after skip=12pt plus 4pt minus 2pt,
 		colback=#1,
 		colframe=#2,
 		coltitle=#2,
@@ -465,9 +478,12 @@ linkcolor=blue
 	% line ("Theorem 3 (Name)", then the body).
 	claimstyle/.style 2 args={%
 		breakable,
+		code={\colorlet{jptextbf}{#2}},
+		fontupper=\jpboxparskip,
+		fontlower=\jpboxparskip,
 		enhanced,
-		before skip=12pt,
-		after skip=12pt,
+		before skip=12pt plus 4pt minus 2pt,
+		after skip=12pt plus 4pt minus 2pt,
 		colback=#1,
 		coltitle=#2,
 		frame hidden,
@@ -480,97 +496,9 @@ linkcolor=blue
 		description formatter=\jp@description,
 		separator sign none,
 		segmentation style={solid, #2},
-	},
-	% Framed box with square corners (not used by \claimbox)
-	examplestyle/.style 2 args={%
-		breakable,
-		enhanced,
-		before skip=16pt,
-		after skip=16pt,
-		colback=#1,
-		colframe=#2,
-		coltitle=#2,
-		boxrule=0.5pt,
-		sharp corners,
-		detach title,
-		before upper=\tcbtitle\par\medskip,
-		fonttitle=\bfseries\sffamily,
-		description font=\mdseries,
-		separator sign none,
-		description delimiters parenthesis,
-	},
+	}
 }
 \makeatother
-
-\tcbuselibrary{theorems,skins,hooks,breakable}
-\tcbset{
-	problemstyle/.style={
-		breakable,
-		enhanced,
-		frame hidden,
-		boxrule=0pt,
-		boxsep=0pt,
-		coltitle=probcoltitle,
-		colback=probcolback,
-		colframe=probcolframe,
-		sharp corners,
-		before upper={\noindent\ignorespaces},
-		before skip=16pt,
-		after skip=16pt,
-		top=0pt, bottom=0pt, left=0pt, right=0pt,
-		fonttitle=\bfseries\sffamily\color{probfont},
-		attach title to upper,
-		after title={.\space},
-		description delimiters parenthesis,
-		separator sign none,
-	}
-}
-
-\usetikzlibrary{arrows,calc,shadows.blur}
-\tcbuselibrary{skins,breakable}
-\tcbset{%
-	notationstyle/.style={%
-		breakable,
-		enhanced jigsaw,
-		before skip=16pt,
-		after skip=16pt,
-		coltitle=notecoltitle,
-		colback=notecolback,
-		colframe=notecolframe,
-		size=small,
-		top=2mm,
-		bottom=3mm,
-		left=4mm,
-		right=4mm,
-		boxrule=1pt,
-		title=\textsf{\bfseries{Notation:}},
-		halign title=flush center,
-		drop shadow=noteshadow,
-		attach boxed title to top
-		left={xshift=1cm,yshift=-\tcboxedtitleheight/2,yshifttext=-\tcboxedtitleheight/2},
-		minipage boxed title=2.25cm,
-		boxed title style={%
-			colback=noteboxcolback,
-			size=fbox,
-			boxrule=1pt,
-			boxsep=2pt,
-			underlay={%
-				\coordinate (dotA) at ($(interior.west) + (-0.5pt,0)$);
-				\coordinate (dotB) at ($(interior.east) + (0.5pt,0)$);
-				\begin{scope}%
-					\clip (interior.north west) rectangle ([xshift=3ex]interior.east);
-					\filldraw [noteboxfill, blur shadow={shadow opacity=60, shadow
-						yshift=-.75ex}, rounded corners=2pt] (interior.north west)
-					rectangle (interior.south east);
-				\end{scope}
-				\begin{scope}[noteboxscope]%
-					\fill (dotA) circle (2pt);
-					\fill (dotB) circle (2pt);
-				\end{scope}
-			},
-		},
-	}
-}
 
 \tcbuselibrary{theorems,skins,hooks}
 % Shared counter for all theorem boxes
@@ -626,11 +554,11 @@ linkcolor=blue
 	{definition}{Definition}{Definitions}
 \claimbox{blue!5}{Navy}
 	{theorem}{Theorem}{Theorems}
-\claimbox{DodgerBlue!6}{DodgerBlue!45!black}
+\claimbox{DodgerBlue!10}{DodgerBlue!80!black}
 	{lemma}{Lemma}{Lemmas}
-\claimbox{DodgerBlue!6}{DodgerBlue!45!black}
-	{corollary}{Corollary}{Corollaries}
 \claimbox{blue!5}{Navy}
+	{corollary}{Corollary}{Corollaries}
+\claimbox{DodgerBlue!10}{DodgerBlue!80!black}
 	{proposition}{Proposition}{Propositions}
 \claimbox{Gold!8}{Olive!50!DarkGoldenrod!75!black}
 	{conjecture}{Conjecture}{Conjectures}
@@ -648,7 +576,7 @@ linkcolor=blue
 	{problem}{Problem}{Problems}
 \claimbox{DarkTurquoise!8}{DarkTurquoise!40!black}
 	{exercise}{Exercise}{Exercises}
-\claimbox{RedViolet!5}{RedViolet}
+\claimbox{Salmon!5}{RawSienna}
 	{remark}{Remark}{Remarks}
 \claimbox{RedViolet!5}{RedViolet}
 	{example}{Example}{Examples}
