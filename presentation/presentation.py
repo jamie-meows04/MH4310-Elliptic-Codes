@@ -1291,9 +1291,9 @@ class Isogenies(Slide):
             )),
             bullet(rate_line, distance_line),
             bullet(
-                colored_tex("is quasi-cyclic of co-index $", ell, "$", font_size=size),
+                colored_tex("is quasi-cyclic of index $", ("n", YELLOW), "$", font_size=size),
                 colored_tex(
-                    "(i.e.\\ invariant under $", ell, "$-fold cyclic shifts)",
+                    "(i.e.\\ invariant under $", ("n", YELLOW), "$-fold cyclic shifts)",
                     font_size=size,
                 ),
             ),
